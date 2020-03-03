@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Login</title>
+
+        <!-- Bootstrap CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <link href="Login.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="container" id="container">
+            <div class="form-container sign-up-container">
+                <form action="#">
+                    <h1>Tạo tài khoản</h1>
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="fa fa-facebook-square"  style="font-size:48px;color:blue"></i></a>
+                        <a href="#" class="social"><i class="fa fa fa-google-plus-square" style="font-size:48px;color:red"></i></a>
+                        <a href="#" class="social"><i class="fa fa-linkedin-square" style="font-size:48px;color:rgb(15, 15, 185)"></i></a>
+                    </div>
+                    <span>hoặc dùng tài khoản email để đăng ký</span>
+                    <input type="text" placeholder="Name" />
+                    <input type="email" placeholder="Email" />
+                    <input type="password" placeholder="Password" />
+                    <button>Đăng ký</button>
+                </form>
+            </div>
+            <div class="form-container sign-in-container">
+                <form action="#">
+                    <h1>Đăng nhập</h1>
+                    <div class="social-container">
+                        <a href="#" class="social"><i class="fa fa-facebook-square"  style="font-size:48px;color:blue"></i></a>
+                        <a href="#" class="social"><i class="fa fa fa-google-plus-square" style="font-size:48px;color:red"></i></a>
+                        <a href="#" class="social"><i class="fa fa-linkedin-square" style="font-size:48px;color:rgb(15, 15, 185)"></i></a>
+                    </div>
+                    <span>hoặc sử dụng tài khoản của bạn</span>
+                    <input type="email" placeholder="Email" />
+                    <input type="password" placeholder="Password" />
+                    <a href="#">Quên mật khẩu ?</a>
+                    <button>Đăng nhập</button>
+                </form>
+            </div>
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1>Nếu bạn đã có tài khoản</h1>
+                        <p>Hãy kết nối với chúng tôi bằng tài khoản của bạn</p>
+                        <button class="ghost" id="signIn">Đăng nhập</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1>Nếu chưa có tài khoản</h1>
+                        <p>Hãy đăng ký để tham gia cùng với chúng tôi</p>
+                        <button class="ghost" id="signUp">Đăng ký</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Bootstrap JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="Login.js"></script>
+    </body>
+</html>
+
+
+
