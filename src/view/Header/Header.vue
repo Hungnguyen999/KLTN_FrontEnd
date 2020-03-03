@@ -94,7 +94,7 @@ export default {
       }
     },
     promise() {
-      axios.post('http://localhost:8000/test', {}, {params: {input: 'vinh'}})
+      axios.get('http://localhost:8000/test', {}, {params: {test: 'vinh'}})
       .then(response => {
         console.log(response.data)
       })
