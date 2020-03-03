@@ -94,7 +94,7 @@ export default {
       }
     },
     promise() {
-      axios.get('http://localhost:8000/test', {}, {params: {test: 'vinh'}})
+      axios.get('https://goodlearningserver.herokuapp.com/test', {}, {params: {test: 'vinh'}})
       .then(response => {
         console.log(response.data)
       })
