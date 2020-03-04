@@ -76,7 +76,7 @@ export default {
   components: { DropdownCategory, Login_Modal, Singup_Modal },
   data() {
     return {
-      baseURL: apiURL.baseURL,
+      baseURL: apiURL.apiURLOnline,
       isLogin: false
     };
   },

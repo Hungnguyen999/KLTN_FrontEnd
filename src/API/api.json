@@ -1,6 +1,6 @@
 {
     "apiURL": "http://localhost:8000",
     "baseURL": "http://localhost:8081",
-    "apiURLOnline": "https://goodlearningserver.herokuapp.com/",
-    "baseURLOnline": "https://goodlearningclient.herokuapp.com/"
+    "apiURLOnline": "https://goodlearningserver.herokuapp.com",
+    "baseURLOnline": "https://goodlearningclient.herokuapp.com"
 }
