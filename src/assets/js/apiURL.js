@@ -1,5 +1,5 @@
 var apiConfig = require('../../API/api.json')
-var apiAddress = apiConfig.apiURLOnline
+var apiAddress = apiConfig.apiURL
 
 var apiURL = {
     adminLogin: apiAddress + "/adminLogin",

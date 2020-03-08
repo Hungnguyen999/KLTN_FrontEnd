@@ -1,22 +1,25 @@
 <template>
-  <div class="container" style="position: relative">
-    <aglie ref="recommend" :options="myOption">
-      <div class="slide" v-for="(slide,index) in loadSlide" :key="index">
-        <div class="row">
-          <div v-for="(column,index2) in loadSlide[index]" :key="index2" class="col-3 col-md-3">
-            <div v-for="(item, index3) in loadSlide[index][index2]" :key="index3">
-              <button class="my-button">Topic {{item.name}}</button>
+  <div>
+    <div class="container" style="margin-bottom: 0;"><h2 style="padding: 0;margin:0;padding-left: 1rem">Lĩnh vực liên quan</h2></div>
+    <div class="container" style="position: relative;margin-top: 0">
+      <aglie ref="recommend" :options="myOption">
+        <div class="slide" v-for="(slide,index) in loadSlide" :key="index">
+          <div class="row">
+            <div v-for="(column,index2) in loadSlide[index]" :key="index2" class="col-3 col-md-3">
+              <div v-for="(item, index3) in loadSlide[index][index2]" :key="index3">
+                <button class="my-button">Topic {{item.name}}</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </aglie>
-    <button class="btn collection-btn left" @click="$refs['recommend'].goToPrev()">
-      <i class="fas fa-chevron-left"></i>
-    </button>
-    <button class="btn collection-btn right" @click="$refs['recommend'].goToNext()">
-      <i class="fas fa-chevron-right"></i>
-    </button>
+      </aglie>
+      <button class="btn collection-btn left" @click="$refs['recommend'].goToPrev()">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="btn collection-btn right" @click="$refs['recommend'].goToNext()">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
   </div>
 </template>
 <script>
@@ -84,9 +87,9 @@ export default {
 .row {
   padding: 0;
   margin: 0;
+  height: 8rem;
   .col-3 {
     text-align: center;
-    margin-bottom: 0.5rem;
     .my-button {
       width: 100%;
       height: 3rem;
@@ -110,7 +113,7 @@ export default {
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  top: 20%;
+  top: 3rem;
   border: 1px solid silver;
   background-color: #f3f7f7;
   &:focus {

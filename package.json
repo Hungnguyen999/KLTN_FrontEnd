@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 8081",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
@@ -22,11 +22,15 @@
     "sweetalert2": "^9.8.2",
     "vue": "^2.6.11",
     "vue-agile": "^1.0.11",
+    "vue-context": "^5.0.0",
+    "vue-marquee-text-component": "^1.1.1",
     "vue-router": "^3.0.3",
+    "vue-sidebar-menu": "^4.5.3",
     "vue-slick": "^1.1.15",
     "vue-spinner": "^1.0.3",
     "vue-star-rating": "^1.6.1",
     "vue-sweetalert2": "^3.0.3",
+    "vuetify": "^2.2.15",
     "vuex": "^3.1.2"
   },
   "devDependencies": {

@@ -11,9 +11,7 @@ export default {
     user_request(state) {
         state.userState.loading = true
     },
-    user_success(state, data) {
-        if(data.user)
-            state.userState.object= data.user
+    user_success(state) {
         state.userState.loading = false
     },
     user_error(state) {

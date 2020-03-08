@@ -19,9 +19,6 @@
       <b-carousel-slide img-src="https://www.zendvn.com/images/slider/t1HrRjUfzZ.jpeg"></b-carousel-slide>
     </b-carousel>
     <div>
-      <div class="container">
-        <h2 style="padding-left: 1rem;">Lĩnh vực liên quan</h2>
-      </div>
       <CollectionRecommend></CollectionRecommend>
     </div>
     <div class="container">

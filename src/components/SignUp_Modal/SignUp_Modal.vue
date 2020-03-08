@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal ref="signup-modal" hide-footer id="singup-modal" title="Tài khoản GoodLearning">
+    <b-modal @hidden="reset()" ref="signup-modal" hide-footer id="singup-modal" title="Tài khoản GoodLearning">
       <form action="#">
         <div class="inputWithIcon">
           <input class="form-control" v-model="user.name" placeholder="Họ Tên" type="text" required />
@@ -63,6 +63,11 @@ export default {
     };
   },
   methods: {
+    reset() {
+      this.user.user_id = '',
+      this.user.name = '',
+      this.user.password = ''
+    },
     register() {
       let vm = this
       this.$swal.showLoading();

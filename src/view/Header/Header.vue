@@ -1,69 +1,72 @@
 <template>
   <div id="header">
-    <b-navbar toggleable="lg" type="light" variant="default">
-      <b-navbar-brand :href="baseURL">
-        <b-img
-          rounded="circle"
-          style="width: 4rem; height: 4rem"
-          src="https://cdn2.vectorstock.com/i/1000x1000/63/61/education-logo-vector-11136361.jpg"
-        ></b-img>&nbsp;
-        <span style="position: absolute;margin-top: 0.5rem;margin-left: 0.5rem">
-          <div>
-            <b>GoodLearning</b>
-          </div>
-          <div style="font-size: 9pt;">
-            <i>
-              <b>Học tập Online</b>
-            </i>
-          </div>
-        </span>
-      </b-navbar-brand>
+    <div class="page-container">
+      <b-navbar toggleable="lg" type="light" variant="default">
+        <b-navbar-brand :href="baseURL">
+          <b-img
+            rounded="circle"
+            style="width: 4rem; height: 4rem"
+            src="https://cdn2.vectorstock.com/i/1000x1000/63/61/education-logo-vector-11136361.jpg"
+          ></b-img>&nbsp;
+          <span style="position: absolute;margin-top: 0.5rem;margin-left: 0.5rem">
+            <div>
+              <b>GoodLearning</b>
+            </div>
+            <div style="font-size: 9pt;">
+              <i>
+                <b>Học tập Online</b>
+              </i>
+            </div>
+          </span>
+        </b-navbar-brand>
 
-      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
-      <b-collapse id="nav-collapse" is-nav>
-        <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
-          <DropdownCategory></DropdownCategory>
-          <input class="form-control input-search" placeholder="Search..." type="text" />
-          <button class="btn btn-info btn-search">
-            <i class="fa fa-search"></i>
-          </button>
-          <button class="btn btn-default normal-button">Miễn Phí</button>
-          <div style="border-left: 1px solid;margin-right: 1rem;"></div>
-          <button class="btn btn-default normal-button">Khóa Học</button>
-          <div v-if="!loadStateLogin">
-            <button class="btn btn-default circle-button normal-button">
-              <i class="fa fa-shopping-cart"></i>
+        <b-collapse id="nav-collapse" is-nav>
+          <!-- Right aligned nav items -->
+          <b-navbar-nav class="ml-auto">
+            <DropdownCategory></DropdownCategory>
+            <input class="form-control input-search" placeholder="Search..." type="text" />
+            <button class="btn btn-info btn-search">
+              <i class="fa fa-search"></i>
             </button>
-            <button
-              v-b-modal.login-modal
-              class="btn btn-outline-secondary"
-              style="margin-right: 1rem;"
-            >Log In</button>
-            <button v-b-modal.singup-modal class="btn btn-outline-danger">Sign Up</button>
-            <Login_Modal></Login_Modal>
-            <Singup_Modal></Singup_Modal>
-          </div>
-          <div v-if="loadStateLogin">
-            <button class="btn btn-default circle-button normal-button">
-              <i class="fa fa-shopping-cart"></i>
-            </button>
-            <button class="btn btn-default circle-button normal-button">
-              <i class="fas fa-heart" style="color: red;"></i>
-            </button>
-            <button class="btn btn-default circle-button normal-button">
-              <i class="fas fa-bell"></i>
-            </button>
-            <button class="btn btn-default circle-button-lg normal-button" style="margin-right: 0;">
-              <i class="fas fa-user-circle fa-2x"></i>
-            </button>
-          </div>
-        </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
-    <button @click="change()">Change</button>
-    <button @click="promise()">test </button>
+            <button class="btn normal-button">Miễn Phí</button>
+            <div style="border-left: 1px solid;margin-right: 1rem;"></div>
+            <button class="btn normal-button">Khóa Học</button>
+            <div v-if="!loadStateLogin">
+              <button class="btn btn-default circle-button normal-button">
+                <i class="fa fa-shopping-cart"></i>
+              </button>
+              <button
+                v-b-modal.login-modal
+                class="btn btn-outline-secondary"
+                style="margin-right: 1rem;"
+              >Log In</button>
+              <button v-b-modal.singup-modal class="btn btn-outline-danger">Sign Up</button>
+            </div>
+            <div v-if="loadStateLogin">
+              <button class="btn btn-default circle-button normal-button">
+                <i class="fa fa-shopping-cart"></i>
+              </button>
+              <button class="btn btn-default circle-button normal-button">
+                <i class="fas fa-heart" style="color: red;"></i>
+              </button>
+              <button class="btn btn-default circle-button normal-button">
+                <i class="fas fa-bell"></i>
+              </button>
+              <button
+                class="btn btn-default circle-button-lg normal-button"
+                style="margin-right: 0;"
+              >
+                <i class="fas fa-user-circle fa-lg"></i>
+              </button>
+            </div>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
+    </div>
+    <Login_Modal></Login_Modal>
+    <Singup_Modal></Singup_Modal>
   </div>
 </template>
 <script>
@@ -71,34 +74,22 @@ import apiURL from "../../API/api.json";
 import DropdownCategory from "../../components/Dropdown_Category/Dropdown_Category";
 import Login_Modal from "../../components/Login_Modal/Login_Modal";
 import Singup_Modal from "../../components/SignUp_Modal/SignUp_Modal";
-import axios from "axios"
 export default {
   components: { DropdownCategory, Login_Modal, Singup_Modal },
   data() {
     return {
-      baseURL: apiURL.apiURLOnline,
+      baseURL: apiURL.baseURL,
       isLogin: false
     };
   },
   methods: {
     checkLogin() {
       return localStorage.token && localStorage.token != "";
-    },
-    change() {
-      if (this.checkLogin()) {
-        localStorage.removeItem("token");
-        this.isLogin = false;
-      } else {
-        localStorage.token = "co";
-        this.isLogin = true;
-      }
-    },
-    promise() {
-      axios.get('https://goodlearningserver.herokuapp.com/test', {params: {test: 'hung7 di9 123'}})
-      .then(response => {
-        console.log(response.data)
-      })
     }
+  },
+  created() {
+    if (localStorage.token) this.isLogin = true;
+    else this.isLogin = false;
   },
   computed: {
     loadStateLogin() {
@@ -109,7 +100,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .circle-button-lg {
-  border-radius: 100px;
+  border-radius: 50%;
 }
 .circle-button {
   border-radius: 20px;
@@ -124,6 +115,9 @@ button {
 }
 .normal-button:hover {
   background-color: #ece8e8;
+}
+.normal-button {
+  height: 2.5rem;
 }
 #header {
   font-family: "Quicksand";
