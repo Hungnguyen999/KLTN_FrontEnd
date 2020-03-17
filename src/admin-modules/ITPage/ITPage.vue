@@ -5,7 +5,9 @@
 </template>
 <script>
 export default {
-    
+    created() {
+        this.$store.commit("ShowHeaderAdmin");
+    }
 }
 </script>
 <style scoped>

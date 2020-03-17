@@ -85,39 +85,7 @@
               </i>
             </div>
           </div>
-          <div class="btn-group">
-            <button
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-              class="btn btn-default circle-button-lg normal-button"
-              style="margin-right: 0;"
-            >
-              <i class="fas fa-user-circle fa-2x"></i>
-            </button>
-            <div class="dropdown-menu ow1-dropdown-menu dropdown-menu-right">
-              <i class="dropdown-item text-center">
-                <b-img
-                  rounded="circle"
-                  src="https://cdn2.vectorstock.com/i/1000x1000/63/61/education-logo-vector-11136361.jpg"
-                  style="width: 3rem;height: 3rem;margin-bottom: 0.5rem;"
-                />
-                <br />
-                <span class="userName">Đào Lê Văn Vinh</span>
-                <br />
-                <span class="email">daolevanvinh@gmail.com</span>
-              </i>
-              <router-link class="dropdown-item" to="google.com">
-                <i class="fas fa-user"></i> Thông tin cá nhân
-              </router-link>
-              <router-link class="dropdown-item" to="google.com">
-                <i class="fas fa-bell"></i> Thông báo
-              </router-link>
-              <router-link class="dropdown-item" to="google.com" type="button">
-                <i class="fas fa-long-arrow-alt-right"></i> Đăng xuất
-              </router-link>
-            </div>
-          </div>
+          <UserMenuButton :account="loadAdmin"></UserMenuButton>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -125,10 +93,12 @@
 </template>
 <script>
 import apiConfig from "../../API/api.json";
+import UserMenuButton from "../../components/UserMenuButton/UserMenuButton";
 export default {
+  components: { UserMenuButton },
   created() {
-    this.emp = this.$route.meta.emp;
-    switch (this.emp) {
+    this.emp = this.$route.meta.emp
+    switch (this.emp == true) {
       case true:
         this.baseURL = apiConfig.baseURL + "/admin/emp";
         break;
@@ -136,17 +106,51 @@ export default {
         this.baseURL = apiConfig.baseURL + "/admin/it";
         break;
     }
+    if (localStorage.admin && localStorage.adminToken) {
+      this.$swal.close()
+      this.admin = JSON.parse(localStorage.admin);
+      this.admin.id = this.admin.admin_id;
+    } else {
+      this.errorLogin();
+    }
   },
   data() {
     return {
       baseURL: "",
-      emp: false
+      emp: false,
+      admin: {}
     };
+  },
+  methods: {
+    myAlert(icon, title, text) {
+      if (title == "") title = "Thông báo";
+      this.$swal({
+        icon: icon,
+        title: title,
+        text: text
+      });
+    },
+    errorLogin() {
+      new Promise(() => {
+        this.myAlert(
+          "error",
+          "Thông báo",
+          "Lỗi đăng nhập, vui lòng đăng nhập lại"
+        );
+      });
+      //this.$router.push({name: 'admin-login'})
+    }
   },
   computed: {
     loadEmp() {
-      return this.emp
+      return this.emp;
+    },
+    loadAdmin() {
+      return this.admin;
     }
+  },
+  updated() {
+    console.log("b update");
   }
 };
 </script>
@@ -156,8 +160,8 @@ export default {
   border-image: linear-gradient(
       to right,
       #79589f 30%,
-      #40C3EA 70%,
-      #A1F5C1 100%
+      #40c3ea 70%,
+      #a1f5c1 100%
     )
     5;
 }

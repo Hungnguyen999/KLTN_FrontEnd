@@ -9,6 +9,9 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
+        headerState: {
+            hide: false
+        },
         adminState: {
             object: {},
             loading: false
@@ -16,6 +19,10 @@ export const store = new Vuex.Store({
         userState: {
             object: {},
             loading: false,
+        },
+        ATCState: {
+            loading: false,
+            cart: {}
         }
     },
     mutations,

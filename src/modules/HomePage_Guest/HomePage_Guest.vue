@@ -27,7 +27,7 @@
           <template slot="title">{{item.name}}</template>
         </b-tab>
       </b-tabs>
-      <Collection :id="loadCurrentCategoryID"></Collection>
+      <Collection :caterogy_id="loadCurrentCategoryID"></Collection>
     </div>
   </div>
 </template>

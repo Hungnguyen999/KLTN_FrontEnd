@@ -17,15 +17,12 @@ Vue.use(BootstrapVueIcons)
 Vue.use(Slick)
 Vue.use(Agile)
 
-
 import '../node_modules/slick-carousel/slick/slick.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 window.$ = require('jquery')
 window.JQuery = require('jquery')
 import '../node_modules/vue-context/dist/css/vue-context.css';
-
-
 Vue.prototype.$http = Axios
 
 

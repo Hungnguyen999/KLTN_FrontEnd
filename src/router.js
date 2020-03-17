@@ -23,6 +23,7 @@ import adminRouter from "./admin-modules/router.js"
 import userIndex from "./view/Index"
 import adminIndex from "./view/Admin-Index"
 import adminLoginPage from "./admin-modules/LoginPage/LoginPage"
+
 const BaseRoutes = [
     {
         path: '/admin',

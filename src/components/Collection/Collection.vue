@@ -39,8 +39,9 @@
 </template>
 <script>
 import Item from "../Item/Item";
-export default {
+export default { 
   components: { Item },
+  props: ['caterogy_id'],
   data() {
     return {
       myOption: {
@@ -48,6 +49,11 @@ export default {
         dots: false
       }
     };
+  },
+  watch: {
+    caterogy_id(NewValue) {
+      this.caterogy_id = NewValue;
+    }
   },
   methods: {}
 };

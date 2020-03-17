@@ -6,7 +6,22 @@ import ChatBotPage from "./ChatBotPage/ChatBotPage"
 import TopicPage from "./TopicPage/TopicPage"
 import StatisticalPage from "./StatisticalPage/StatisticalPage"
 import CategoryDetailPage from "./CategoryDetailPage/CategoryDetailPage"
+import AccountPage from "./AccountPage/AccountPage"
+import AdminLoginPage from "./LoginPage/LoginPage"
 export default [
+    {
+        path: '',
+        name: 'admin-login-page',
+        component: AdminLoginPage
+    },
+    {
+        path: 'it',
+        name: 'it-page',
+        component: ITPage,
+        meta: {
+            emp: false
+        }
+    },
     {
         path: 'emp',
         name: 'employee-page',
@@ -64,11 +79,11 @@ export default [
         }
     },
     {
-        path: 'it',
-        name: 'it-page',
-        component: ITPage,
+        path: ':id',
+        name: 'account-page',
+        component: AccountPage,
         meta: {
-            emp: false
+            emp: true
         }
     }
 ]

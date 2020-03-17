@@ -35,11 +35,18 @@
       <div class="input-container">
         <label>
           <i>Tài khoản:</i>
-          <input ref="admin_id" class="form-control text-input" required />
+          <input v-model="admin.admin_id" ref="admin_id" @keyup.enter="login()" class="form-control text-input" required />
         </label>
         <label>
           <i>Mật khẩu:</i>
-          <input ref="password" class="form-control text-input" type="password" required />
+          <input
+            v-model="admin.password"
+            ref="password"
+            class="form-control text-input"
+            type="password"
+            @keyup.enter="login()"
+            required
+          />
         </label>
         <button class="btn btn-secondary" @click="login()">Đăng nhập</button>
       </div>
@@ -52,20 +59,40 @@ export default {
   data() {
     return {
       baseURL: api.baseURL,
-      Employee: true
+      Employee: true,
+      admin: {
+        admin_id: "",
+        password: "",
+        employee: 1
+      }
     };
   },
+  created() {
+    this.$store.commit("HideHeaderAdmin");
+  },
   mounted() {
-    this.$refs["admin_id"].validity.valid;
-    this.$refs["password"].validity.valid;
   },
   methods: {
     login() {
-      if (this.Employee === true) {
-        this.$router.push({ name: "employee-page", params: { admin_id: 1 } });
-      } else {
-        this.$router.push({ name: "it-page", params: { admin_id: 1 } });
-      }
+      this.$swal.showLoading()
+      this.Employee === true ? this.admin.employee = 1 : this.admin.employee = 2;
+      this.$store.dispatch("AdminLogin", this.admin).then(response => {
+        if (response.data.RequestSuccess === true) {
+          let routeName = "";
+          this.Employee
+            ? (routeName = "employee-page")
+            : (routeName = "it-page");
+          localStorage.adminToken = response.data.token;
+          localStorage.admin = JSON.stringify(response.data.admin)
+          this.$router.push({ name: routeName });
+        } else {
+          this.$swal({
+            icon: 'error',
+            title: 'Thông báo',
+            text: response.data.msg
+          })
+        }
+      });
     }
   }
 };

@@ -91,10 +91,11 @@ export default {
     },
     loginSuccess(data) {
       localStorage.token = data.token;
+      localStorage.userName = data.user.name;
       this.reset();
       this.$swal.close();
-      this.$router.push({ name: "my-page" });
       this.$refs["login-modal"].hide();
+      location.reload();
     },
     loginFaild(data, vm) {
       vm.$swal({

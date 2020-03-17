@@ -16,5 +16,20 @@ export default {
     },
     user_error(state) {
         state.userState.loading = false
+    },
+    ATC_request(state) {
+        state.ATCState.loading = true
+    },
+    ATC_success(state) {
+        state.ATCState.loading = false
+    },
+    ATC_error(state) {
+        state.ATCState.loading = false
+    },
+    ShowHeaderAdmin(state) {
+        state.headerState.hide = false
+    },
+    HideHeaderAdmin(state) {
+        state.headerState.hide = true
     }
 }

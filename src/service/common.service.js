@@ -6,4 +6,13 @@ export class CommonService {
             return true
         }
     }
+    getChildrenRouteUser(router, name) {
+        let childrenRouteUser = router.route[2].children;
+        for(let i=0;i<childrenRouteUser.length;i++) {
+            if(childrenRouteUser[i].name == name) {
+                return childrenRouteUser[i].path
+            }
+        }
+        return 'not-found-page'
+    }
 }

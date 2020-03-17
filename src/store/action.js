@@ -4,14 +4,15 @@ const apiConfig = require('../assets/js/apiURL').apiURL
 export default {
     AdminLogin({ commit }, admin) {
         const apiUrl = apiConfig.adminLogin
-        console.log(apiConfig, commit)
+        commit('adminLogin_request')
         return new Promise((resolve, reject) => {
             axios.post(apiUrl, {}, { params: admin })
                 .then(function (response) {
+                    commit('adminLogin_success')
                     resolve(response)
                 })
                 .catch(function (err) {
-                    console.log(err)
+                    commit('adminLogin_error')
                     reject(err)
                 })
         })
@@ -42,6 +43,25 @@ export default {
                 })
                 .catch(function (err) {
                     commit('user_error')
+                    reject(err)
+                })
+        })
+    },
+    AddToCart({ commit }, course_id) {
+        const apiURL = apiConfig.addToCart
+        let data = {
+            token: localStorage.token,
+            course_id: course_id
+        }
+        commit('ATC_request')
+        return new Promise((resolve, reject) => {
+            axios.post(apiURL, {}, { params: data })
+                .then(function (response) {
+                    commit('ATC_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('ATC_error')
                     reject(err)
                 })
         })
