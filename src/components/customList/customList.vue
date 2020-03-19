@@ -1,9 +1,9 @@
 <template>
-  <div style="margin:0">
-    <v-list>
+  <div>
+    <v-list dark flat>
       <v-list-group no-action>
         <template v-slot:activator>
-          <v-list-item-icon style="margin-right: 1rem">
+          <v-list-item-icon style="margin-right: 1rem;">
             <i :class="list.icon"></i>
           </v-list-item-icon>
           <v-list-item-content>
@@ -22,7 +22,7 @@
         >
           <v-list-item-content>
             <v-list-item-title>
-              <div class="text-left elevation-2 pa-12 headline">
+              <div class>
                 <i :class="item.icon" style="margin: 0 0.5rem 0 2rem;font-size: 10px;"></i>
                 {{item.title}}
               </div>
@@ -49,8 +49,5 @@ export default {
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  &:hover {
-    background-color: #ece8e8;
-  }
 }
 </style>

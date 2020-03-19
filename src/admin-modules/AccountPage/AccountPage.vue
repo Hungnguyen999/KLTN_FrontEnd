@@ -1,19 +1,19 @@
 <template>
-  <div style="padding: 0 1rem;height: 33rem">
-    <v-app style="height: 32rem;">
+  <div class="account-page">
+    <v-app style="hegith: auto;">
       <v-tabs hide-slider v-model="tab" vertical class="my-tabs">
         <div class="tab-container">
-          <v-tab active-class="active-class" href="#info-tab" class="my-tab text-left">
+          <v-tab active-class="active-class" href="#info-tab" class="my-tab">
             <v-icon style="position: absolute;left: 1rem">mdi-account</v-icon>
             <span>Thông tin</span>
           </v-tab>
 
-          <v-tab active-class="active-class text-left" href="#annouce-tab" class="my-tab">
+          <v-tab active-class="active-class" href="#annouce-tab" class="my-tab">
             <v-icon style="position: absolute;left: 1rem">mdi-bell-alert</v-icon>
             <span style="font-size: 13px;">Thông báo</span>
           </v-tab>
 
-          <v-tab active-class="active-class text-left" class="my-tab" href="#msg-tab">
+          <v-tab active-class="active-class" class="my-tab" href="#msg-tab">
             <v-icon style="position: absolute;left: 1rem">mdi-chat-alert</v-icon>
             <span>Tin nhắn</span>
           </v-tab>
@@ -55,33 +55,27 @@ a {
   border-bottom: #79589f !important;
   background: whitesmoke !important;
 }
-div {
-  width: 100%;
-  margin: 1rem 0;
+.account-page {
   .my-tabs {
-    border: 1px solid #ece8e8;
-    border-radius: 5px;
-    text-align: left;
-    padding-left: 1rem;
-    max-height: 24.1rem !important;
+    padding: 1rem;
     .tab-container {
-      border: 1px solid;
       height: 100%;
-      width: 13rem;
+      width: 14rem;
+      padding: 1rem 0.5rem;
       border: 1px solid #ece8e8;
       border-radius: 5px;
-      .my-tab {
-        width: 100% !important;
-      }
       .v-tab {
-        padding: 0 !important;
-        padding-left: -1rem !important;
-        text-align: left !important;
+        border-radius: 10px;
       }
     }
     .list-item {
-      margin: 0 1rem;
+      position: relative;
       border-radius: 5px;
+      margin-left: 1rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      padding-left: 2rem;
+      border: 1px solid #ece8e8;
     }
   }
 }

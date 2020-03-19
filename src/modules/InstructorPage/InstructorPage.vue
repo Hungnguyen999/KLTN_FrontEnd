@@ -1,14 +1,14 @@
 <template>
   <div class="my-container">
-    <v-navigation-drawer class="left-menu" style="background: #ece8e8;" permanent expand-on-hover>
-      <v-list>
-        <router-link :to="{name: 'instructor-page'}" style="padding-left: 0.25rem;color: black">
+    <v-navigation-drawer class="left-menu" style="background-color: #52143e" permanent expand-on-hover>
+      <v-list dark>
+        <router-link :to="{name: 'instructor-page'}" style="padding-left: 0.25rem;color: white">
           <b-img
             rounded="circle"
             style="width: 3rem; height: 3rem"
             src="https://cdn2.vectorstock.com/i/1000x1000/63/61/education-logo-vector-11136361.jpg"
           ></b-img>&nbsp;
-          <span style="position: absolute;margin-top: 0.5rem;margin-left: 0.5rem">
+          <span style="position: absolute;margin-top: 0.5rem;margin-left: 0.5rem;color: white;">
             <div>
               <b>GoodLearning</b>
             </div>
@@ -28,10 +28,10 @@
       </div>
     </v-navigation-drawer>
     <v-app>
-      <div class="instructor-control">
+      <div class="instructor-control" style="background: #f4f3ef;width: 100%">
         <AnnouceButton></AnnouceButton>
       </div>
-      <div class="row">
+      <div class="row" style="background: #f4f3ef">
         <div class="col-11 offset-1">
           <div class="my-content">
             <router-view></router-view>
@@ -46,6 +46,7 @@ import customList from "../../components/customList/customList";
 import AnnouceButton from "../../components/AnnouncementButton/AnnouncementButton";
 export default {
   components: { customList, AnnouceButton },
+  
   data() {
     return {
       list: [
@@ -74,11 +75,14 @@ export default {
           items: [
             {
               title: "Tin nhắn",
-              icon: "fas fa-circle fa-sm"
+              icon: "fas fa-circle fa-sm",
+              routeName: "ins-message-page"
             },
             {
               title: "Thông báo",
-              icon: "fas fa-circle fa-sm"
+              icon: "fas fa-circle fa-sm",
+              routeName: "ins-annouce-page"
+
             }
           ]
         },
@@ -107,8 +111,8 @@ export default {
   }
 .left-menu {
   position: fixed;
-  background-color: #ece8e8;
-  z-index: 2;
+  background-color: #52143e;
+  z-index: 1;
 }
 .my-container {
   .row {

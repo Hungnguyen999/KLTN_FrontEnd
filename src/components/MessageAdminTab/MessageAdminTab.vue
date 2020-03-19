@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <v-tab-item value="msg-tab">23</v-tab-item>
+  </div>
 </template>
 <style lang="scss" scoped>
 a {

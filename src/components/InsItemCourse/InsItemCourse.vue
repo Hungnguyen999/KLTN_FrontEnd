@@ -50,6 +50,7 @@ export default {
 .my-container {
   opacity: 1;
   width: 100%;
+  background: rgb(255, 253, 253);
   a {
     text-decoration: none;
     color: black;

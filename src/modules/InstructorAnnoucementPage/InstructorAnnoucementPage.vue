@@ -1,7 +1,6 @@
 <template>
   <div>
-    <v-tab-item value="annouce-tab">
-      <div class="row">
+    <div class="row">
         <div class="col-9">
           <div class="text-box-container"></div>
           <div class="input-box"></div>
@@ -20,7 +19,6 @@
           </div>
         </div>
       </div>
-    </v-tab-item>
   </div>
 </template>
 <script>

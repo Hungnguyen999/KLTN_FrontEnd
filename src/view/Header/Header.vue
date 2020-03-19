@@ -30,7 +30,8 @@
             <button class="btn btn-info btn-search">
               <i class="fa fa-search"></i>
             </button>
-            <a :href="baseURL + '/instructor'" class="btn normal-button">Giảng Viên</a>
+            <a v-if="!loadStateLogin" href="google" class="btn normal-button">Miễn phí</a>
+            <a v-if="loadStateLogin" :href="baseURL + '/instructor'" class="btn normal-button">Giảng Viên</a>
             <div style="border-left: 1px solid;margin-right: 1rem;"></div>
             <button class="btn normal-button" id="mycourse">Khóa Học</button>
             <b-popover target="mycourse" triggers="hover" placement="top">

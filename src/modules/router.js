@@ -7,6 +7,9 @@ import MyPage from "./MyPage/MyPage"
 import InstructorPage from "./InstructorPage/InstructorPage"
 import InstructorCoursePage from "./InstructorCoursePage/InstructorCoursePage"
 import InstructorLessonPage from "./InstructorLessonPage/InstructorLessonPage"
+import InstructorMessagePage from "./InstructorMessagePage/InstructorMessagePage"
+import InstructorAnnoucementPage from "./InstructorAnnoucementPage/InstructorAnnoucementPage"
+
 export default [
     // Guest
     {
@@ -55,6 +58,22 @@ export default [
                 path: 'lesson',
                 name: 'ins-lesson-page',
                 component: InstructorLessonPage,
+                meta: {
+                    instructor: true
+                }
+            },
+            {
+                path: 'message',
+                name: 'ins-message-page',
+                component: InstructorMessagePage,
+                meta: {
+                    instructor: true
+                }
+            },
+            {
+                path: 'annouce',
+                name: 'ins-annouce-page',
+                component: InstructorAnnoucementPage,
                 meta: {
                     instructor: true
                 }

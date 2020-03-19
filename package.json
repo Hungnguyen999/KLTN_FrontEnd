@@ -32,6 +32,7 @@
     "vue-spinner": "^1.0.3",
     "vue-star-rating": "^1.6.1",
     "vue-sweetalert2": "^3.0.3",
+    "vue2-editor": "^2.10.2",
     "vuetify": "^2.2.15",
     "vuex": "^3.1.2"
   },

@@ -12,7 +12,59 @@
               Mật khẩu:
               <input class="form-control" />
             </label>
-            <button style="margin-top: 1rem" class="btn btn-warning">Đổi mật khẩu ?</button>
+            <button
+              @click.stop="dialog = true"
+              style="margin-top: 1rem"
+              class="btn btn-warning"
+            >Đổi mật khẩu ?</button>
+            <v-dialog v-model="dialog" width="40rem" persistent>
+              <v-card>
+                <v-card-title class="headline lighten-2" primary-title>Đổi mật khẩu</v-card-title>
+                <hr style="margin: 0 0 0.5rem 0" />
+                <div style="margin: 0 1rem">
+                  <b-alert variant="success" show>Đổi mật khẩu thành công</b-alert>
+                  <b-alert variant="danger" show>Đổi mật khẩu thất bại</b-alert>
+                </div>
+                <div class="container">
+                  <div class="row" style="margin-top: -1rem;">
+                    <div
+                      class="col-3 offset-1"
+                      style="text-align: right;padding-top: 1.2rem"
+                    >Mật khẩu hiện tại</div>
+                    <div class="col-7">
+                      <input class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="row" style="margin-top: -1rem;">
+                    <div
+                      class="col-3 offset-1"
+                      style="text-align: right;padding-top: 1.2rem"
+                    >Mật khẩu mới</div>
+                    <div class="col-7">
+                      <input class="form-control" />
+                    </div>
+                  </div>
+
+                  <div class="row" style="margin-top: -1rem;">
+                    <div
+                      class="col-3 offset-1"
+                      style="text-align: right;padding-top: 1.2rem"
+                    >Xác nhận</div>
+                    <div class="col-7">
+                      <input class="form-control" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row" style="margin-top: -1rem;">
+                  <div class="col-7 offset-4">
+                    <button @click="dialog = false" class="btn btn-primary">Đổi mật khẩu</button>
+                    <button @click="dialog = false" class="btn btn-danger">Hủy</button>
+                  </div>
+                </div>
+              </v-card>
+            </v-dialog>
           </div>
         </div>
         <div class="col-4 text-left">
@@ -36,7 +88,14 @@
             <img
               src="https://cdn2.vectorstock.com/i/1000x1000/63/61/education-logo-vector-11136361.jpg"
             />
-            <v-file-input style="border: none;margin-top: 1.5rem" small-chips full-width show-size @change="upLoadImage" label="File input"></v-file-input>
+            <v-file-input
+              style="border: none;margin-top: 1.5rem"
+              small-chips
+              full-width
+              show-size
+              @change="upLoadImage"
+              label="File input"
+            ></v-file-input>
           </div>
         </div>
       </div>
@@ -47,12 +106,13 @@
 export default {
   data() {
     return {
-      file: null
+      file: null,
+      dialog: false
     };
   },
   methods: {
     upLoadImage(file) {
-      console.log(file)
+      console.log(file);
     }
   },
   computed: {
@@ -70,7 +130,6 @@ export default {
     div {
       width: 90%;
       margin: 0 5%;
-      border: 1px solid #ece8e8;
       border-radius: 5px;
       padding: 1rem 1rem 1rem 1rem;
       height: 22rem;
@@ -78,6 +137,11 @@ export default {
         width: 70%;
         height: 10rem;
       }
+    }
+  }
+  .col-7 {
+    button {
+      margin-left: 0.3rem;
     }
   }
 }
