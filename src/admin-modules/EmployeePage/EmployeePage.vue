@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-4">
           <router-link :to="{name: 'category-page'}" class="btn">
             <div>
@@ -44,28 +44,29 @@
             <p>Thống kê</p>
           </router-link>
         </div>
-      </div>
+      </div>-->
+      this is my dashboard
     </div>
   </div>
 </template>
 <script>
 export default {
   created() {
+    this.$swal.close();
     this.$store.commit("ShowHeaderAdmin");
   }
 };
 </script>
 <style lang="scss" scoped>
 .container {
-  margin: 2rem auto;
   border: 1px solid #79589f;
   border-radius: 10px;
   .row {
-      margin: 2rem 0;
+    margin: 2rem 0;
     .col-4 {
       text-align: center;
       a {
-          font-size: 22pt;
+        font-size: 22pt;
         color: #79589f;
         opacity: 0.8;
         &:hover {

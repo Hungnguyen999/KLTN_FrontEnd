@@ -58,8 +58,9 @@ export default [
                 path: 'lesson',
                 name: 'ins-lesson-page',
                 component: InstructorLessonPage,
-                meta: {
-                    instructor: true
+                meta:  {
+                    instructor: true,
+                    course_id: ''
                 }
             },
             {

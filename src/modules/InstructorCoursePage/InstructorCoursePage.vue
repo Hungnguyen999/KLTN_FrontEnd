@@ -13,9 +13,13 @@
           <v-select class="my-sort" v-model="selected" :items="items" label="Sắp xếp"></v-select>
         </div>
         <div class="col-3 offset-3">
-          <button class="btn btn-danger btn-new">
+          <button class="btn btn-danger btn-new" @click="dialog = true">
             <i class="far fa-play-circle fa-lg"></i>&nbsp;Tạo khóa học
           </button>
+          <v-dialog v-model="dialog" persistent width="900" s>
+            
+                  <SteperCreateCourse style="margin:0" v-on:closeModal="closeModal"></SteperCreateCourse>
+          </v-dialog>
         </div>
       </div>
       <div ref="my_courseList">
@@ -40,8 +44,9 @@
 <script>
 import InsCourseItem from "../../components/InsItemCourse/InsItemCourse";
 import InsCourseItemLoading from "../../components/InsCourseItemLoading/InsCourseItemLoading";
+import SteperCreateCourse from "../../components/SteperCreateCourse/SteperCreateCourse";
 export default {
-  components: { InsCourseItem, InsCourseItemLoading },
+  components: { InsCourseItem, InsCourseItemLoading, SteperCreateCourse },
   created() {
     this.selected = this.items[0].value;
   },
@@ -155,7 +160,8 @@ export default {
       currentPage: 1,
       perPage: 4,
       selected: null,
-      loading: false
+      loading: false,
+      dialog: false
     };
   },
   methods: {
@@ -178,6 +184,9 @@ export default {
         offset: 500,
         easing: "linear"
       });
+    },
+    closeModal(value) {
+      this.dialog = value
     }
   },
   computed: {

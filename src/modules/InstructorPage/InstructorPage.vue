@@ -1,32 +1,6 @@
 <template>
   <div class="my-container">
-    <v-navigation-drawer class="left-menu" style="background-color: #52143e" permanent expand-on-hover>
-      <v-list dark>
-        <router-link :to="{name: 'instructor-page'}" style="padding-left: 0.25rem;color: white">
-          <b-img
-            rounded="circle"
-            style="width: 3rem; height: 3rem"
-            src="https://cdn2.vectorstock.com/i/1000x1000/63/61/education-logo-vector-11136361.jpg"
-          ></b-img>&nbsp;
-          <span style="position: absolute;margin-top: 0.5rem;margin-left: 0.5rem;color: white;">
-            <div>
-              <b>GoodLearning</b>
-            </div>
-            <div style="font-size: 9pt;">
-              <i>
-                <b>Học tập Online</b>
-              </i>
-            </div>
-          </span>
-        </router-link>
-      </v-list>
-
-      <v-divider></v-divider>
-
-      <div v-for="(item,index) in list" :key="index">
-        <customList :list="item"></customList>
-      </div>
-    </v-navigation-drawer>
+    <LeftMenu :list="list"></LeftMenu>
     <v-app>
       <div class="instructor-control" style="background: #f4f3ef;width: 100%">
         <AnnouceButton></AnnouceButton>
@@ -42,10 +16,10 @@
   </div>
 </template>
 <script>
-import customList from "../../components/customList/customList";
 import AnnouceButton from "../../components/AnnouncementButton/AnnouncementButton";
+import LeftMenu from "../../components/LeftMenu_Ins_Admin/LeftMenu_Ins_Admin"
 export default {
-  components: { customList, AnnouceButton },
+  components: { AnnouceButton, LeftMenu },
   
   data() {
     return {

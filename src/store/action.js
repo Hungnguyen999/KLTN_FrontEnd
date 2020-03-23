@@ -65,5 +65,38 @@ export default {
                     reject(err)
                 })
         })
+    },
+    adminGetCategories({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminCategory
+            commit('admin_getCategory_request')
+            axios.get(apiURL, { params: { adminToken: localStorage.adminToken } })
+                .then(function (response) {
+                    commit('admin_getCategory_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_getCategory_error')
+                    reject(error)
+                })
+        })
+    },
+    adminUpdateCategory({ commit }, category) {
+        console.log(category)
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminCategory
+            category.adminToken = localStorage.adminToken
+            let data = category
+            commit('admin_getCategory_request')
+            axios.patch(apiURL,{}, { params: data })
+                .then(function (response) {
+                    commit('admin_getCategory_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_getCategory_error')
+                    reject(error)
+                })
+        })
     }
 }

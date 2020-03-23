@@ -23,6 +23,11 @@ export const store = new Vuex.Store({
         ATCState: {
             loading: false,
             cart: {}
+        },
+        adminCategoryState: {
+            loading: false,
+            list: [],
+            object: {}
         }
     },
     mutations,

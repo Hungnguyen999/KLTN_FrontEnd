@@ -1,6 +1,6 @@
 <template>
   <div class="my-container">
-    <router-link to="google">
+    <router-link :to="{name: 'ins-lesson-page', query: {course: course.id}}">
       <div
         class="row"
         style="border: 1px solid #ece8e8;margin-bottom: 1rem"

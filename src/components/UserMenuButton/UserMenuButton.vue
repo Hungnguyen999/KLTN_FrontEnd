@@ -5,8 +5,8 @@
         data-toggle="dropdown"
         aria-haspopup="true"
         aria-expanded="false"
-        class="btn btn-default circle-button-lg normal-button"
-        style="margin-right: 0;"
+        class="btn btn-default normal-button btn-sm text-center"
+        style="margin-right: 0;width: 2.5rem;padding:0.3rem;"
       >
         <i class="fas fa-user-circle fa-2x"></i>
       </button>
@@ -100,9 +100,6 @@ button:focus {
   outline: 0px !important;
   -webkit-appearance: none;
   box-shadow: none !important;
-}
-.normal-button {
-  border-radius: 20px;
 }
 .normal-button:hover {
   background-color: white;

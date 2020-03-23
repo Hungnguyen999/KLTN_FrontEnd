@@ -1,5 +1,5 @@
 <template>
-  <div style="background: #f4f3ef">
+  <div style="background: #f4f3ef;margin: 0">
     <h1>Tin nhắn của tôi</h1>
     <div class="row">
       <div class="col-9" v-if="seletedItem != null">
@@ -55,7 +55,7 @@
     </div>
     <div v-html="myMessage" :editor-toolbar="false"></div>
     <div class="collapse" id="myEditor">
-      <vue-editor v-model="myMessage" :editor-toolbar="false" style="background: white"></vue-editor>
+      <vue-editor v-model="myMessage" style="background: white"></vue-editor>
     </div>
   </div>
 </template>

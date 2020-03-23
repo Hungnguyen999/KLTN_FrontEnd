@@ -31,5 +31,20 @@ export default {
     },
     HideHeaderAdmin(state) {
         state.headerState.hide = true
+    },
+    admin_getCategory_request(state) {
+        state.adminCategoryState.loading = true
+    },
+    admin_getCategory_success(state, data) {
+        state.adminCategoryState.loading = false
+        if(data.list) {
+            state.adminCategoryState.list = data.list
+        }
+        if(data.object) {
+            state.adminCategoryState.object = data.object
+        }
+    },
+    admin_getCategory_error(state) {
+        state.adminCategoryState.loading = false
     }
 }

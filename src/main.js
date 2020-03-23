@@ -6,6 +6,7 @@ import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import { store } from './store/store.js'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+
 import Slick from 'vue-slick';
 import Agile from 'vue-agile';
 import vuetify from './plugins/vuetify.js'
