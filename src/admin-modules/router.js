@@ -5,7 +5,6 @@ import CoursePage from "./CoursePage/CoursePage"
 import ChatBotPage from "./ChatBotPage/ChatBotPage"
 import TopicPage from "./TopicPage/TopicPage"
 import StatisticalPage from "./StatisticalPage/StatisticalPage"
-import CategoryDetailPage from "./CategoryDetailPage/CategoryDetailPage"
 import AccountPage from "./AccountPage/AccountPage"
 import AdminLoginPage from "./LoginPage/LoginPage"
 export default [
@@ -34,14 +33,6 @@ export default [
         path: 'category',
         name: 'category-page',
         component: CategoryPage,
-        meta: {
-            emp: true
-        }
-    },
-    {
-        path: 'category/:id',
-        name: 'category-detail-page',
-        component: CategoryDetailPage,
         meta: {
             emp: true
         }

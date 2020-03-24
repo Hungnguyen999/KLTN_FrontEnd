@@ -5,7 +5,7 @@
         <div class="col-9">
           <v-card>
             <v-card-title>
-              Danh sách thẻ loại
+              Danh sách thể loại
               <v-spacer></v-spacer>
               <v-text-field
                 v-model="search"
@@ -14,6 +14,17 @@
                 single-line
                 hide-details
               ></v-text-field>
+              <div style="position: relative;width:100%;padding-top:0.5rem">
+                <v-select
+                  style="float: right;width: 30%;cursor: pointer"
+                  :items="activeList"
+                  label="Trạng thái"
+                  outlined
+                  dense
+                  @change="updateTempList()"
+                  v-model="disableCategoryList"
+                ></v-select>
+              </div>
             </v-card-title>
             <v-data-table
               ref="my-table"
@@ -21,7 +32,7 @@
               height="33rem"
               @page-count="pageCount = $event"
               :headers="fields"
-              :items="adminGetCategories"
+              :items="tempList"
               :page.sync="currentPage"
               :items-per-page="perPage"
               :search="search"
@@ -50,31 +61,48 @@
                 >chọn icon</a>
               </template>
               <template v-slot:item.update="{item}">
-                <div
-                  v-if="categoryIDSelected == '' || (loadCategoryIDSelected != item.category_id)"
-                >
-                  <button
-                    v-if="!item.disable"
-                    class="btn btn-outline-danger btn-sm"
-                    style="margin-right: 0.5rem"
-                  >Xóa</button>
-                  <button
-                    v-if="item.disable"
-                    class="btn btn-outline-danger btn-sm"
-                    style="margin-right: 0.5rem"
-                  >Khôi phục</button>
-                  <button
-                    class="btn btn-outline-info btn-sm"
-                    @click="selectCategory(item)"
-                  >Chỉnh sửa</button>
-                </div>
-                <div v-else>
-                  <button
-                    class="btn btn-outline-primary btn-sm"
-                    style="margin-right: 0.5rem"
-                    @click="confirmUpdate()"
-                  >Lưu</button>
-                  <button class="btn btn-outline-warning btn-sm" @click="cancel()">Hủy</button>
+                <div style="float: right;">
+                  <div
+                    v-if="categoryIDSelected == '' || (loadCategoryIDSelected != item.category_id)"
+                  >
+                    <button
+                      v-if="!item.disable"
+                      class="btn btn-outline-secondary btn-sm"
+                      style="margin-right: 0.5rem"
+                      @click="disableOrEnableCategory(item)"
+                    >Xóa</button>
+                    <button
+                      v-if="item.disable"
+                      class="btn btn-outline-secondary btn-sm"
+                      style="margin-right: 0.5rem"
+                      @click="disableOrEnableCategory(item)"
+                    >Khôi phục</button>
+                    <button
+                      class="btn btn-outline-secondary btn-sm"
+                      style="margin-right: 0.5rem"
+                      @click="selectCategory(item)"
+                    >Chỉnh sửa</button>
+                    <router-link
+                      class="btn btn-outline-secondary btn-sm"
+                      :to="{name: 'topic-page', query: {category_id: item.category_id}}"
+                    >Chi tiết</router-link>
+                  </div>
+                  <div v-else>
+                    <button
+                      class="btn btn-outline-secondary btn-sm"
+                      style="margin-right: 0.5rem"
+                      @click="confirmUpdate()"
+                    >Lưu</button>
+                    <button
+                      style="margin-right: 0.5rem"
+                      class="btn btn-outline-secondary btn-sm"
+                      @click="cancel()"
+                    >Hủy</button>
+                    <router-link
+                      class="btn btn-outline-secondary btn-sm"
+                      :to="{name: 'topic-page', query: {category_id: item.category_id}}"
+                    >Chi tiết</router-link>
+                  </div>
                 </div>
               </template>
               <template v-slot:no-results>
@@ -112,18 +140,22 @@
               <b-card>
                 <label>
                   Tên thể loại:
-                  <input class="form-control" />
+                  <input v-model="newCategory.name" class="form-control" />
                 </label>
                 <label>
                   Icon đại diện:
-                  <i class="fa-2x" :class="newCategory.iconClass"></i>
+                  <i class="fa-2x" :class="newCategory.icon_class"></i>
                   <button
                     @click="dialogIcon = true"
                     style="width: 100%;"
                     class="btn btn-sm btn-primary"
                   >Chọn icon</button>
                 </label>
-                <button style="width: 100%;" class="btn btn-danger">Lưu</button>
+                <button
+                  style="width: 100%;"
+                  @click="insertCategory()"
+                  class="btn-sm btn btn-danger"
+                >Lưu</button>
                 <v-dialog v-model="dialogIcon" max-width="700">
                   <v-card style="padding: 1rem 1rem 1rem 2rem">
                     <v-card-title class="headline">Chọn Icon đại diện</v-card-title>
@@ -175,10 +207,16 @@ export default {
   created() {
     this.$store.dispatch("adminGetCategories");
     this.pageCount = Math.ceil(this.adminGetCategories.length / this.perPage);
+    this.updateTempList();
   },
   data() {
     return {
       dialogIcon: false,
+      disableCategoryList: false,
+      activeList: [
+        { value: false, text: "Đang hoạt động" },
+        { value: true, text: "Đã xóa" }
+      ],
       dialogCreateForm: false,
       iconList: iconList.icons,
       categoryIDSelected: "",
@@ -196,48 +234,58 @@ export default {
         name: "",
         icon_class: ""
       },
-      selectedCategory: {
-        name: "",
-        icon_class: ""
-      }
+      selectedCategory: {},
+      tempList: []
     };
   },
   methods: {
     confirmUpdate() {
       let vm = this;
-      this.$swal.queue([
-        {
-          icon: "question",
+      if (
+        this.selectedCategory.name == "" ||
+        this.selectedCategory.icon_class == ""
+      ) {
+        this.$swal({
+          icon: "error",
           title: "Thông Báo",
-          text: "Bạn muốn lưu chỉnh sửa?",
-          showCancelButton: true,
-          showLoaderOnConfirm: true,
-          preConfirm: () => {
-            return vm.$store
-              .dispatch("adminUpdateCategory", vm.selectedCategory)
-              .then(response => {
-                let icon = "success";
-                if (response.data.RequestSuccess == false) {
-                  icon = "error";
-                }
-                if (response.data.RequestSuccess == true) {
-                  vm.cancel();
-                }
-                vm.$swal.insertQueueStep({
-                  icon: icon,
-                  title: "Thông báo",
-                  text: response.data.msg
+          text: "Nhập thiếu thông tin!"
+        });
+      } else {
+        this.$swal.queue([
+          {
+            icon: "question",
+            title: "Thông Báo",
+            text: "Bạn muốn lưu chỉnh sửa?",
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+              return vm.$store
+                .dispatch("adminUpdateCategory", vm.selectedCategory)
+                .then(response => {
+                  let icon = "success";
+                  if (response.data.RequestSuccess == false) {
+                    icon = "error";
+                  }
+                  if (response.data.RequestSuccess == true) {
+                    vm.cancel();
+                  }
+                  vm.$swal.insertQueueStep({
+                    icon: icon,
+                    title: "Thông báo",
+                    text: response.data.msg
+                  });
+                  this.updateTempList();
                 });
-              });
+            }
           }
-        }
-      ]);
+        ]);
+      }
     },
     setIconSeleted(iconClass) {
       if (this.categoryIDSelected != "") {
         this.selectedCategory.icon_class = iconClass;
       } else {
-        this.newCategory.iconClass = iconClass;
+        this.newCategory.icon_class = iconClass;
       }
       this.dialogIcon = false;
     },
@@ -253,6 +301,78 @@ export default {
         vm.dialogCreateForm = !vm.dialogCreateForm;
       }
     },
+    insertCategory() {
+      let vm = this;
+      if (this.newCategory.name == "" || this.newCategory.icon_class == "") {
+        this.$swal({
+          icon: "error",
+          title: "Thông Báo",
+          text: "Nhập thiếu thông tin!"
+        });
+      } else {
+        this.$swal.queue([
+          {
+            icon: "question",
+            title: "Thông Báo",
+            text: "Bạn muốn thêm thể loại?",
+            showCancelButton: true,
+            showLoaderOnConfirm: true,
+            preConfirm: () => {
+              return vm.$store
+                .dispatch("adminInsertCategory", vm.newCategory)
+                .then(response => {
+                  let icon = "success";
+                  if (response.data.RequestSuccess == false) {
+                    icon = "error";
+                  }
+                  if (response.data.RequestSuccess == true) {
+                    vm.cancel();
+                    vm.newCategory = {};
+                  }
+                  vm.$swal.insertQueueStep({
+                    icon: icon,
+                    title: "Thông báo",
+                    text: response.data.msg
+                  });
+                  this.updateTempList();
+                });
+            }
+          }
+        ]);
+      }
+    },
+    disableOrEnableCategory(item) {
+      let text = "xóa";
+      let vm = this;
+      if (item.disable == true) {
+        text = "khôi phục";
+      }
+      this.$swal.queue([
+        {
+          icon: "question",
+          title: "Thông Báo",
+          text: "Bạn chắc chắn muốn " + text + " thể loại này?",
+          showCancelButton: true,
+          showLoaderOnConfirm: true,
+          preConfirm: () => {
+            return vm.$store
+              .dispatch("adminDisableOrEnableCategory", item)
+              .then(response => {
+                let icon = "success";
+                if (response.data.RequestSuccess == false) {
+                  icon = "error";
+                }
+                vm.$swal.insertQueueStep({
+                  icon: icon,
+                  title: "Thông báo",
+                  text: response.data.msg
+                });
+                vm.updateTempList();
+              });
+          }
+        }
+      ]);
+    },
     ScrollToTable() {
       this.$vuetify.goTo(this.$refs["my-table"], {
         duration: 1500,
@@ -267,6 +387,18 @@ export default {
     cancel() {
       this.categoryIDSelected = "";
       this.selectedCategory = {};
+    },
+    updateTempList() {
+      this.cancel();
+      this.tempList = [];
+      this.$store.commit("admin_getCategory_request");
+      for (let i = 0; i < this.adminGetCategories.length; i++) {
+        if (this.adminGetCategories[i].disable == this.disableCategoryList)
+          this.tempList.push(this.adminGetCategories[i]);
+      }
+      setTimeout(() => {
+        this.$store.commit("admin_getCategory_success", {});
+      }, 300);
     }
   },
   computed: {

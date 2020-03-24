@@ -70,7 +70,7 @@ export default {
         return new Promise((resolve, reject) => {
             let apiURL = apiConfig.adminCategory
             commit('admin_getCategory_request')
-            axios.get(apiURL, { params: { adminToken: localStorage.adminToken } })
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
                 .then(function (response) {
                     commit('admin_getCategory_success', response.data)
                     resolve(response)
@@ -82,13 +82,46 @@ export default {
         })
     },
     adminUpdateCategory({ commit }, category) {
-        console.log(category)
         return new Promise((resolve, reject) => {
             let apiURL = apiConfig.adminCategory
-            category.adminToken = localStorage.adminToken
+            category.token = localStorage.adminToken
             let data = category
             commit('admin_getCategory_request')
-            axios.patch(apiURL,{}, { params: data })
+            axios.patch(apiURL, {}, { params: data })
+                .then(function (response) {
+                    commit('admin_getCategory_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_getCategory_error')
+                    reject(error)
+                })
+        })
+    },
+    adminInsertCategory({ commit }, category) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminCategory
+            category.token = localStorage.adminToken
+            let data = category
+            commit('admin_getCategory_request')
+            axios.post(apiURL, {}, { params: data })
+                .then(function (response) {
+                    commit('admin_getCategory_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_getCategory_error')
+                    reject(error)
+                })
+        })
+    },
+    adminDisableOrEnableCategory({ commit }, category) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminCategory
+            category.token = localStorage.adminToken
+            let data = category
+            commit('admin_getCategory_request')
+            axios.delete(apiURL, { params: data })
                 .then(function (response) {
                     commit('admin_getCategory_success', response.data)
                     resolve(response)
