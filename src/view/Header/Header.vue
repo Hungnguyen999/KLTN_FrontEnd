@@ -31,7 +31,11 @@
               <i class="fa fa-search"></i>
             </button>
             <a v-if="!loadStateLogin" href="google" class="btn normal-button">Miễn phí</a>
-            <a v-if="loadStateLogin" :href="baseURL + '/instructor'" class="btn normal-button">Giảng Viên</a>
+            <a
+              v-if="loadStateLogin"
+              :href="baseURL + '/instructor/course'"
+              class="btn normal-button"
+            >Giảng Viên</a>
             <div style="border-left: 1px solid;margin-right: 1rem;"></div>
             <button class="btn normal-button" id="mycourse">Khóa Học</button>
             <b-popover target="mycourse" triggers="hover" placement="top">
@@ -42,7 +46,7 @@
                 <button style="width:100%;" class="btn btn-info">Xem thêm</button>
               </div>
             </b-popover>
-            <div v-if="!loadStateLogin">
+            <div v-if="!loadStateLogin && !userUserInfoLoading">
               <button class="btn btn-default circle-button normal-button">
                 <i class="fa fa-shopping-cart"></i>
               </button>
@@ -53,7 +57,7 @@
               >Log In</button>
               <button v-b-modal.singup-modal class="btn btn-outline-danger">Sign Up</button>
             </div>
-            <div v-if="loadStateLogin">
+            <div v-if="loadStateLogin && !userUserInfoLoading">
               <button class="btn btn-default circle-button normal-button" id="cart">
                 <i class="fa fa-shopping-cart"></i>
               </button>
@@ -100,25 +104,14 @@
                   <li>item 1</li>
                 </ul>
               </b-popover>
-
-              <button
-                id="user"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                class="btn btn-default circle-button normal-button"
-              >
-                <i class="fa fa-user"></i>
-                <b-popover target="user" triggers="hover" placement="top">
-                  <ul>
-                    <li>item 1item 1item 1item 1item 1item 1item 1item 1item 1item 1item 1item 1</li>
-                    <li>item 1</li>
-                    <li>item 1</li>
-                    <li>item 1</li>
-                    <li>item 1</li>
-                  </ul>
-                </b-popover>
+              <button>
+                <UserMenuButton :account="userUserInfo"></UserMenuButton>
               </button>
+            </div>
+            <div v-if="userUserInfoLoading" class="loading-container">
+              <v-skeleton-loader type="avatar"></v-skeleton-loader>
+              <v-skeleton-loader type="avatar"></v-skeleton-loader>
+              <v-skeleton-loader type="avatar"></v-skeleton-loader>
             </div>
           </b-navbar-nav>
         </b-collapse>
@@ -134,10 +127,12 @@ import Login_Modal from "../../components/Login_Modal/Login_Modal";
 import Singup_Modal from "../../components/SignUp_Modal/SignUp_Modal";
 import ItemOfListMyCourse from "../../components/ItemOfListMyCourse/ItemOfListMyCourse";
 import ItemOfList from "../../components/ItemOfList/ItemOfList";
+import UserMenuButton from "../../components/UserMenuButton/UserMenuButton";
 import apiConfig from "../../API/api.json";
-import { mapGetters } from "vuex"
+import { mapGetters } from "vuex";
 export default {
   components: {
+    UserMenuButton,
     DropdownCategory,
     Login_Modal,
     Singup_Modal,
@@ -151,38 +146,48 @@ export default {
       baseURL: apiConfig.baseURL
     };
   },
-  methods: {
-    checkLogin() {
-      return localStorage.token && localStorage.token != "";
+  methods: {},
+  created() {
+    console.log(JSON.stringify(this.userUserInfo) !== JSON.stringify({}));
+    if (JSON.stringify(this.userUserInfo) !== JSON.stringify({}))
+      this.isLogin = true;
+    else this.isLogin = false;
+    if (this.$route.meta.instructor == true) {
+      this.isStudent = false;
     }
   },
-  created() {
-    if (localStorage.token) this.isLogin = true;
+  updated() {
+    if (JSON.stringify(this.userUserInfo) !== JSON.stringify({}))
+      this.isLogin = true;
     else this.isLogin = false;
-    if(this.$route.meta.instructor == true) {
-      this.isStudent = false
-    }
   },
   computed: {
     ...mapGetters({
+      userUserInfo: "userUserInfo",
+      userUserInfoLoading: "userUserInfoLoading"
     }),
     loadStateLogin() {
       return this.isLogin;
     },
     loadStudent() {
-      return this.isStudent
+      return this.isStudent;
     }
   }
 };
 </script>
 <style lang="scss" scoped>
+.loading-container {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+}
 .circle-button-lg {
   border-radius: 50%;
 }
 .circle-button {
   border-radius: 20px;
 }
-button,a {
+button,
+a {
   margin-right: 1rem;
   &:focus {
     outline: 0px !important;

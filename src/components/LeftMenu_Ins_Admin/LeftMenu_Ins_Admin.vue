@@ -7,7 +7,7 @@
       expand-on-hover
     >
       <v-list dark>
-        <router-link :to="{name: 'instructor-page'}" style="padding-left: 0.25rem;color: white">
+        <router-link :to="{name: 'ins-course-page'}" style="padding-left: 0.25rem;color: white">
           <b-img
             rounded="circle"
             style="width: 3rem; height: 3rem"

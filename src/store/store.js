@@ -9,6 +9,9 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
+        mypageTabState: {
+            hash: 'info-tab'
+        },
         headerState: {
             hide: false
         },
@@ -18,6 +21,7 @@ export const store = new Vuex.Store({
         },
         userState: {
             object: {},
+            user: {},
             loading: false,
         },
         ATCState: {
@@ -25,6 +29,21 @@ export const store = new Vuex.Store({
             cart: {}
         },
         adminCategoryState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        adminTopicState: {
+            loading: false,
+            list: [],
+            pbject: {}
+        },
+        userCategoryState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        userCourseState: {
             loading: false,
             list: [],
             object: {}

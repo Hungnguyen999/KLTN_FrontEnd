@@ -1,6 +1,9 @@
 export default {
+    changeTab(state, data) {
+        state.mypageTabState.hash = data
+    },
     adminLogin_request(state) {
-        state.adminState.loading = true 
+        state.adminState.loading = true
     },
     adminLogin_success(state) {
         state.adminState.loading = false
@@ -11,11 +14,17 @@ export default {
     user_request(state) {
         state.userState.loading = true
     },
-    user_success(state) {
+    user_success(state, data) {
         state.userState.loading = false
+        if (data.user) {
+            state.userState.user = data.user
+        }
     },
     user_error(state) {
         state.userState.loading = false
+    },
+    user_logout(state) {
+        state.userState.user = {}
     },
     ATC_request(state) {
         state.ATCState.loading = true
@@ -37,14 +46,59 @@ export default {
     },
     admin_getCategory_success(state, data) {
         state.adminCategoryState.loading = false
-        if(data.list) {
+        if (data.list) {
             state.adminCategoryState.list = data.list
         }
-        if(data.object) {
+        if (data.object) {
             state.adminCategoryState.object = data.object
         }
     },
     admin_getCategory_error(state) {
         state.adminCategoryState.loading = false
+    },
+    admin_getTopic_request(state) {
+        state.adminTopicState.loading = true
+    },
+    admin_getTopic_success(state, data) {
+        state.adminTopicState.loading = false
+        if (data.list) {
+            state.adminTopicState.list = data.list
+        }
+        if (data.object) {
+            state.adminTopicState.object = data.object
+        }
+    },
+    admin_getTopic_error(state) {
+        state.adminTopicState.loading = false
+    },
+    user_getCategory_request(state) {
+        state.userCategoryState.loading = true
+    },
+    user_getCategory_success(state, data) {
+        state.userCategoryState.loading = false
+        if (data.list) {
+            state.userCategoryState.list = data.list
+        }
+        if (data.object) {
+            state.userCategoryState.object = data.object
+        }
+    },
+    user_getCategory_error(state) {
+        state.userCategoryState.loading = false
+    },
+    user_course_request(state) {
+        state.userCourseState.loading = true
+    },
+    user_course_success(state, data) {
+        state.userCourseState.loading = false
+        if (data.list) {
+            state.userCourseState.list = data.list
+        }
+        if (data.object) {
+            state.userCourseState.object = data.object
+        }
+    },
+    user_course_error(state) {
+        state.userCourseState.loading = false
     }
 }

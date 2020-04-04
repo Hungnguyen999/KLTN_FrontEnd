@@ -6,9 +6,13 @@
           <b-embed
             type="iframe"
             aspect="16by9"
-            src="https://www.youtube.com/embed/1d2HfH8EBsk"
+            src="http://localhost:8000/uploads/videos/vinh.mp4"
             allowfullscreen
-          ></b-embed>
+          ></b-embed>sadasd
+          <vue-core-video-player
+            auto
+            src="http://localhost:8080/KLTN-Server/public/uploads/videos/5%20Centimeters%20Per%20Second%20Trailer%20HD.mp4"
+          ></vue-core-video-player>
         </div>
         <div class="lesson-container">
           <v-tabs class="tab-bars" active-class="tab-active">
@@ -33,8 +37,10 @@
           <div v-for="i in fakeLength" :key="i" style="margin: 0.5rem 0">
             <VideoItem></VideoItem>
           </div>
-          <div class="button-container"><a href="#" v-if="fakeLength!=10" @click="fakeLength = 10">Xem tất cả</a>
-          <a href="#" v-if="fakeLength==10" @click="fakeLength = 5">Thu gọn</a></div>
+          <div class="button-container">
+            <a href="#" v-if="fakeLength!=10" @click="fakeLength = 10">Xem tất cả</a>
+            <a href="#" v-if="fakeLength==10" @click="fakeLength = 5">Thu gọn</a>
+          </div>
         </div>
       </div>
     </div>
@@ -45,6 +51,7 @@ import OverviewTab from "../../components/OverviewTab/OverviewTab";
 import CommentTab from "../../components/CommentTab/CommentTab";
 import AnnounceTab from "../../components/AnnouncementTab/AnnouncementTab";
 import VideoItem from "../../components/VideoItem/VideoItem";
+
 export default {
   components: { OverviewTab, CommentTab, AnnounceTab, VideoItem },
   data() {

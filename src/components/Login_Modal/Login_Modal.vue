@@ -15,13 +15,20 @@
           <i class="fab fa-google-plus-g"></i> Login with Google+
         </button>
         <div class="input-container">
-          <input class="form-control" v-model="user.user_id" type="email" placeholder="Email" />
+          <input
+            class="form-control"
+            @keydown.enter="login"
+            v-model="user.user_id"
+            type="email"
+            placeholder="Email"
+          />
           <i class="fas fa-envelope-square fa-lg" aria-hidden="true"></i>
         </div>
         <div class="input-container">
           <input
             class="form-control"
             v-model="user.password"
+            @keydown.enter="login"
             type="password"
             placeholder="Password"
           />
@@ -91,7 +98,7 @@ export default {
     },
     loginSuccess(data) {
       localStorage.token = data.token;
-      localStorage.userName = data.user.name;
+      localStorage.user = JSON.stringify(data.user);
       this.reset();
       this.$swal.close();
       this.$refs["login-modal"].hide();

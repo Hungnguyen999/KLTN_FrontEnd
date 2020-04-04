@@ -14,7 +14,7 @@
                 single-line
                 hide-details
               ></v-text-field>
-              <div style="position: relative;width:100%;padding-top:0.5rem">
+              <div style="position: relative;width:100%;padding-top:1rem">
                 <v-select
                   style="float: right;width: 30%;cursor: pointer"
                   :items="activeList"
@@ -65,43 +65,44 @@
                   <div
                     v-if="categoryIDSelected == '' || (loadCategoryIDSelected != item.category_id)"
                   >
-                    <button
-                      v-if="!item.disable"
-                      class="btn btn-outline-secondary btn-sm"
-                      style="margin-right: 0.5rem"
-                      @click="disableOrEnableCategory(item)"
-                    >Xóa</button>
-                    <button
-                      v-if="item.disable"
-                      class="btn btn-outline-secondary btn-sm"
-                      style="margin-right: 0.5rem"
-                      @click="disableOrEnableCategory(item)"
-                    >Khôi phục</button>
-                    <button
-                      class="btn btn-outline-secondary btn-sm"
+                    <v-icon
+                      title="chỉnh sửa"
+                      small
+                      class="mr-2"
                       style="margin-right: 0.5rem"
                       @click="selectCategory(item)"
-                    >Chỉnh sửa</button>
-                    <router-link
-                      class="btn btn-outline-secondary btn-sm"
-                      :to="{name: 'topic-page', query: {category_id: item.category_id}}"
-                    >Chi tiết</router-link>
+                    >mdi-pencil</v-icon>
+                    <v-icon
+                      title="xóa"
+                      v-if="!item.disable"
+                      style="margin-right: 0.5rem"
+                      @click="disableOrEnableCategory(item)"
+                      small
+                      class="mr-2"
+                    >mdi-delete</v-icon>
+                    <v-icon
+                      v-if="item.disable"
+                      title="khôi phục"
+                      style="margin-right: 0.5rem"
+                      @click="disableOrEnableCategory(item)"
+                    >mdi-cog-counterclockwise</v-icon>
+                    <router-link :to="{name: 'topic-page', query: {category_id: item.category_id}}">
+                      <v-icon style="margin-right: 0.5rem">mdi-eye</v-icon>
+                    </router-link>
                   </div>
                   <div v-else>
-                    <button
-                      class="btn btn-outline-secondary btn-sm"
-                      style="margin-right: 0.5rem"
+                    <v-icon
+                      class="mr-2"
                       @click="confirmUpdate()"
-                    >Lưu</button>
-                    <button
                       style="margin-right: 0.5rem"
-                      class="btn btn-outline-secondary btn-sm"
+                      title="Lưu"
+                    >mdi-content-save</v-icon>
+                    <v-icon
+                      title="Hủy"
+                      class="mr-2"
+                      style="margin-right: 0.5rem"
                       @click="cancel()"
-                    >Hủy</button>
-                    <router-link
-                      class="btn btn-outline-secondary btn-sm"
-                      :to="{name: 'topic-page', query: {category_id: item.category_id}}"
-                    >Chi tiết</router-link>
+                    >mdi-close-circle</v-icon>
                   </div>
                 </div>
               </template>
@@ -155,7 +156,9 @@
                   style="width: 100%;"
                   @click="insertCategory()"
                   class="btn-sm btn btn-danger"
-                >Lưu</button>
+                >
+                  <i class="fas fa-save"></i>&nbsp;Lưu
+                </button>
                 <v-dialog v-model="dialogIcon" max-width="700">
                   <v-card style="padding: 1rem 1rem 1rem 2rem">
                     <v-card-title class="headline">Chọn Icon đại diện</v-card-title>
@@ -205,9 +208,10 @@ import iconList from "../../assets/iconList.json";
 import { mapGetters } from "vuex";
 export default {
   created() {
-    this.$store.dispatch("adminGetCategories");
+    this.$store.dispatch("adminGetCategories").then(() => {
+      this.updateTempList();
+    });
     this.pageCount = Math.ceil(this.adminGetCategories.length / this.perPage);
-    this.updateTempList();
   },
   data() {
     return {
@@ -437,5 +441,9 @@ a {
   outline: 0px !important;
   -webkit-appearance: none;
   box-shadow: none !important;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
 }
 </style>

@@ -2,11 +2,12 @@
   <div class="my-container">
     <LeftMenu :list="list"></LeftMenu>
     <v-app>
-      <div class="instructor-control" style="background: #f4f3ef;width: 100%">
-        <AnnouceButton></AnnouceButton>
+      <div class="instructor-control" style="position: relative;background: #f4f3ef;width: 100%">
+        <AnnouceButton style="position: absolute; right: 3rem;top: 0;z-index: 2"></AnnouceButton>
+        <UserButton class="btn-user" style="position: absolute; right: 0.5rem;top: 0;z-index: 2" :account="{}" ></UserButton>
       </div>
       <div class="row" style="background: #f4f3ef">
-        <div class="col-11 offset-1">
+        <div class="col-11 offset-1" style="padding-top: 2.5rem">
           <div class="my-content">
             <router-view></router-view>
           </div>
@@ -17,9 +18,10 @@
 </template>
 <script>
 import AnnouceButton from "../../components/AnnouncementButton/AnnouncementButton";
+import UserButton from "../../components/UserMenuButton/UserMenuButton"
 import LeftMenu from "../../components/LeftMenu_Ins_Admin/LeftMenu_Ins_Admin"
 export default {
-  components: { AnnouceButton, LeftMenu },
+  components: { AnnouceButton, LeftMenu, UserButton },
   
   data() {
     return {
@@ -35,7 +37,7 @@ export default {
               routeName: "ins-course-page"
             },
             {
-              title: "Danh sách buổi học",
+              title: "Danh sách bài học",
               icon: "fas fa-circle fa-sm",
               routeName: "ins-lesson-page"
             }

@@ -7,7 +7,7 @@
       aria-expanded="false"
       class="btn btn-default circle-button normal-button"
     >
-      <i class="fas fa-bell"></i>
+      <i class="fas fa-bell fa-lg"></i>
     </button>
     <b-popover target="annouce" triggers="hover" placement="bottomleft">
       <div>

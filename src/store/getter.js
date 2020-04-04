@@ -5,5 +5,17 @@ export default {
     loadHide: state => state.headerState.hide,
     adminGetCategoryLoading: state => state.adminCategoryState.loading,
     adminGetCategories: state => state.adminCategoryState.list,
-    adminGetCategoryObject: state => state.adminCategoryState.object
+    adminGetCategoryObject: state => state.adminCategoryState.object,
+    adminGetTopicLoading: state => state.adminTopicState.loading,
+    adminGetTopics: state => state.adminTopicState.list,
+    adminGetTopicObject: state => state.adminTopicState.object,
+    // user
+    mypageTab: state => state.mypageTabState.hash,
+    userUserInfo: state=>state.userState.user,
+    userUserInfoLoading: state=>state.userState.loading,
+    userGetCategoryLoading: state => state.userCategoryState.loading,
+    userGetCategories: state => state.userCategoryState.list,
+    userGetCategoryObject: state => state.userCategoryState.object,
+    userCourseList: state => state.userCourseState.list,
+    userCourseLoading: state => state.userCourseState.loading
 }

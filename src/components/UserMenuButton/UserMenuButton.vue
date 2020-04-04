@@ -1,57 +1,70 @@
 <template>
   <div>
-    <div class="btn-group">
-      <button
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-        class="btn btn-default normal-button btn-sm text-center"
-        style="margin-right: 0;width: 2.5rem;padding:0.3rem;"
-      >
-        <i class="fas fa-user-circle fa-2x"></i>
-      </button>
-      <div class="dropdown-menu ow1-dropdown-menu dropdown-menu-right">
-        <i class="dropdown-item text-center">
-          <b-img
-            rounded="circle"
-            src="https://cdn2.vectorstock.com/i/1000x1000/63/61/education-logo-vector-11136361.jpg"
-            style="width: 3rem;height: 3rem;margin-bottom: 0.5rem;"
-          />
-          <br />
-          <span class="userName">{{account.name}}</span>
-          <br />
-          <span class="email">daolevanvinh@gmail.com</span>
-        </i>
-        <router-link class="dropdown-item" :to="{name: 'account-page', params: {id: account.id}}">
-          <i class="fas fa-user"></i> Thông tin cá nhân
-        </router-link>
-        <router-link
-          class="dropdown-item"
-          :to="{name: 'account-page', params: {id: account.id}, hash: '#annouce'}"
-        >
-          <i class="fas fa-bell"></i> Thông báo
-        </router-link>
-        <router-link
-          class="dropdown-item"
-          :to="{name: 'account-page', params: {id: account.id}, hash: '#message'}"
-        >
-          <i class="fas fa-comment"></i> Tin nhắn
-        </router-link>
-        <router-link class="dropdown-item" to="google.com" type="button">
-          <i class="fas fa-long-arrow-alt-right"></i> Đăng xuất
-        </router-link>
-      </div>
+    <button
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+      class="my-btn btn btn-default normal-button text-center"
+      style="margin-right: 0;"
+    >
+      <i class="fa fa-user"></i>
+    </button>
+    <div class="dropdown-menu ow1-dropdown-menu dropdown-menu-right">
+      <i class="dropdown-item text-center">
+        <b-img
+          rounded="circle"
+          src="https://cdn2.vectorstock.com/i/1000x1000/63/61/education-logo-vector-11136361.jpg"
+          style="width: 3rem;height: 3rem;margin-bottom: 0.5rem;"
+        />
+        <br />
+        <span class="userName">{{account.name}}</span>
+        <br />
+        <span class="email">{{account.user_id}}</span>
+      </i>
+      <a class="dropdown-item" href="#" @click="goTab('info-tab')">
+        <i class="fas fa-user"></i> Thông tin cá nhân
+      </a>
+      <a class="dropdown-item" href="#" @click="goTab('annouce-tab')">
+        <i class="fas fa-bell"></i> Thông báo
+      </a>
+      <a href="#" class="dropdown-item" @click="goTab('msg-tab')">
+        <i class="fas fa-comment"></i> Tin nhắn
+      </a>
+      <a class="dropdown-item" @click="logOut" type="button">
+        <i class="fas fa-long-arrow-alt-right"></i> Đăng xuất
+      </a>
     </div>
   </div>
 </template>
 <script>
+import apiConfig from "../../API/api.json";
 export default {
-  props: ["account"]
+  created() {
+    //annouce
+    //message
+  },
+  props: ["account"],
+  methods: {
+    goTab(flag) {
+      this.$store.commit("changeTab", flag);
+      console.log(flag);
+      if (this.$route.name != "my-page") {
+        this.$router.push({ name: "my-page" });
+      }
+    },
+    logOut() {
+      localStorage.removeItem("token");
+      window.location.href = apiConfig.baseURL;
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
 .ow1-dropdown-menu {
   width: 15rem;
+}
+.my-btn:hover .dropdown-menu {
+  display: block;
 }
 
 .dropdown-menu {
@@ -81,15 +94,18 @@ i.fas {
   }
   &:hover {
     background-color: #e9f9f3;
-    opacity: 1.5;
-    color: #79589f;
+    opacity: 1;
+    font-weight: bolder;
+    color: #52143e; //79589f;
     .userName {
-      color: #79589f;
+      font-weight: bolder;
+      color: #52143e; //#79589f;
     }
   }
   padding: 0.5rem 1rem;
   border: 0.5px solid #ece8e8;
-  color: #79589f;
+  color: #52143e; //#79589f;
+  font-weight: 500;
   opacity: 0.8;
   .email {
     margin-top: 1rem;
@@ -102,6 +118,12 @@ button:focus {
   box-shadow: none !important;
 }
 .normal-button:hover {
-  background-color: white;
+  &:hover {
+    border-radius: 50%;
+    background-color: #ece8e8;
+    .dropdown-menu {
+      display: block;
+    }
+  }
 }
 </style>

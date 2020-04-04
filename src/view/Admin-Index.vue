@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!adminLogin">
+    <div v-if="!loadFlag">
       <v-navigation-drawer
         class="left-menu"
         style="background-color: #52143e"
@@ -59,7 +59,7 @@
         <router-view></router-view>
       </div>
     </div>
-    <div v-if="adminLogin">
+    <div v-if="loadFlag">
       <router-view></router-view>
     </div>
   </div>
@@ -68,6 +68,10 @@
 import { mapGetters } from "vuex";
 import UserMenuButton from "../components/UserMenuButton/UserMenuButton";
 export default {
+  created() {
+    
+    this.adminLogin = this.$route.name == "admin-login-page";
+  },
   beforeUpdate() {
     this.adminLogin = this.$route.name == "admin-login-page";
   },
@@ -110,7 +114,7 @@ export default {
       loadHide: "loadHide"
     }),
     loadFlag() {
-      return this.isAdminPage;
+      return this.adminLogin;
     }
   }
 };

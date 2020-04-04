@@ -16,9 +16,8 @@
           <button class="btn btn-danger btn-new" @click="dialog = true">
             <i class="far fa-play-circle fa-lg"></i>&nbsp;Tạo khóa học
           </button>
-          <v-dialog v-model="dialog" persistent width="900" s>
-            
-                  <SteperCreateCourse style="margin:0" v-on:closeModal="closeModal"></SteperCreateCourse>
+          <v-dialog v-model="dialog" persistent width="1300">
+            <SteperCreateCourse style="margin:0" v-on:closeModal="closeModal"></SteperCreateCourse>
           </v-dialog>
         </div>
       </div>
@@ -49,6 +48,7 @@ export default {
   components: { InsCourseItem, InsCourseItemLoading, SteperCreateCourse },
   created() {
     this.selected = this.items[0].value;
+    
   },
   mounted() {
     this.updateTempCourseList();
@@ -186,7 +186,7 @@ export default {
       });
     },
     closeModal(value) {
-      this.dialog = value
+      this.dialog = value;
     }
   },
   computed: {
