@@ -22,18 +22,17 @@
       <CollectionRecommend></CollectionRecommend>
     </div>
     <div class="container">
-      <b-tabs style="margin: 1rem;">
-        <b-tab v-for="(item,index) in arrayCategory" :key="index" @click="changeItem(item.id)">
-          <template slot="title">{{item.name}}</template>
-        </b-tab>
-      </b-tabs>
-      <Collection :caterogy_id="loadCurrentCategoryID"></Collection>
+      <v-tabs style="margin: 1rem;">
+        <v-tab style="font-size: 12px" v-for="(cate,index) in guestCategoryList" @click="changeCategory(cate)" :key="index">{{cate.name}}</v-tab>
+      </v-tabs>
+      <Collection :caterogy="currentCategory"></Collection>
     </div>
   </div>
 </template>
 <script>
 import Collection from "../../components/Collection/Collection";
 import CollectionRecommend from "../../components/CollectionRecommend/CollectionRecommend";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -44,16 +43,20 @@ export default {
         { name: "tab 4", id: "4" },
         { name: "tab 5", id: "5" }
       ],
-      currentCategoryId: 0
+      currentCategory: {}
     };
   },
   components: { Collection, CollectionRecommend },
   methods: {
-    changeItem(CategoryID) {
-      this.currentCategoryId = CategoryID;
+    changeCategory(cate) {
+      this.currentCategory = cate
     }
   },
   computed: {
+    ...mapGetters({
+      guestCategoryList: "guestCategoryList",
+      guestCategoryLoading: "guestCategoryLoading"
+    }),
     loadCurrentCategoryID() {
       return this.currentCategoryId;
     }

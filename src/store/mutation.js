@@ -100,5 +100,21 @@ export default {
     },
     user_course_error(state) {
         state.userCourseState.loading = false
+    },
+    guest_category_request(state) {
+        state.guestCategoryState.loading = true
+    },
+    guest_category_success(state, data) {
+        state.guestCategoryState.loading = false
+        if (data.list) {
+            state.guestCategoryState.list = data.list
+            console.log(state.guestCategoryState.list)
+        }
+        if (data.object) {
+            state.guestCategoryState.object = data.object
+        }
+    },
+    guest_category_error(state) {
+        state.guestCategoryState.loading = false
     }
 }

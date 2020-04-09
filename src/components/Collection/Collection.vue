@@ -20,7 +20,7 @@
       <div class="carousel-inner">
         <div class="carousel-item active">
           <div class="row">
-            <div class="col" v-for="index in 4" :key="index">
+            <div class="col" v-for="(index) in 4" :key="index">
               <Item :id="index"></Item>
             </div>
           </div>
@@ -41,7 +41,7 @@
 import Item from "../Item/Item";
 export default { 
   components: { Item },
-  props: ['caterogy_id'],
+  props: ['caterogy'],
   data() {
     return {
       myOption: {
@@ -51,8 +51,8 @@ export default {
     };
   },
   watch: {
-    caterogy_id(NewValue) {
-      this.caterogy_id = NewValue;
+    caterogy(NewValue) {
+      this.caterogy = NewValue;
     }
   },
   methods: {}

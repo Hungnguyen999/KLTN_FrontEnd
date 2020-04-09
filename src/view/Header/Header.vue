@@ -71,7 +71,6 @@
               </b-popover>
               <button
                 id="like"
-                data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
                 class="btn btn-default circle-button normal-button"
@@ -88,7 +87,6 @@
               </b-popover>
               <button
                 id="annouce"
-                data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
                 class="btn btn-default circle-button normal-button"

