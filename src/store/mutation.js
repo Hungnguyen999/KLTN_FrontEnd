@@ -116,5 +116,20 @@ export default {
     },
     guest_category_error(state) {
         state.guestCategoryState.loading = false
+    },
+    user_lesson_request(state) {
+        state.userLessonState.loading = true
+    },
+    user_lesson_success(state, data) {
+        state.userLessonState.loading = false
+        if(data.list) {
+            state.userLessonState.list = data.list
+        }
+        if(data.object) {
+            state.userLessonState.object = data.object
+        }
+    },
+    user_lesson_error(state) {
+        state.userLessonState.loading = false
     }
 }

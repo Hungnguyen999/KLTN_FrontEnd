@@ -19,7 +19,7 @@ var apiURL = {
     userEditPassword: apiAddress + "/user/edit/password",
     userEditInfor: apiAddress + "/user/edit/infor",
     userEditProfile: apiAddress + "/user/edit/profile",
-
+    userLesson: apiAddress + "/user/lesson",
 
 
     //guest

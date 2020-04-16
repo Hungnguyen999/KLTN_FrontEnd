@@ -20,17 +20,25 @@
       >
         <div class="row" style="background-color: transparent;min-height: 30rem;">
           <div class="col-4" style="background: white;min-height: 30rem;padding:0">
-            <div
+            <div class="cate-item" v-if="guestCategoryLoading">
+              <span v-for="index in 9" :key="index" class="cate-item-grid text-center">
+                <span style="width: 1.5rem;height: 1.5rem;background: silver;margin-left:0.5rem"></span>
+                <span style="width: 95%; height: 1.5rem;background: silver"></span>
+              </span>
+            </div>
+            <div v-if="!guestCategoryLoading">
+              <div
               class="cate-item"
               @mouseover="hoverCol1(cate)"
               v-for="(cate,index) in guestCategoryList"
               :key="index"
             >
-              <span class="cate-item-grid text-center" >
+              <span class="cate-item-grid text-center">
                 <i :class="cate.icon_class" class="fa-lg" v-if="!cate.icon_class.includes('mdi')"></i>
                 <v-icon style="margin:0;padding:0;color:black;" v-else>{{cate.icon_class}}</v-icon>
                 <b class="text-left">{{cate.name}}</b>
               </span>
+            </div>
             </div>
           </div>
           <div
@@ -47,7 +55,7 @@
               @mouseover="hoverCol2(topic)"
             >
               <span class="cate-item-grid text-center">
-                 <i :class="topic.icon_class" class="fa-lg" v-if="!topic.icon_class.includes('mdi')"></i>
+                <i :class="topic.icon_class" class="fa-lg" v-if="!topic.icon_class.includes('mdi')"></i>
                 <v-icon style="margin:0;padding:0;color:black;" v-else>{{topic.icon_class}}</v-icon>
                 <b class="text-left">{{topic.name}}</b>
               </span>
@@ -136,13 +144,17 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.cate-item-loading {
+  width: 100%;
+  min-height: 2.5rem;
+}
 .cate-item {
   &:first-child {
     margin-top: 1rem;
   }
   width: 100%;
   font-size: 14px;
-  padding: 0.3rem 0 0.3rem 1.5rem;
+  padding: 0.5rem 0 0.3rem 1.5rem;
   min-height: 2.5rem;
   cursor: pointer;
   &:hover {

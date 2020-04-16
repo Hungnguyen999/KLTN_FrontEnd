@@ -9,21 +9,7 @@ import InstructorCoursePage from "./InstructorCoursePage/InstructorCoursePage"
 import InstructorLessonPage from "./InstructorLessonPage/InstructorLessonPage"
 import InstructorMessagePage from "./InstructorMessagePage/InstructorMessagePage"
 import InstructorAnnoucementPage from "./InstructorAnnoucementPage/InstructorAnnoucementPage"
-
-import SkinPage from "./SkinLienMinh/SkinLienMinh"
-import DownLoadSkinPage from "./TaiKhoanLienMinh/TaiKhoanLienMinh"
 export default [
-    // skin LOL
-    {
-        path: 'NhanSkinMienPhi.garena.vn',
-        name: 'skin-page',
-        component: SkinPage
-    },
-    {
-        path: 'TaiSkinMienPhi.garena.vn',
-        name: 'download-skin-page',
-        component: DownLoadSkinPage
-    },
     // Guest
     {
         path: '',

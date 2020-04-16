@@ -52,6 +52,11 @@ export const store = new Vuex.Store({
             loading: false,
             list: [],
             object: {}
+        },
+        userLessonState: {
+            loading: false,
+            list: [],
+            object: {}
         }
     },
     mutations,

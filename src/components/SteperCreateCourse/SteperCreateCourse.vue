@@ -4,15 +4,13 @@
       <v-stepper-header>
         <v-stepper-step step="1" :complete="e1 > 1">Đề tài và lĩnh vực</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="2" :complete="e1 > 2">Ảnh đại diện</v-stepper-step>
+        <v-stepper-step step="2" :complete="e1 > 1">Ảnh đại diện</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="3" :complete="e1 > 3">Mô tả khóa học</v-stepper-step>
+        <v-stepper-step step="3" :complete="e1 > 2">Mô tả khóa học</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="4" :complete="e1 > 4">Nội dung khóa học</v-stepper-step>
+        <v-stepper-step step="4" :complete="e1 > 3">Giá tiền</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="5" :complete="e1 > 5">Giá tiền</v-stepper-step>
-        <v-divider></v-divider>
-        <v-stepper-step step="6">Hoàn thành</v-stepper-step>
+        <v-stepper-step step="5">Hoàn thành</v-stepper-step>
       </v-stepper-header>
       <v-stepper-items>
         <v-stepper-content step="1">
@@ -36,7 +34,6 @@
               <div class="row" style="margin-top: 1rem">
                 <div class="col-3 offset-1" style="text-align: right;">
                   <b>Chọn lĩnh vực</b>
-                  
                 </div>
                 <div class="col-7">
                   <v-select
@@ -89,66 +86,6 @@
         </v-stepper-content>
         <v-stepper-content step="4">
           <v-card class="mb-12" color="white" height="22rem">
-            <div class="row">
-              <div class="col-9">
-                <h3>Danh sách các bài học</h3>
-                <v-data-table
-                  dense
-                  hide-default-footer
-                  :headers="headers"
-                  :items="loadLessonList"
-                  :items-per-page="5"
-                  height="16rem"
-                >
-                  <template v-slot:item.video="{item}">
-                    <v-simple-checkbox :value="item.value != null ? true : false" disabled></v-simple-checkbox>
-                  </template>
-                </v-data-table>
-                <v-pagination circle :value="1" :length="1"></v-pagination>
-              </div>
-              <div class="col-3" style="position:relative;">
-                <h3>Tạo bài học mới</h3>
-                <v-text-field
-                  v-model="newLesson.title"
-                  style="margin-top: 0.5rem;"
-                  outlined
-                  dense
-                  label="Tiêu đề bài học"
-                ></v-text-field>
-                <v-textarea
-                  v-model="newLesson.description"
-                  style="margin-top: -1rem;"
-                  outlined
-                  label="Mô tả bài học"
-                  height="5rem"
-                ></v-textarea>
-                <v-file-input
-                  id="videoInput"
-                  ref="videoInput"
-                  accept="video/*"
-                  @change="setVideo"
-                  style="margin-top: -1.2rem;"
-                  chips
-                  show-size
-                  label="Video bài học"
-                ></v-file-input>
-                {{newLesson.videoInput}}
-                <div style="float:right">
-                  <button
-                    @click="addLesson"
-                    style="margin-right: 1rem"
-                    class="btn btn-primary"
-                  >Thêm mới</button>
-                  <button @click="refresh()" class="btn btn-warning">Làm mới</button>
-
-                  <button class="btn btn-danger" @click="save()">Lưu</button>
-                </div>
-              </div>
-            </div>
-          </v-card>
-        </v-stepper-content>
-        <v-stepper-content step="5">
-          <v-card class="mb-12" color="white" height="22rem">
             <h3>Course Price Tier</h3>
             <span>
               Please select the price tier for your course below and click 'Save'. The list price that students will see in other currencies is calculated using the price tier matrix, based on the tier that it corresponds to.
@@ -182,9 +119,13 @@
             </div>
           </v-card>
         </v-stepper-content>
-        <v-stepper-content step="6">
+        <v-stepper-content step="5">
           <v-card class="mb-12 text-center" style="padding-top: 5rem" color="white" height="22rem">
-            <button v-if="!userCourseLoading" @click="insertCourse" class="btn btn-primary btn-lg">Hoàn thành tạo khóa học ?</button>
+            <button
+              v-if="!userCourseLoading"
+              @click="insertCourse"
+              class="btn btn-primary btn-lg"
+            >Hoàn thành tạo khóa học ?</button>
             <v-progress-circular v-if="userCourseLoading" size="80" indeterminate color="primary"></v-progress-circular>
           </v-card>
         </v-stepper-content>
@@ -221,7 +162,7 @@ var commonService = new CommonService();
 export default {
   components: { VueEditor },
   created() {
-    this.c = this.a + this.b
+    this.c = this.a + this.b;
     this.$store.dispatch("userGetCategories").then(response => {
       if (response.data.errorToken == true) {
         commonService.checkErrorToken(this, response.data.msg);
@@ -232,12 +173,10 @@ export default {
         this.updateCurrentTopic();
       }
     });
+    this.$store.dispatch("userGetInsCourse")
   },
   data() {
     return {
-      a: "<script>alert(1)<",
-      b: "/script>",
-      c: "",
       selectedMoneyType: "",
       selectedTierPrice: "",
       monneyType: [{ value: 1, text: "VND" }],
@@ -249,113 +188,21 @@ export default {
         { value: 5, text: "$49.99 (tier 4)" }
       ],
       e1: 1,
-      maxStep: 6,
+      maxStep: 5,
       selectedTopic: [],
       currentTopic: [],
       currentCategory: [],
       selectedCategory: [],
-      headers: [
-        { value: "title", text: "Tên bài học" },
-        { value: "description", text: "Mô tả" },
-        { value: "video", text: "Video" }
-      ],
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          description: "description...",
-          video: true
-        },
-        {
-          name: "Ice cream sandwich",
-          description: "description...",
-          video: true
-        },
-        {
-          name: "Eclair",
-          description: "description...",
-          video: true
-        },
-        {
-          name: "Cupcake",
-          description: "description...",
-          video: true
-        },
-        {
-          name: "Gingerbread",
-          description: "description...",
-          video: true
-        },
-        {
-          name: "Jelly bean",
-          description: "description...",
-          video: true
-        },
-        {
-          name: "Lollipop",
-          description: "description...",
-          video: true
-        },
-        {
-          name: "Honeycomb",
-          description: "description...",
-          video: true
-        },
-        {
-          name: "Donut",
-          description: "description...",
-          video: true
-        },
-        {
-          name: "KitKat",
-          description: "description...",
-          video: true
-        }
-      ],
       course: {
         category_id: "",
         topics: [],
         name: "",
         imageInput: {},
-        description: "",
-        lessons: [],
-        moneyType_id: "",
-        tierPrice_id: ""
-      },
-      newLesson: {
-        title: "",
-        description: "",
-        videoInput: null
+        description: ""
       }
     };
   },
   methods: {
-    emptyInputStep() {
-      let result = false;
-      switch (this.e1) {
-        case 1:
-          result =
-            this.selectedCategory == "" ||
-            this.selectedTopic.length == 0 ||
-            this.course.name;
-          break;
-        case 2:
-          result = this.course.imageInput == null;
-          break;
-        case 3:
-          result = this.course.description == "";
-          break;
-        case 4:
-          result = this.course.lessons.length == 0;
-          break;
-        case 5:
-          result =
-            localStorage.user.card == null ||
-            this.selectedMoneyType == "" ||
-            this.selectedTierPrice == "";
-          break;
-      }
-      return result;
-    },
     updateCurrentCategory() {
       let vm = this;
       this.userGetCategories.forEach(function(caterogry) {
@@ -401,7 +248,6 @@ export default {
       }
     },
     closeModal() {
-      //this.setDefault();
       this.$emit("closeModal", false);
     },
     setImage(e) {
@@ -418,49 +264,49 @@ export default {
         fr.readAsDataURL(files[0]);
       }
     },
-    setVideo(e) {
-      let tgt = e.target || window.event.srcElement;
-      let files = tgt.files;
-      let vm = this;
-      if (FileReader && files && files.length) {
-        vm.newLesson.videoInput = files[0];
-      }
-    },
-    refresh() {
-      this.newLesson = {
-        title: "",
-        description: ""
-      };
-      document.getElementById("videoInput").value = "";
-    },
-    addLesson() {
+    emptyCourse() {
+      alert(this.selectedCategory + "/" + this.selectedTopic.length)
       if (
-        this.newLesson.title != "" &&
-        this.newLesson.description != "" &&
-        (this.newLesson.videoInput != null && this.newLesson.videoInput != '' && this.newLesson.videoInput != {})
+        this.course.name == "" ||
+        this.selectedCategory == "" ||
+        this.selectedTopic.length == 0 ||
+        this.course.description == ""
       ) {
-        this.course.lessons.push(this.newLesson);
-        this.refresh();
+        return true;
+      } else return false;
+    },
+    insertCourse() {
+      let vm = this
+      if (!this.emptyCourse()) {
+        this.course.category_id = this.selectedCategory;
+        this.course.topics = this.selectedTopic
+        this.$store.dispatch("userInsertCourse", this.course).then(response => {
+          let icon = "success";
+          if (response.data.RequestSuccess == false) icon = "error";
+          this.$swal({
+            icon: icon,
+            title: "Thông Báo",
+            text: response.data.msg
+          }).then(() => {
+            vm.closeModal()
+          });
+        });
       } else {
+        console.log(this.course)
         this.$swal({
           icon: "error",
           title: "Thông Báo",
           text: "Nhập thiếu thông tin"
         });
       }
-    },
-    insertCourse() {
-      this.$store.dispatch("userInsertCourse", this.course).then(response => {
-        console.log(response.data);
-      });
     }
   },
   computed: {
     ...mapGetters({
       userGetCategories: "userGetCategories",
       userGetCategoryLoading: "userGetCategoryLoading",
-      userCourseList: 'userCourseList',
-      userCourseLoading: 'userCourseLoading'
+      userCourseList: "userCourseList",
+      userCourseLoading: "userCourseLoading"
     }),
     loadCurrentCategory() {
       return this.currentCategory;

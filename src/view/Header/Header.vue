@@ -144,6 +144,14 @@ export default {
       baseURL: apiConfig.baseURL
     };
   },
+  props: ["show"],
+  watch: {
+    show(newVal) {
+      if(newVal!=null) {
+        this.isStudent = newVal
+      }
+    }
+  },
   methods: {},
   created() {
     console.log(JSON.stringify(this.userUserInfo) !== JSON.stringify({}));
@@ -152,6 +160,9 @@ export default {
     else this.isLogin = false;
     if (this.$route.meta.instructor == true) {
       this.isStudent = false;
+    }
+    if(this.show != null) {
+      this.isStudent = this.show
     }
   },
   updated() {

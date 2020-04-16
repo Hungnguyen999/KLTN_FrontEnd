@@ -4,13 +4,24 @@
       <h1>Danh sách khóa học</h1>
       <div class="row">
         <div class="col-3">
-          <input placeholder="Tìm kiếm tiêu đề khóa học" class="form-control" />
+          <input
+            @change="updateTempCourseList()"
+            v-model="searchText"
+            placeholder="Tìm kiếm tiêu đề khóa học"
+            class="form-control"
+          />
           <button class="btn btn-info btn-search">
             <i class="fa fa-search"></i>
           </button>
         </div>
         <div class="col-3">
-          <v-select class="my-sort" v-model="selected" :items="items" label="Sắp xếp"></v-select>
+          <v-select
+            class="my-sort"
+            @change="updateTempCourseList()"
+            v-model="flagSort"
+            :items="items"
+            label="Sắp xếp"
+          ></v-select>
         </div>
         <div class="col-3 offset-3">
           <button class="btn btn-danger btn-new" @click="dialog = true">
@@ -21,15 +32,25 @@
           </v-dialog>
         </div>
       </div>
-      <div ref="my_courseList">
+      <div v-if="!userCourseLoading" ref="my_courseList">
         <div v-for="(course,index) in loadCourseList" :key="index">
           <InsCourseItem :course="course" :loading="loadLoading"></InsCourseItem>
         </div>
+        <div v-if="loadCourseList.length == 0" class="text-center">
+          <img
+            style="width: 10rem;"
+            src="https://cdn3.iconfinder.com/data/icons/folders-files/512/empty_folder-512.png"
+          />
+          <h1 style="margin: 0.5rem" class="text-center">Danh sách rỗng</h1>
+        </div>
       </div>
-      <InsCourseItemLoading></InsCourseItemLoading>
+      <div v-if="userCourseLoading">
+        <InsCourseItemLoading></InsCourseItemLoading>
+      </div>
       <div class="text-center">
         <b-pagination
-          @change="updateTempCourseList"
+          v-if="loadCourseList.length != 0"
+          @change="updateTempCourseList()"
           v-model="currentPage"
           pills
           :total-rows="courseList.length"
@@ -44,138 +65,99 @@
 import InsCourseItem from "../../components/InsItemCourse/InsItemCourse";
 import InsCourseItemLoading from "../../components/InsCourseItemLoading/InsCourseItemLoading";
 import SteperCreateCourse from "../../components/SteperCreateCourse/SteperCreateCourse";
+import { mapGetters } from "vuex";
 export default {
   components: { InsCourseItem, InsCourseItemLoading, SteperCreateCourse },
   created() {
     this.selected = this.items[0].value;
-    
-  },
-  mounted() {
-    this.updateTempCourseList();
+    this.$store.dispatch("userGetInsCourse").then(() => {
+      this.courseList = this.userCourseList;
+      this.updateTempCourseList();
+    });
   },
   data() {
     return {
       tab: null,
       items: [
-        { value: "1", text: "Mới nhất" },
-        { value: "2", text: "Cũ nhất" },
-        { value: "3", text: "A-Z" },
-        { value: "4", text: "Z-A" },
-        { value: "5", text: "Miễn phí" },
-        { value: "6", text: "Có phí" }
+        { value: "1", text: "Tất cả" },
+        { value: "2", text: "Có phí" },
+        { value: "3", text: "Miễn phí" },
+        { value: "4", text: "Đã công khai" },
+        { value: "5", text: "Chưa công khai" }
       ],
-      courseList: [
-        {
-          id: "1",
-          name: "Khóa học lập trình php từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "2",
-          name: "Khóa học lập trình laravel từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "3",
-          name: "Khóa học lập trình nodejs từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "4",
-          name: "Khóa học lập trình vuejs từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "5",
-          name: "Khóa học lập trình reactjs từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "6",
-          name: "Khóa học lập trình java web từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "1",
-          name: "Khóa học lập trình php từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "2",
-          name: "Khóa học lập trình laravel từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "3",
-          name: "Khóa học lập trình nodejs từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "4",
-          name: "Khóa học lập trình vuejs từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "5",
-          name: "Khóa học lập trình reactjs từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "6",
-          name: "Khóa học lập trình java web từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "1",
-          name: "Khóa học lập trình php từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "2",
-          name: "Khóa học lập trình laravel từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "3",
-          name: "Khóa học lập trình nodejs từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "4",
-          name: "Khóa học lập trình vuejs từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "5",
-          name: "Khóa học lập trình reactjs từ cơ bản đến nâng cao",
-          public: false
-        },
-        {
-          id: "6",
-          name: "Khóa học lập trình java web từ cơ bản đến nâng cao",
-          public: false
-        }
-      ],
+      courseList: [],
       tempCourseList: [],
       currentPage: 1,
       perPage: 4,
       selected: null,
       loading: false,
-      dialog: false
+      dialog: false,
+      flagSort: 1,
+      searchText: ""
     };
   },
   methods: {
+    cleanString(input) {
+      var output = "";
+      for (var i = 0; i < input.length; i++) {
+        if (input.charCodeAt(i) <= 127) {
+          output += input.charAt(i);
+        }
+      }
+      return output;
+    },
+    search(tempCourseList) {
+      let temp = [];
+      for (let i = 0; i < tempCourseList.length; i++) {
+        if (tempCourseList[i].name.toLowerCase().includes(this.searchText)) {
+          temp.push(tempCourseList[i]);
+        }
+      }
+      return temp;
+    },
+    sort() {
+      let tempCourseList = [];
+      if (this.flagSort == 1) {
+        return this.courseList;
+      } else {
+        for (let i = 0; i < this.courseList.length; i++) {
+          if (
+            this.flagSort == 2 &&
+            this.courseList[i].tierPrice_id != 0 &&
+            this.courseList[i].public == true
+          )
+            tempCourseList.push(this.courseList[i]);
+          if (
+            this.flagSort == 3 &&
+            this.courseList[i].tierPrice_id == 0 &&
+            this.courseList[i].public == true
+          )
+            tempCourseList.push(this.courseList[i]);
+          if (this.flagSort == 4 && this.courseList[i].public == true)
+            tempCourseList.push(this.courseList[i]);
+          if (this.flagSort == 5 && this.courseList[i].public == false)
+            tempCourseList.push(this.courseList[i]);
+        }
+        return tempCourseList;
+      }
+    },
     updateTempCourseList() {
-      let vm = this;
       this.loading = true;
+      this.changePage(this.search(this.sort()));
+    },
+    changePage(tempCourseList) {
+      let vm = this;
       setTimeout(function() {
         let start = vm.perPage * (vm.currentPage - 1);
-        let listLength = vm.courseList.length;
+        let listLength = tempCourseList.length;
         if (start < listLength) {
           if (start + vm.perPage < listLength) {
             vm.tempCourseList = [];
-            vm.tempCourseList = vm.courseList.slice(start, start + vm.perPage);
-          } else vm.tempCourseList = vm.courseList.slice(start, listLength);
+            vm.tempCourseList = tempCourseList.slice(start, start + vm.perPage);
+          } else vm.tempCourseList = tempCourseList.slice(start, listLength);
+        }
+        if (listLength == 0) {
+          vm.tempCourseList = [];
         }
       }, 100);
       this.loading = false;
@@ -190,6 +172,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      userCourseList: "userCourseList",
+      userCourseLoading: "userCourseLoading"
+    }),
     loadCourseList() {
       return this.tempCourseList;
     },

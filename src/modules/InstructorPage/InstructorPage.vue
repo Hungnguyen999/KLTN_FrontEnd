@@ -4,7 +4,7 @@
     <v-app>
       <div class="instructor-control" style="position: relative;background: #f4f3ef;width: 100%">
         <AnnouceButton style="position: absolute; right: 3rem;top: 0;z-index: 2"></AnnouceButton>
-        <UserButton class="btn-user" style="position: absolute; right: 0.5rem;top: 0;z-index: 2" :account="{}" ></UserButton>
+        <UserButton class="btn-user" style="position: absolute; right: 0.5rem;top: 0;z-index: 2" :account="userUserInfo" ></UserButton>
       </div>
       <div class="row" style="background: #f4f3ef">
         <div class="col-11 offset-1" style="padding-top: 2.5rem">
@@ -20,6 +20,7 @@
 import AnnouceButton from "../../components/AnnouncementButton/AnnouncementButton";
 import UserButton from "../../components/UserMenuButton/UserMenuButton"
 import LeftMenu from "../../components/LeftMenu_Ins_Admin/LeftMenu_Ins_Admin"
+import { mapGetters } from "vuex"
 export default {
   components: { AnnouceButton, LeftMenu, UserButton },
   
@@ -75,7 +76,11 @@ export default {
       this.$router.push({ name: name });
     }
   },
-  computed: {}
+  computed: {
+    ...mapGetters({
+      userUserInfo: 'userUserInfo'
+    })
+  }
 };
 </script>
 <style lang="scss" scoped>

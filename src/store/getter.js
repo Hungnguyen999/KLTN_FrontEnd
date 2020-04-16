@@ -18,6 +18,8 @@ export default {
     userGetCategoryObject: state => state.userCategoryState.object,
     userCourseList: state => state.userCourseState.list,
     userCourseLoading: state => state.userCourseState.loading,
+    userLessonList: state => state.userLessonState.list,
+    userLessonLoading: state => state.userLessonState.loading,
     // guest
     guestCategoryList: state => state.guestCategoryState.list,
     guestCategoryLoading: state => state.guestCategoryState.loading,

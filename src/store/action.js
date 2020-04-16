@@ -237,13 +237,13 @@ export default {
                 token: localStorage.token
             }
             let formData = new FormData()
+            formData.append('category_id', course.category_id)
             formData.append('topic_id_list', course.topics)
             formData.append('name', course.name)
             formData.append('description', course.description)
-            formData.append('moneyType_id', 1)
-            formData.append('tierPrice_id', 0)
             formData.append('image', course.imageInput)
             //formData.append('video', course.lessons[0].videoInput)
+            /*
             formData.append('lesson_count', course.lessons.length)
             for (let i = 0; i < course.lessons.length; i++) {
                 formData.append('lesson_title_' + i, course.lessons[i].title)
@@ -251,6 +251,7 @@ export default {
                 formData.append('lesson_video_' + i, course.lessons[i].videoInput)
                 formData.append('lesson_ext_' + i, course.lessons[i].videoInput.name.split('.').pop())
             }
+            */
             formData.append('token', localStorage.token)
             let apiURL = apiConfig.userCourse
             axios.post(apiURL, formData, config)
@@ -291,6 +292,24 @@ export default {
                 })
         })
     },
+    userGetInsCourse({commit}) {
+        const apiURL = apiConfig.userCourse
+        commit('user_course_request')
+        const config = {
+            token: localStorage.token
+        }
+        return new Promise((resolve, reject) => {
+            axios.get(apiURL, { params: config })
+                .then(function (response) {
+                    commit('user_course_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('user_course_error')
+                    reject(err)
+                })
+        })
+    },
     userChangePassword({ commit }, user) {
         const apiURL = apiConfig.userEditPassword
         user.token = localStorage.token
@@ -321,6 +340,25 @@ export default {
                     commit('guest_category_error')
                     // console.log(error)
                     reject(error)
+                })
+        })
+    },
+    userGetInsLesson({commit}, course_id) {
+        const apiURL = apiConfig.userLesson
+        commit('user_lesson_request')
+        const config = {
+            token: localStorage.token,
+            course_id: course_id
+        }
+        return new Promise((resolve, reject) => {
+            axios.get(apiURL, { params: config })
+                .then(function (response) {
+                    commit('user_lesson_success', response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit('user_lesson_error')
+                    reject(err)
                 })
         })
     },
