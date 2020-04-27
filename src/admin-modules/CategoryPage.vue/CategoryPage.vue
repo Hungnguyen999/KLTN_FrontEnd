@@ -52,7 +52,8 @@
                 </div>
               </template>
               <template v-slot:item.icon_class="{ item }">
-                <i class="fa-lg" :class="item.icon_class"></i>&nbsp;
+                <i class="fa-lg" :class="item.icon_class" v-if="!item.icon_class.includes('mdi')"></i>
+                <v-icon v-else>{{item.icon_class}}</v-icon>&nbsp;
                 <a
                   class="btn btn-sm"
                   @click="dialogIcon = true"
@@ -87,7 +88,7 @@
                       @click="disableOrEnableCategory(item)"
                     >mdi-cog-counterclockwise</v-icon>
                     <router-link :to="{name: 'topic-page', query: {category_id: item.category_id}}">
-                      <v-icon style="margin-right: 0.5rem">mdi-eye</v-icon>
+                      <v-icon style="margin-right: 0.5rem" title="chi tiết">mdi-eye</v-icon>
                     </router-link>
                   </div>
                   <div v-else>
@@ -107,12 +108,10 @@
                 </div>
               </template>
               <template v-slot:no-results>
-                <img
-                  style="margin-top:1rem"
-                  src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
-                />
-
-                <h4 style="margin-top: 0.5rem">Không tìm thấy từ khóa !</h4>
+                <Empty></Empty>
+              </template>
+              <template v-slot:no-data>
+                <Empty></Empty>
               </template>
             </v-data-table>
             <div>
@@ -205,8 +204,10 @@
 </template>
 <script>
 import iconList from "../../assets/iconList.json";
+import Empty from "../../components/EmptyComponent/EmptyComponent"
 import { mapGetters } from "vuex";
 export default {
+  components: {Empty},
   created() {
     this.$store.dispatch("adminGetCategories").then(() => {
       this.updateTempList();

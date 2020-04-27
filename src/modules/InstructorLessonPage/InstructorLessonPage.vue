@@ -16,32 +16,110 @@
             hide-default-footer
             :headers="headers"
             :items="userLessonList"
-            :items-per-page="5"
-            height="16rem"
+            height="25rem"
             :loading="userLessonLoading"
+            :items-per-page="perPage"
+            :page="currentPage"
           >
-            <template style="width: 30rem" v-slot:item.control="data">
-              <a href="#" @click="showDetail(data.item)">Chi tiết</a>
+            <template v-slot:item.control="data">
+              <a href="#" @click="showDetail(data.item)">Xem video</a>
+            </template>
+            <template v-slot:no-results>
+              <img
+                style="margin-top:1rem"
+                src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
+              />
+
+              <h4 style="margin-top: 0.5rem">Danh sách rỗng!</h4>
+            </template>
+            <template v-slot:no-data>
+              <img
+                style="margin-top:1rem"
+                src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
+              />
+
+              <h4 style="margin-top: 0.5rem">Danh sách rỗng!</h4>
             </template>
           </v-data-table>
-          <v-pagination circle :value="1" :length="1"></v-pagination>
+          <v-pagination
+            circle
+            v-model="currentPage"
+            :length="(Math.ceil(userLessonList.length / perPage))"
+          ></v-pagination>
         </v-card>
-        <v-dialog v-model="dialogLessonDetail" max-width="900">
+        <v-dialog persistent ref="dialog" v-model="dialogLessonDetail" max-width="1300">
           <v-card>
-            <v-card-title class="headline">{{selectedLesson.title}}</v-card-title>
-            <hr>
+            <v-card-title class="headline">{{loadSelectedLesson.title}}</v-card-title>
+            <hr />
             <div class="row" style="margin: 0">
               <div class="col-6" style="padding: 0;padding-left: 2rem">
-                <label>{{selectedLesson.description}}</label>
+                <div class="player-container">
+                  <VideoPlayer ref="video" :lesson="loadSelectedLesson" :options="videoOptions"></VideoPlayer>
+                </div>
               </div>
-              <div class="col-6" style="padding: 0">
-                video ne
+              <div class="col-6" style="padding: 0;padding-left: 2rem">
+                <div class="row" style="width: 90%;">
+                  <div class="col-4">
+                    Lượt xem: {{loadSelectedLesson.views}}
+                    <v-icon>mdi-eye</v-icon>
+                  </div>
+                  <div class="col-4">
+                    Lượt bình luận: {{loadSelectedLesson.commentCount}}
+                    <v-icon>mdi-chat</v-icon>
+                  </div>
+                </div>
+                <v-btn
+                  @click="edit = true"
+                  color="yellow darken-1"
+                  v-if="!edit"
+                  v-b-toggle.collapse-update-lesson
+                >Chỉnh sửa</v-btn>
+                <v-btn
+                  v-if="edit"
+                  @click="edit = false"
+                  color="yellow darken-1"
+                  v-b-toggle.collapse-update-lesson
+                >Hủy bỏ</v-btn>
+
+                <b-collapse id="collapse-update-lesson" class="mt-2" style="width: 90%;">
+                  <v-text-field
+                    v-model="updateLesson.title"
+                    style="margin-top: 1.5rem;"
+                    outlined
+                    dense
+                    @keydown="disableSaveUpdateButton = false"
+                    label="Tiêu đề bài học"
+                  ></v-text-field>
+                  <v-textarea
+                    v-model="updateLesson.description"
+                    style="margin-top: -1rem;"
+                    outlined
+                    @keydown="disableSaveUpdateButton = false"
+                    label="Mô tả bài học"
+                    height="10rem"
+                  ></v-textarea>
+                  <v-file-input
+                    id="videoUpdateInput"
+                    ref="videoUpdateInput"
+                    accept="video/*"
+                    @change="setVideoUpdate($event); disableSaveUpdateButton = false"
+                    style="margin-top: -1.2rem;"
+                    chips
+                    show-size
+                    label="Video bài học"
+                  ></v-file-input>
+                </b-collapse>
               </div>
             </div>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="green darken-1" text @click="dialogLessonDetail = false">Disagree</v-btn>
-              <v-btn color="green darken-1" text @click="dialogLessonDetail = false">Agree</v-btn>
+              <v-btn
+                color="blue darken-1"
+                :disabled="disableSaveUpdateButton"
+                text
+                @click="fixLesson()"
+              >Lưu</v-btn>
+              <v-btn color="blue darken-1" text @click="closeVideoModal">Hủy</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -55,7 +133,6 @@
           <v-icon style="color:white">mdi-video-outline</v-icon>&nbsp; Tạo bài học mới
         </b-button>
         <b-collapse id="collapse-new-lesson" class="mt-2">
-          <h3 style="margin-top: 0rem"></h3>
           <v-text-field
             v-model="newLesson.title"
             style="margin-top: 0.5rem;"
@@ -68,7 +145,7 @@
             style="margin-top: -1rem;"
             outlined
             label="Mô tả bài học"
-            height="5rem"
+            height="10rem"
           ></v-textarea>
           <v-file-input
             id="videoInput"
@@ -80,10 +157,9 @@
             show-size
             label="Video bài học"
           ></v-file-input>
-          {{newLesson.videoInput}}
           <div style="float:right">
             <button @click="addLesson" style="margin-right: 1rem" class="btn btn-primary">Thêm mới</button>
-            <button @click="refresh()" class="btn btn-warning">Làm mới</button>
+            <button @click="refresh()" style="margin: 0" class="btn btn-primary">Làm mới</button>
           </div>
         </b-collapse>
       </div>
@@ -93,12 +169,19 @@
 <script>
 import { mapGetters } from "vuex";
 //import UTF8 from "../../assets/UTF8.json"
+import "../../../node_modules/vue-core-video-player/dist/vue-core-video-player.umd.js";
+import apiConfig from "../../API/api.json";
+import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
 export default {
+  components: { VideoPlayer },
   created() {
-    this.$store.dispatch("userGetInsCourse").then(() => this.handleData());
-    this.$route.query.course_id != ""
-      ? (this.courseSelected = this.$route.query.course_id)
-      : "";
+    this.$store.dispatch("userGetInsCourse").then(() => {
+      if (this.$route.course_id != "") {
+        this.courseSelected = this.$route.query.course_id;
+        this.getLessons();
+      }
+      this.handleData();
+    });
   },
   data() {
     return {
@@ -128,7 +211,18 @@ export default {
       },
       courseList: [],
       selectedLesson: {},
-      dialogLessonDetail: false
+      dialogLessonDetail: false,
+      currentPage: 1,
+      perPage: 5,
+      videoURL: apiConfig.videoURL,
+      videoOptions: {
+        autoplay: false,
+        controls: true,
+        sources: []
+      },
+      disableSaveUpdateButton: true,
+      updateLesson: {},
+      edit: false
     };
   },
   methods: {
@@ -140,12 +234,27 @@ export default {
         vm.newLesson.videoInput = files[0];
       }
     },
+    setVideoUpdate(e) {
+      let tgt = e.target || window.event.srcElement;
+      let files = tgt.files;
+      let vm = this;
+      if (FileReader && files && files.length) {
+        vm.updateLesson.videoInput = files[0];
+      }
+      console.log(vm.updateLesson.videoInput)
+    },
     refresh() {
       this.newLesson = {
         title: "",
         description: ""
       };
-      document.getElementById("videoInput").value = "";
+      //document.getElementById("videoInput").value = "";
+      console.log(this.$refs.videoInput);
+    },
+    closeVideoModal() {
+      this.dialogLessonDetail = false;
+      //this.$refs.video.pause();
+      this.selectedLesson = {};
     },
     addLesson() {
       if (
@@ -155,9 +264,65 @@ export default {
         this.newLesson.videoInput != "" &&
         this.newLesson.videoInput != {}
       ) {
-        this.course.lessons.push(this.newLesson);
+        this.newLesson.course_id = this.courseSelected;
+        this.$swal.showLoading();
+        let vm = this;
+        this.$store
+          .dispatch("userInsertLesson", this.newLesson)
+          .then(response => {
+            this.handleData();
+            let icon = "";
+            response.data.RequestSuccess === true
+              ? (icon = "success")
+              : (icon = "error");
+            this.$swal({
+              icon: icon,
+              title: "Thông Báo",
+              text: response.data.msg
+            });
+          });
         this.refresh();
       } else {
+        this.$swal({
+          icon: "error",
+          title: "Thông Báo",
+          text: "Nhập thiếu thông tin"
+        });
+      }
+    },
+    fixLesson() {
+      if (
+        this.updateLesson.title != "" &&
+        this.updateLesson.description != "" &&
+        this.updateLesson.videoInput != null &&
+        this.updateLesson.videoInput != "" &&
+        this.updateLesson.videoInput != {}
+      ) {
+        this.updateLesson.course_id = this.courseSelected;
+        this.$swal.showLoading();
+        let vm = this;
+        this.$store
+          .dispatch("userUpdateLesson", this.updateLesson)
+          .then(response => {
+            this.handleData();
+            let icon = "";
+            response.data.RequestSuccess === true
+              ? (icon = "success")
+              : (icon = "error");
+            this.$swal({
+              icon: icon,
+              title: "Thông Báo",
+              text: response.data.msg
+            }).then(() => {
+              if(response.data.RequestSuccess === true) {
+                vm.dialogLessonDetail = false
+                vm.edit = false
+              }
+            });
+          });
+        this.refresh();
+      } else {
+        console.log(this.updateLesson)
         this.$swal({
           icon: "error",
           title: "Thông Báo",
@@ -175,10 +340,27 @@ export default {
     },
     getLessons() {
       this.$store.dispatch("userGetInsLesson", this.courseSelected);
+      this.currentPage = 1;
     },
     showDetail(lesson) {
-      console.log(lesson);
       this.selectedLesson = lesson;
+      this.updateLesson = {
+        lesson_id: lesson.lesson_id,
+        title: lesson.title,
+        description: lesson.description
+      };
+      this.videoOptions.sources = [
+        {
+          src:
+            this.videoURL +
+            "/" +
+            lesson.course_id +
+            "/" +
+            lesson.title +
+            ".mp4",
+          type: "video/mp4"
+        }
+      ];
       this.dialogLessonDetail = true;
     }
   },
@@ -191,6 +373,9 @@ export default {
     }),
     loadLessonList() {
       return this.course.lessons;
+    },
+    loadSelectedLesson() {
+      return this.selectedLesson;
     }
   }
 };

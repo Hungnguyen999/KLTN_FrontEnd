@@ -131,5 +131,66 @@ export default {
     },
     user_lesson_error(state) {
         state.userLessonState.loading = false
+    },
+    admin_question_bot_request(state) {
+        state.adminQuestionBotState.loading = true
+    },
+    admin_question_bot_success(state, data) {
+        state.adminQuestionBotState.loading = false
+        if(data.list) {
+            state.adminQuestionBotState.list = data.list
+        }
+        if(data.object) {
+            state.adminQuestionBotState.object = data.object
+        }
+    },
+    admin_question_bot_error(state) {
+        state.adminQuestionBotState.loading = false
+    },
+    admin_message_bot_request(state) {
+        state.adminMessageBotState.loading = true
+    },
+    admin_message_bot_success(state, data) {
+        state.adminMessageBotState.loading = false
+        if(data.list) {
+            state.adminMessageBotState.list = data.list
+        }
+        if(data.object) {
+            state.adminMessageBotState.object = data.object
+        }
+    },
+    admin_message_bot_error(state) {
+        state.adminMessageBotState.loading = false
+    },
+    guest_message_bot_request(state) {
+        state.guestMessageBotState.loading = true
+    },
+    guest_message_bot_success(state, data) {
+        state.guestMessageBotState.loading = false
+        if(data.list) {
+            state.guestMessageBotState.list = data.list
+        }
+        if(data.object) {
+            state.guestMessageBotState.object = data.object
+        }
+    },
+    guest_message_bot_error(state) {
+        state.guestMessageBotState.loading = false
+    },
+    guest_category_topCourse_request(state) {
+        state.guestCategoryWithTopCouseState.loading = true
+    },
+    guest_category_topCourse_success(state, data) {
+        state.guestCategoryWithTopCouseState.loading = false
+        if (data.list) {
+            state.guestCategoryWithTopCouseState.list = data.list
+            console.log(state.guestCategoryWithTopCouseState.list)
+        }
+        if (data.object) {
+            state.guestCategoryWithTopCouseState.object = data.object
+        }
+    },
+    guest_category_topCourse_error(state) {
+        state.guestCategoryWithTopCouseState.loading = false
     }
 }

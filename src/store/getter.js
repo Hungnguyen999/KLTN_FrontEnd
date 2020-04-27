@@ -9,6 +9,10 @@ export default {
     adminGetTopicLoading: state => state.adminTopicState.loading,
     adminGetTopics: state => state.adminTopicState.list,
     adminGetTopicObject: state => state.adminTopicState.object,
+    adminQuestionBotList: state => state.adminQuestionBotState.list,
+    adminQuestionBotLoading: state => state.adminQuestionBotState.loading,
+    adminMessageBotList: state => state.adminMessageBotState.list,
+    adminMessageBotLoading: state => state.adminMessageBotState.loading,
     // user
     mypageTab: state => state.mypageTabState.hash,
     userUserInfo: state=>state.userState.user,
@@ -20,8 +24,14 @@ export default {
     userCourseLoading: state => state.userCourseState.loading,
     userLessonList: state => state.userLessonState.list,
     userLessonLoading: state => state.userLessonState.loading,
+    userLessonObject: state => state.userLessonState.object,
     // guest
     guestCategoryList: state => state.guestCategoryState.list,
     guestCategoryLoading: state => state.guestCategoryState.loading,
-    guestCategoryObject: state => state.guestCategoryState.object
+    guestCategoryObject: state => state.guestCategoryState.object,
+    guestBotList: state => state.guestMessageBotState.list,
+    guestBotLoading: state => state.guestMessageBotState.loading,
+    guestBotObject: state => state.guestMessageBotState.object,
+    guestCategoryTopCourseList: state => state.guestCategoryWithTopCouseState.list,
+    guestCategoryTopCourseLoading: state => state.guestCategoryWithTopCouseState.loading
 }

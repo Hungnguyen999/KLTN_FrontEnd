@@ -1,12 +1,16 @@
 <template>
   <div class="my-container">
     <LeftMenu :list="list"></LeftMenu>
-    <v-app>
+    <v-app style="background: rgb(244, 243, 239)">
       <div class="instructor-control" style="position: relative;background: #f4f3ef;width: 100%">
         <AnnouceButton style="position: absolute; right: 3rem;top: 0;z-index: 2"></AnnouceButton>
-        <UserButton class="btn-user" style="position: absolute; right: 0.5rem;top: 0;z-index: 2" :account="userUserInfo" ></UserButton>
+        <UserButton
+          class="btn-user"
+          style="position: absolute; right: 0.5rem;top: 0;z-index: 2"
+          :account="userUserInfo"
+        ></UserButton>
       </div>
-      <div class="row" style="background: #f4f3ef">
+      <div class="row" style="background: #f4f3ef;height:100%">
         <div class="col-11 offset-1" style="padding-top: 2.5rem">
           <div class="my-content">
             <router-view></router-view>
@@ -18,12 +22,11 @@
 </template>
 <script>
 import AnnouceButton from "../../components/AnnouncementButton/AnnouncementButton";
-import UserButton from "../../components/UserMenuButton/UserMenuButton"
-import LeftMenu from "../../components/LeftMenu_Ins_Admin/LeftMenu_Ins_Admin"
-import { mapGetters } from "vuex"
+import UserButton from "../../components/UserMenuButton/UserMenuButton";
+import LeftMenu from "../../components/LeftMenu_Ins_Admin/LeftMenu_Ins_Admin";
+import { mapGetters } from "vuex";
 export default {
   components: { AnnouceButton, LeftMenu, UserButton },
-  
   data() {
     return {
       list: [
@@ -59,7 +62,6 @@ export default {
               title: "Thông báo",
               icon: "fas fa-circle fa-sm",
               routeName: "ins-annouce-page"
-
             }
           ]
         },
@@ -78,18 +80,19 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userUserInfo: 'userUserInfo'
+      userUserInfo: "userUserInfo"
     })
   }
 };
 </script>
 <style lang="scss" scoped>
 .instructor-control {
-    text-align: right;
-    right: 0;
-    margin: 0;
-    margin-right: 1rem;
-  }
+  text-align: right;
+  right: 0;
+  margin: 0;
+  margin-right: 1rem;
+  height: auto;
+}
 .left-menu {
   position: fixed;
   background-color: #52143e;

@@ -57,6 +57,26 @@ export const store = new Vuex.Store({
             loading: false,
             list: [],
             object: {}
+        },
+        adminQuestionBotState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        adminMessageBotState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        guestMessageBotState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        guestCategoryWithTopCouseState: {
+            loading: false,
+            list: [],
+            object: {}
         }
     },
     mutations,

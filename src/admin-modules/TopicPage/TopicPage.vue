@@ -63,7 +63,8 @@
                 </div>
               </template>
               <template v-slot:item.icon_class="{ item }">
-                <i class="fa-lg" :class="item.icon_class"></i>&nbsp;
+                <i v-if="!item.icon_class.includes('mdi')" class="fa-lg" :class="item.icon_class"></i>
+                <v-icon v-else>{{item.icon_class}}</v-icon>&nbsp;
                 <a
                   class="btn btn-sm"
                   @click="dialogIcon = true"
@@ -74,11 +75,13 @@
               <template v-slot:item.update="{item}">
                 <div style="float: right;">
                   <div v-if="topicIDSelected == '' || (loadTopicsIDSelected != item.topic_id)">
-                    
-                    <v-icon title="chỉnh sửa" style="margin-right: 0.5rem"
-                      @click="selectTopic(item)">mdi-pencil</v-icon>
                     <v-icon
-                    title="xóa"
+                      title="chỉnh sửa"
+                      style="margin-right: 0.5rem"
+                      @click="selectTopic(item)"
+                    >mdi-pencil</v-icon>
+                    <v-icon
+                      title="xóa"
                       v-if="!item.disable"
                       style="margin-right: 0.5rem"
                       @click="disableOrEnableTopic(item)"
@@ -89,18 +92,18 @@
                       style="margin-right: 0.5rem"
                       @click="disableOrEnableTopic(item)"
                     >mdi-cog-counterclockwise</v-icon>
-                    <router-link
-                      :to="{name: 'topic-page', query: {topic_id: item.topic_id}}"
-                    ><v-icon>mdi-eye</v-icon></router-link>
+                    <router-link :to="{name: 'topic-page', query: {topic_id: item.topic_id}}">
+                      <v-icon>mdi-eye</v-icon>
+                    </router-link>
                   </div>
                   <div v-else>
                     <v-icon
-                    title="lưu"
+                      title="lưu"
                       style="margin-right: 0.5rem"
                       @click="confirmUpdate()"
                     >mdi-content-save</v-icon>
                     <v-icon
-                    title="hủy"
+                      title="hủy"
                       style="margin-right: 0.5rem"
                       @click="cancel()"
                     >mdi-close-circle</v-icon>
@@ -108,20 +111,10 @@
                 </div>
               </template>
               <template v-slot:no-results>
-                <img
-                  style="margin-top:1rem"
-                  src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
-                />
-
-                <h4 style="margin-top: 0.5rem">Không tìm thấy từ khóa!</h4>
+                <Empty></Empty>
               </template>
               <template v-slot:no-data>
-                <img
-                  style="margin-top:1rem"
-                  src="https://tiki.vn/desktop/img/account/tiki-not-found-pgae.png"
-                />
-
-                <h4 style="margin-top: 0.5rem">Không tìm thấy từ khóa!</h4>
+                <Empty></Empty>
               </template>
             </v-data-table>
             <div>
@@ -217,8 +210,10 @@
 </template>
 <script>
 import iconList from "../../assets/iconList.json";
+import Empty from "../../components/EmptyComponent/EmptyComponent";
 import { mapGetters } from "vuex";
 export default {
+  components: { Empty },
   created() {
     this.$store.dispatch("adminGetTopics").then(() => {
       this.updateTempList();

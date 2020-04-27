@@ -6,7 +6,7 @@ export default {
         const apiUrl = apiConfig.adminLogin
         commit('adminLogin_request')
         return new Promise((resolve, reject) => {
-            axios.post(apiUrl, {}, { params: admin })
+            axios.post(apiUrl, admin, { params: admin })
                 .then(function (response) {
                     commit('adminLogin_success')
                     resolve(response)
@@ -292,7 +292,7 @@ export default {
                 })
         })
     },
-    userGetInsCourse({commit}) {
+    userGetInsCourse({ commit }) {
         const apiURL = apiConfig.userCourse
         commit('user_course_request')
         const config = {
@@ -327,7 +327,7 @@ export default {
                 })
         })
     },
-    guestGetCategory({commit}) {
+    guestGetCategory({ commit }) {
         return new Promise((resolve, reject) => {
             let apiURL = apiConfig.guestGetCategory
             commit('guest_category_request')
@@ -343,7 +343,7 @@ export default {
                 })
         })
     },
-    userGetInsLesson({commit}, course_id) {
+    userGetInsLesson({ commit }, course_id) {
         const apiURL = apiConfig.userLesson
         commit('user_lesson_request')
         const config = {
@@ -362,12 +362,273 @@ export default {
                 })
         })
     },
-    hackLogin({ commit }, user) {
-        console.log(commit);
-        return new Promise(() => {
-            let TEXT = user.user_id + "/" + user.password
-            const apiURL = apiConfig.hackne;
-            axios.get(apiURL, { params: { TEXT: TEXT } })
+    userInsertLesson({ commit }, lesson) {
+        return new Promise((resolve, reject) => {
+            commit('user_lesson_request')
+            const config = {
+                headers: { 'content-type': 'multipart/form-data' },
+                token: localStorage.token
+            }
+            let formData = new FormData()
+            formData.append('course_id', lesson.course_id)
+            formData.append('title', lesson.title)
+            formData.append('description', lesson.description)
+            formData.append('video', lesson.videoInput)
+            formData.append('token', localStorage.token)
+            let apiURL = apiConfig.userLesson
+            axios.post(apiURL, formData, config)
+                .then(function (response) {
+                    commit('user_lesson_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_lesson_error')
+                    reject(error)
+                })
+        })
+    },
+    userUpdateLesson({ commit }, lesson) {
+        return new Promise((resolve, reject) => {
+            commit('user_lesson_request')
+            const config = {
+                headers: { 'content-type': 'multipart/form-data' },
+                token: localStorage.token
+            }
+            let formData = new FormData()
+            formData.append('course_id', lesson.course_id)
+            formData.append('lesson_id', lesson.lesson_id)
+            formData.append('title', lesson.title)
+            formData.append('description', lesson.description)
+            formData.append('video', lesson.videoInput)
+            formData.append('token', localStorage.token)
+            let apiURL = apiConfig.userEditLesson
+            axios.post(apiURL, formData, config)
+                .then(function (response) {
+                    commit('user_lesson_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_lesson_error')
+                    reject(error)
+                })
+        })
+    },
+    adminGetQuestionBot({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminQuestionBot
+            commit('admin_question_bot_request')
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit('admin_question_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_question_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    adminInsertAnswerBot({ commit }, answerBot) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminAnswerBot
+            answerBot.token = localStorage.adminToken
+            commit('admin_question_bot_request')
+            axios.post(apiURL, {}, { params: answerBot })
+                .then(function (response) {
+                    commit('admin_question_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_question_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    adminUpdatetAnswerBot({ commit }, answerBot) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminAnswerBot
+            answerBot.token = localStorage.adminToken
+            commit('admin_question_bot_request')
+            axios.patch(apiURL, {}, { params: answerBot })
+                .then(function (response) {
+                    commit('admin_question_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_question_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    adminDeleteAnswerBot({ commit }, answerBot) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminAnswerBot
+            answerBot.token = localStorage.adminToken
+            commit('admin_question_bot_request')
+            axios.delete(apiURL, { params: answerBot })
+                .then(function (response) {
+                    commit('admin_question_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_question_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    adminInsertQuestionBot({ commit }, questionBot) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminQuestionBot
+            questionBot.token = localStorage.adminToken
+            commit('admin_question_bot_request')
+            axios.post(apiURL, {}, { params: questionBot })
+                .then(function (response) {
+                    commit('admin_question_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_question_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    adminUpdateQuestionBot({ commit }, questionBot) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminQuestionBot
+            questionBot.token = localStorage.adminToken
+            commit('admin_question_bot_request')
+            axios.patch(apiURL, {}, { params: questionBot })
+                .then(function (response) {
+                    commit('admin_question_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_question_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    adminDeleteQuestionBot({ commit }, questionBot) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminQuestionBot
+            questionBot.token = localStorage.adminToken
+            commit('admin_question_bot_request')
+            axios.delete(apiURL, { params: questionBot })
+                .then(function (response) {
+                    commit('admin_question_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_question_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    adminGetMessageBot({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminMessageBot
+            commit('admin_message_bot_request')
+            axios.get(apiURL, { params: { token: localStorage.adminToken } })
+                .then(function (response) {
+                    commit('admin_message_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_message_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    adminInsertMessageBot({ commit }, message) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminMessageBot
+            message.token = localStorage.adminToken
+            console.log(message)
+            commit('admin_message_bot_request')
+            axios.post(apiURL, {}, { params: message })
+                .then(function (response) {
+                    commit('admin_message_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_message_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    adminUpdateMessageBot({ commit }, message) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminMessageBot
+            message.token = localStorage.adminToken
+            commit('admin_message_bot_request')
+            axios.patch(apiURL, {}, { params: message })
+                .then(function (response) {
+                    commit('admin_message_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_message_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    adminDeleteMessageBot({ commit }, message) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.adminMessageBot
+            message.token = localStorage.adminToken
+            commit('admin_message_bot_request')
+            axios.delete(apiURL, { params: message })
+                .then(function (response) {
+                    commit('admin_message_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('admin_message_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    guestChatBot({ commit }, question) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.guestChatBot
+            commit('guest_message_bot_request')
+            axios.get(apiURL, { params: { question: question } })
+                .then(function (response) {
+                    commit('guest_message_bot_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('guest_message_bot_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    guestGetCategoryWithTopCourse({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.guestGetCategoryWithTopCourse
+            commit('guest_category_topCourse_request')
+            axios.get(apiURL)
+                .then(function (response) {
+                    commit('guest_category_topCourse_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('guest_category_topCourse_error')
+                    // console.log(error)
+                    reject(error)
+                })
         })
     }
 }

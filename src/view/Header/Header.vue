@@ -6,7 +6,7 @@
           <b-img
             rounded="circle"
             style="width: 4rem; height: 4rem"
-            src="https://cdn2.vectorstock.com/i/1000x1000/63/61/education-logo-vector-11136361.jpg"
+            :src="goodLearning"
           ></b-img>&nbsp;
           <span style="position: absolute;margin-top: 0.5rem;margin-left: 0.5rem">
             <div>
@@ -37,7 +37,7 @@
               class="btn normal-button"
             >Giảng Viên</a>
             <div style="border-left: 1px solid;margin-right: 1rem;"></div>
-            <button class="btn normal-button" id="mycourse">Khóa Học</button>
+            <a class="btn normal-button" id="mycourse">Khóa Học</a>
             <b-popover target="mycourse" triggers="hover" placement="top">
               <div v-for="i in 3" :key="i">
                 <ItemOfListMyCourse></ItemOfListMyCourse>
@@ -54,8 +54,8 @@
                 v-b-modal.login-modal
                 class="btn btn-outline-secondary"
                 style="margin-right: 1rem;"
-              >Log In</button>
-              <button v-b-modal.singup-modal class="btn btn-outline-danger">Sign Up</button>
+              >Đăng nhập</button>
+              <button v-b-modal.singup-modal class="btn btn-danger">Đăng ký</button>
             </div>
             <div v-if="loadStateLogin && !userUserInfoLoading">
               <button class="btn btn-default circle-button normal-button" id="cart">
@@ -127,6 +127,7 @@ import ItemOfListMyCourse from "../../components/ItemOfListMyCourse/ItemOfListMy
 import ItemOfList from "../../components/ItemOfList/ItemOfList";
 import UserMenuButton from "../../components/UserMenuButton/UserMenuButton";
 import apiConfig from "../../API/api.json";
+import goodLearning from "../../assets/goodlearning.jpg"
 import { mapGetters } from "vuex";
 export default {
   components: {
@@ -139,6 +140,7 @@ export default {
   },
   data() {
     return {
+      goodLearning: goodLearning,
       isLogin: false,
       isStudent: true,
       baseURL: apiConfig.baseURL

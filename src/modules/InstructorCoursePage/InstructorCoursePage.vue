@@ -167,8 +167,10 @@ export default {
         easing: "linear"
       });
     },
-    closeModal(value) {
+    closeModal(value, flag) {
       this.dialog = value;
+      this.courseList = this.userCourseList;
+      this.updateTempCourseList();
     }
   },
   computed: {

@@ -247,8 +247,8 @@ export default {
         this.selectedTopic.pop();
       }
     },
-    closeModal() {
-      this.$emit("closeModal", false);
+    closeModal(flag) {
+      this.$emit("closeModal", false, flag);
     },
     setImage(e) {
       let tgt = e.target || window.event.srcElement;
@@ -265,7 +265,6 @@ export default {
       }
     },
     emptyCourse() {
-      alert(this.selectedCategory + "/" + this.selectedTopic.length)
       if (
         this.course.name == "" ||
         this.selectedCategory == "" ||
@@ -288,11 +287,10 @@ export default {
             title: "Thông Báo",
             text: response.data.msg
           }).then(() => {
-            vm.closeModal()
+            vm.closeModal(true)
           });
         });
       } else {
-        console.log(this.course)
         this.$swal({
           icon: "error",
           title: "Thông Báo",

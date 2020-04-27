@@ -9,8 +9,7 @@
         aria-haspopup="true"
         aria-expanded="false"
         @mouseover="displayCol2 = false; displayCol3 = false"
-      >
-        <b-icon-document-richtext></b-icon-document-richtext>&nbsp;Thể loại
+      >Thể loại
       </button>
       <div
         class="dropdown-menu"

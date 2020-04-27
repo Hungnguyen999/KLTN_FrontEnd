@@ -1,23 +1,25 @@
 <template>
-  <div>
-    <Header :show="showHeader" v-if="!lolSkin"></Header>
+  <div style="position: relative;">
+    <Header :show="showHeader"></Header>
     <router-view></router-view>
+    <AutoAnswer></AutoAnswer>
+    <Footer v-if="false"></Footer>
   </div>
 </template>
 <script>
 import Header from "./Header/Header";
+import Footer from "./Footer/Footer"
+import AutoAnswer from "../components/AutoAnswer/AutoAnswer"
 import { CommonService } from "../service/common.service.js";
 var commonService = new CommonService();
 export default {
-  components: { Header },
+  components: { Header, AutoAnswer, Footer },
   data() {
     return {
-      lolSkin: false,
       showHeader: null,
     }
   },
   created() {
-    this.$route.name == 'skin-page' || this.$route.name =='download-skin-page' ? this.lolSkin = true : this.lolSkin = false
     if (localStorage.token) {
       this.$store.dispatch("userInfo").then(response => {
         if (response.data.errorToken == true) {

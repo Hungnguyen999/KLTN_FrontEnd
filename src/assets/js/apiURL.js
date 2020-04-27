@@ -8,10 +8,9 @@ var apiURL = {
     addToCart: apiAddress + "/addToCart",
     adminCategory: apiAddress + "/admin/category",
     adminTopic: apiAddress + "/admin/topic",
-
-
-    hackne: apiAddress + "/hackne",
-
+    adminQuestionBot: apiAddress + "/admin/bot/question",
+    adminAnswerBot: apiAddress + "/admin/bot/answer",
+    adminMessageBot: apiAddress + "/admin/bot/message",
     //// user
     user: apiAddress + "/user",
     userCategory: apiAddress +"/user/category",
@@ -20,10 +19,12 @@ var apiURL = {
     userEditInfor: apiAddress + "/user/edit/infor",
     userEditProfile: apiAddress + "/user/edit/profile",
     userLesson: apiAddress + "/user/lesson",
-
+    userEditLesson: apiAddress + "/user/lesson/edit",
 
     //guest
-    guestGetCategory: apiAddress + "/guest/category"
+    guestGetCategory: apiAddress + "/guest/category",
+    guestGetCategoryWithTopCourse: apiAddress + "/guest/category/topCourse",
+    guestChatBot: apiAddress + "/guest/bot"
 }
 
 exports.apiURL = apiURL

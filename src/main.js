@@ -1,4 +1,5 @@
 import Vue from 'vue'
+
 import App from './App.vue'
 import router from './router.js'
 import Axios from 'axios'
@@ -6,13 +7,18 @@ import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import { store } from './store/store.js'
 import VueSweetalert2 from 'vue-sweetalert2';
 import VueCoreVideoPlayer from 'vue-core-video-player'
+import 'jquery'
 
 import 'sweetalert2/dist/sweetalert2.min.css';
-
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import Slick from 'vue-slick';
 import Agile from 'vue-agile';
 import vuetify from './plugins/vuetify.js'
 import { VueContext } from 'vue-context';
+import { BSidebar } from 'bootstrap-vue'
+import { BIcon } from 'bootstrap-vue'
+Vue.component('b-icon', BIcon)
+Vue.component('b-sidebar', BSidebar)
 Vue.use(VueCoreVideoPlayer, {
   lang: {
     dashboard: {
@@ -52,17 +58,21 @@ Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(Slick)
 Vue.use(Agile)
-
+Vue.use(VueContext )
 import '../node_modules/slick-carousel/slick/slick.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-window.$ = require('jquery')
-window.JQuery = require('jquery')
 import '../node_modules/vue-context/dist/css/vue-context.css';
 Vue.prototype.$http = Axios
 
 
+
+
+
 Vue.config.productionTip = false
+
+
+
 new Vue({
   render: h => h(App),
   components: {

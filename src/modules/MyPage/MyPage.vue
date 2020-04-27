@@ -1,48 +1,65 @@
 <template>
   <div class="account-page">
     <v-app style="hegith: auto;">
-      <v-tabs hide-slider :value="mypageTab" vertical class="my-tabs">
+      <v-tabs hide-slider :value="mypageTab" vertical active-class class="my-tabs">
         <div class="tab-container">
-          <v-tab active-class="active-class" @click="goTab('info-tab')" class="my-tab">
+          <v-tab
+            :class="'info-tab' == mypageTab ? 'my-active-class' : '' "
+            @click="goTab('info-tab')"
+            class="my-tab"
+            style="color: rgba(0,0,0,.54)"
+          >
             <v-icon style="position: absolute;left: 1rem">mdi-account</v-icon>
             <span>Thông tin</span>
           </v-tab>
 
-          <v-tab active-class="active-class" @click="goTab('profile-tab')" class="my-tab">
-            <v-icon style="position: absolute;left: 1rem"> mdi-cog-counterclockwise</v-icon>
+          <v-tab
+            :class="'profile-tab' == mypageTab ? 'my-active-class' : '' "
+            @click="goTab('profile-tab')"
+            class="my-tab"
+          >
+            <v-icon style="position: absolute;left: 1rem">mdi-cog-counterclockwise</v-icon>
             <span>Giới thiệu</span>
           </v-tab>
 
-          <v-tab active-class="active-class" @click="goTab('annouce-tab')" class="my-tab">
+          <v-tab
+            :class="'annouce-tab' == mypageTab ? 'my-active-class' : '' "
+            @click="goTab('annouce-tab')"
+            class="my-tab"
+          >
             <v-icon style="position: absolute;left: 1rem">mdi-bell-alert</v-icon>
             <span style="font-size: 13px;">Thông báo</span>
           </v-tab>
 
-          <v-tab active-class="active-class" class="my-tab" @click="goTab('msg-tab')">
+          <v-tab
+            :class="'msg-tab' == mypageTab ? 'my-active-class' : '' "
+            class="my-tab"
+            @click="goTab('msg-tab')"
+          >
             <v-icon style="position: absolute;left: 1rem">mdi-chat-alert</v-icon>
             <span>Tin nhắn</span>
           </v-tab>
         </div>
         <v-tabs-items :value="mypageTab" class="list-item">
-          <InfoAdminTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></InfoAdminTab>
+          <InfoTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></InfoTab>
           <ProfileTab :account="userUserInfo"></ProfileTab>
           <AnnouceAdminTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></AnnouceAdminTab>
-          <MessageAdminTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></MessageAdminTab>
+          <MessageTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></MessageTab>
         </v-tabs-items>
       </v-tabs>
     </v-app>
   </div>
 </template>
 <script>
-import InfoAdminTab from "../../components/InfoAdminTab/InfoAdminTab";
+import InfoTab from "../../components/InfoTab/InfoTab";
 import AnnouceAdminTab from "../../components/AnnouceAdminTab/AnnouceAdminTab";
-import MessageAdminTab from "../../components/MessageAdminTab/MessageAdminTab";
-import ProfileTab from "../../components/ProfileTab/ProfileTab"
+import MessageTab from "../../components/MessageTab/MessageTab";
+import ProfileTab from "../../components/ProfileTab/ProfileTab";
 import { mapGetters } from "vuex";
 import { CommonService } from "../../service/common.service.js";
 var commonService = new CommonService();
 export default {
-  components: { ProfileTab,InfoAdminTab, AnnouceAdminTab, MessageAdminTab },
+  components: { ProfileTab, InfoTab, AnnouceAdminTab, MessageTab },
   created() {
     if (localStorage.token) {
       this.$store.dispatch("userInfo").then(response => {
@@ -78,7 +95,7 @@ a {
     text-decoration: none;
   }
 }
-.active-class {
+.my-active-class {
   color: #79589f !important;
   border-bottom: #79589f !important;
   background: whitesmoke !important;
@@ -102,7 +119,7 @@ a {
       margin-left: 1rem;
       padding-top: 1rem;
       padding-bottom: 1rem;
-      padding-left: 2rem;
+      padding-left: 1rem;
       border: 1px solid #ece8e8;
     }
   }

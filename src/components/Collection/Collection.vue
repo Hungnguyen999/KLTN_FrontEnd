@@ -1,83 +1,89 @@
 <template>
-  <div style="position: relative;padding: 0 1rem;">
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-      <button
-        class="btn collection-btn left"
-        href="#carouselExampleControls"
-        role="button"
-        data-slide="prev"
-      >
-        <i class="fas fa-chevron-left"></i>
-      </button>
-      <button
-        class="btn collection-btn right"
-        href="#carouselExampleControls"
-        role="button"
-        data-slide="next"
-      >
-        <i class="fas fa-chevron-right"></i>
-      </button>
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <div class="row">
-            <div class="col" v-for="(index) in 4" :key="index">
-              <Item :id="index"></Item>
+  <div class="my-conatiner">
+    <v-tabs style="width: 92%; margin: 5%;margin-top: 1rem">
+      <v-tab
+        @click="changeCategory(category)"
+        v-for="(category, index) in guestCategoryTopCourseList"
+        :key="index"
+      >{{category.name}}</v-tab>
+    </v-tabs>
+    <v-app class="my-container" style="margin-top: -3.5rem;height: 20rem;">
+      <v-carousel hide-delimiters style="height: 20rem;width: 90%;margin: 0 5%">
+        <v-carousel-item
+          v-for="(temp, index) in courseList"
+          :key="index"
+          style="width: 100%;height:100%"
+        >
+          <div class="my-row" style="width: 100%;">
+            <div class="item" v-for="(course, indexc) in temp.slide" :key="indexc">
+              <Item :course="course"></Item>
             </div>
           </div>
-        </div>
-
-        <div class="carousel-item">
-          <div class="row">
-            <div class="col" v-for="index1 in 4" :key="index1">
-              <Item :id="index1+5"></Item>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+        </v-carousel-item>
+      </v-carousel>
+    </v-app>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
 import Item from "../Item/Item";
-export default { 
+export default {
   components: { Item },
-  props: ['caterogy'],
+  created() {
+    this.$store.dispatch("guestGetCategoryWithTopCourse").then(() => {
+      this.topCourseList = this.guestCategoryTopCourseList[0].topCourseList;
+      this.handleTopCourseList();
+    });
+  },
   data() {
     return {
-      myOption: {
-        navButtons: false,
-        dots: false
-      }
+      categorySelected: {},
+      topCourseList: [],
+      perSlide: 5,
+      courseList: []
     };
   },
-  watch: {
-    caterogy(NewValue) {
-      this.caterogy = NewValue;
+  methods: {
+    changeCategory(category) {
+      this.categorySelected = category;
+      this.topCourseList = category.topCourseList;
+      this.handleTopCourseList();
+    },
+    handleTopCourseList() {
+      let courseList = [];
+      let indexCourseList = 0;
+      courseList[indexCourseList] = {};
+      courseList[indexCourseList].slide = [];
+      for (let i = 0; i < this.topCourseList.length; i++) {
+        if (i % this.perSlide == 0 && i != 0) {
+          indexCourseList++;
+          courseList[indexCourseList] = {};
+          courseList[indexCourseList].slide = [];
+        } else {
+          courseList[indexCourseList].slide.push(this.topCourseList[i]);
+        }
+      }
+      console.log(courseList);
+      this.courseList = courseList;
     }
   },
-  methods: {}
+  computed: {
+    ...mapGetters({
+      guestCategoryTopCourseList: "guestCategoryTopCourseList",
+      guestCategoryTopCourseLoading: "guestCategoryTopCourseLoading"
+    })
+  }
 };
 </script>
 <style lang="scss" scoped>
-.collection-btn {
-  position: absolute;
-  z-index: 2;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  top: 50%;
-  border: 1px solid silver;
-  background-color: #f3f7f7;
-  &:focus {
-    outline: 0px !important;
-    -webkit-appearance: none;
-    box-shadow: none !important;
+.my-row {
+  display: grid;
+  height: 100%;
+  grid-template-columns: 20% 20% 20% 20% 20%;
+  .item {
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
   }
-}
-.left {
-  left: -1.7rem;
-}
-.right {
-  right: -1.7rem;
 }
 </style>
