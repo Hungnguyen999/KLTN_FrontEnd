@@ -3,7 +3,7 @@
     <Header :show="showHeader"></Header>
     <router-view></router-view>
     <AutoAnswer></AutoAnswer>
-    <Footer v-if="false"></Footer>
+    <Footer></Footer>
   </div>
 </template>
 <script>
