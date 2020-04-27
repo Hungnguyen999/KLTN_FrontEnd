@@ -77,6 +77,30 @@ export const store = new Vuex.Store({
             loading: false,
             list: [],
             object: {}
+        },
+        courseState:{
+            loading: false,
+            list: []
+        },
+        userCommentState:{
+            loading: false,
+            list:[]
+        },
+        top5CourseState:{
+            loading: false,
+            list: [],
+            topfive: [],
+            count: 0,
+        },
+        infoInstructorState:{
+            loading: false,
+            totalCourse: 0,
+            infoInstructor: {}
+        },
+        detailCourseState:{
+            loading: false,
+            detailCourse: {},
+            amountReview: 0,
         }
     },
     mutations,

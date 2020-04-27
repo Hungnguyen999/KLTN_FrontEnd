@@ -47,25 +47,6 @@ export default {
                 })
         })
     },
-    AddToCart({ commit }, course_id) {
-        const apiURL = apiConfig.addToCart
-        let data = {
-            token: localStorage.token,
-            course_id: course_id
-        }
-        commit('ATC_request')
-        return new Promise((resolve, reject) => {
-            axios.post(apiURL, {}, { params: data })
-                .then(function (response) {
-                    commit('ATC_success', response.data)
-                    resolve(response);
-                })
-                .catch(function (err) {
-                    commit('ATC_error')
-                    reject(err)
-                })
-        })
-    },
     adminGetCategories({ commit }) {
         return new Promise((resolve, reject) => {
             let apiURL = apiConfig.adminCategory
@@ -630,5 +611,167 @@ export default {
                     reject(error)
                 })
         })
-    }
+    },
+    AddtoCart({ commit }, course_id) {
+        const apiURL = apiConfig.addtoCart;
+        // let a = JSON.parse(localStorage.user);
+        // let x = a.user_id;
+        let data = {
+            token: localStorage.token,
+            course_id: course_id,
+            // user_id: x,
+        };
+        // console.log('response',data.user_id);
+        commit("ATC_request");
+        return new Promise((resolve, reject) => {
+            axios
+                .post(apiURL, data, { params: data })
+                .then(function (response) {
+                    commit("ATC_success", response.data);
+
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit("ATc_error");
+                    reject(err);
+                });
+        });
+    },
+    getCarts({ commit }) {
+        const apiURL = apiConfig.carts;
+        let data = {
+            token: localStorage.token,
+        };
+        commit("ATC_request");
+        return new Promise((resolve, reject) => {
+            axios
+                .post(apiURL, {}, { params: data })
+                .then(function (response) {
+                    commit("ATC_success", response.data);
+
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit("ATc_error");
+                    reject(err);
+                });
+        });
+    },
+    deleteCarts({ commit }, course_id) {
+        const apiURL = apiConfig.deleteCarts;
+        let data = {
+            token: localStorage.token,
+            course_id: course_id,
+        };
+        commit('ATC_request');
+        return new Promise((resolve, reject) => {
+            axios
+                .delete(apiURL, { params: data })
+                .then(function (response) {
+                    commit("ATC_success", response.data);// thanh cong roi no vao mutation update carts
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit("ATc_error");
+                    reject(err);
+                });
+        })
+    },
+    getCourse({ commit }) {
+        const apiURL = apiConfig.getCourse;
+        let data = {
+            token: localStorage.token,
+        };
+        commit("getCourse_request");
+        return new Promise((resolve, reject) => {
+            axios
+                .get(apiURL, {}, { params: data })
+                .then(function (response) {
+                    commit("getCourse_success", response.data);
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit("getCourse_error");
+                    reject(err);
+                });
+        });
+    },
+    userInsertComment({ commit }, obj) {
+        const apiURL = apiConfig.userInsertComment;
+        let data = {
+            token: localStorage.token,
+            course_id: obj.course_id,
+            ratingValue: obj.ratingValue,
+            textComment: obj.textComment,
+        };
+        commit("courseComment_request");
+        return new Promise((resolve, reject) => {
+            axios
+                .post(apiURL, {}, { params: data, obj })
+                .then(function (response) {
+                    commit("courseComment_success", response.data);
+                    resolve(response)
+                })
+                .catch(function (err) {
+                    commit("courseComment_error");
+                    reject(err);
+                })
+        })
+    },
+    userGetListComment({ commit }, course_id) {
+        const apiURL = apiConfig.userGetListComment;
+        let data = {
+            token: localStorage.token,
+            course_id: course_id
+        };
+        commit("courseComment_request");
+        return new Promise((resolve, reject) => {
+            axios.get(apiURL, { params: data })
+                .then(function (response) {
+                    commit("courseComment_success", response.data);
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit("courseComment_error");
+                    reject(err);
+                })
+        })
+    },
+    userGetTop5CourseByTopic({ commit }, course_id) {
+        const apiURL = apiConfig.userGetTop5CourseByTopic;
+        let data = {
+            token: localStorage.token,
+            course_id: course_id
+        };
+        commit("top5Course_request");
+        return new Promise((resolve, reject) => {
+            axios.get(apiURL, {}, { params: data })
+                .then(function (response) {
+                    commit("top5Course_success", response.data);
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit("top5Course_error");
+                    reject(err);
+                })
+        })
+    },
+    userGetDetailCourse({ commit }, course_id) {
+        const apiURL = apiConfig.userGetDetailCourse;
+        let data = {
+            course_id: course_id
+        };
+        commit("getDetailCourse_request");
+        return new Promise((resolve, reject) => {
+            axios.get(apiURL, { params: data })
+                .then(function (response) {
+                    commit("getDetailCourse_success", response.data)
+                    resolve(response);
+                })
+                .catch(function (err) {
+                    commit("getDetailCourse_error")
+                    reject(err);
+                })
+        })
+    },
 }

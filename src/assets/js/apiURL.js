@@ -24,7 +24,19 @@ var apiURL = {
     //guest
     guestGetCategory: apiAddress + "/guest/category",
     guestGetCategoryWithTopCourse: apiAddress + "/guest/category/topCourse",
-    guestChatBot: apiAddress + "/guest/bot"
+    guestChatBot: apiAddress + "/guest/bot",
+
+
+    // hung
+    userInsertComment: apiAddress + "/user/course/insertcomment",
+    userGetListComment: apiAddress + '/guest/course/getListComment',
+    userGetTop5CourseByTopic: apiAddress + '/guest/course/getTop5CourseByTopic',
+    userGetDetailCourse: apiAddress + '/guest/course/getDetailCourse',
+    fieldCRUD: apiAddress + "/fieldCRUD",
+    addtoCart: apiAddress + "/addToCart",
+    carts: apiAddress +'/carts',
+    getCourse: apiAddress + '/getCourse',
+    deleteCarts: apiAddress + '/deleteCarts',
 }
 
 exports.apiURL = apiURL

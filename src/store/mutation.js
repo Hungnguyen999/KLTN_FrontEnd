@@ -26,15 +26,6 @@ export default {
     user_logout(state) {
         state.userState.user = {}
     },
-    ATC_request(state) {
-        state.ATCState.loading = true
-    },
-    ATC_success(state) {
-        state.ATCState.loading = false
-    },
-    ATC_error(state) {
-        state.ATCState.loading = false
-    },
     ShowHeaderAdmin(state) {
         state.headerState.hide = false
     },
@@ -192,5 +183,88 @@ export default {
     },
     guest_category_topCourse_error(state) {
         state.guestCategoryWithTopCouseState.loading = false
+    },
+    
+    field_request(state){
+        state.fieldState.loading = false
+    },
+    field_success(state){
+        state.fieldState.loading = false
+    },
+    field_error(state){
+        state.fieldState.loading = false
+    },
+    ATC_request(state){
+        state.ATCstate.loading = true
+    },
+    ATC_success(state, data){
+        if(data.carts){
+            state.ATCstate.carts = data.carts
+            //alert('here')
+           // console.log(data)
+        }
+        if(data.total){
+            state.ATCstate.total = data.total
+        }
+        state.ATCstate.loading = false
+    },
+    ATc_error(state){
+        state.ATCstate.loading = false
+    },
+    getCourse_request(state){
+        state.courseState.loading = true
+    },
+    getCourse_success(state,data){
+        state.courseState.loading = false
+        if(data.list){
+            state.courseState.list = data.list
+        }
+    },
+    getCourse_error(state){
+        state.courseState.loading = false
+    },
+    courseComment_request(state){
+        state.userCommentState.loading = true
+    },
+    courseComment_success(state,data){
+        console.log("cái này là check",data.list)
+        state.userCommentState.list = data.list
+        state.userCommentState.loading = false
+    },
+    courseComment_error(state){
+        state.userCommentState.loading = false
+    },
+    top5Course_request(state){
+        state.top5CourseState.loading = true
+    },
+    top5Course_success(state){
+        state.top5CourseState.loading = false
+    },
+    top5Course_error(state){
+        state.top5CourseState.loading = false
+    },
+    getInfoInstructor_request(state){
+        state.infoInstructorState.loading = true
+    },
+    getInfoInstructor_success(state){
+        state.infoInstructorState.loading = false
+    },
+    getInfoInstructor_error(state){
+        state.infoInstructorState.loading = false
+    },
+    getDetailCourse_request(state){
+        state.detailCourseState.loading = true
+    },
+    getDetailCourse_success(state,data){
+        if(data.detail){
+            state.detailCourseState.detailCourse = data.detail
+        }
+        if(data.amounReview){
+            state.detailCourseState.amountReview = data.amountReview
+        }
+        state.detailCourseState.loading = false
+    },
+    getDetailCourse_error(state){
+        state.detailCourseState.loading = false
     }
 }

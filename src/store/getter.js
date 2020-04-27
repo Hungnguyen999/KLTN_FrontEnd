@@ -33,5 +33,27 @@ export default {
     guestBotLoading: state => state.guestMessageBotState.loading,
     guestBotObject: state => state.guestMessageBotState.object,
     guestCategoryTopCourseList: state => state.guestCategoryWithTopCouseState.list,
-    guestCategoryTopCourseLoading: state => state.guestCategoryWithTopCouseState.loading
+    guestCategoryTopCourseLoading: state => state.guestCategoryWithTopCouseState.loading,
+
+
+    // hung
+    userCommentState: state => state.userCommentState.list,
+    userCommentStateLoading: state => state.userCommentState.loading,
+
+    userTop5CourseStateList: state => state.top5CourseState.list,
+    userTop5CourseStateLoading: state => state.top5CourseState.loading,
+    userTop5CourseStateTop5: state => state.top5CourseState.topfive,
+
+    userGetInfoInstructorTotalCourse: state => state.infoInstructorState.total,
+    userGetInfoInstructor: state => state.infoInstructorState.infoInstructor,
+    userGetInfoInstructorLoading: state => state.infoInstructorState.loading,
+    
+    userGetDetailCourseAmountReview: state => state.detailCourseState.amountReview,
+    userGetDetailCourse: state => state.detailCourseState.detailCourse,
+    userGetDetailCourseLoading: state => state.detailCourseState.loading,
+    // guest
+    loadCarts: state => state.ATCstate.carts,
+    loadCartsTotal: state => state.ATCstate.total,
+    loadCourse: state => state.courseState.list,
+    getCarts: state => state.cartState.carts,
 }

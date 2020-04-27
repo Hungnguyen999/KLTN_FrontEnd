@@ -1,102 +1,323 @@
-[
-    {
-        "category_id": 1,
-        "name": "L\u1eadp tr\u00ecnh Web",
-        "created_at": "2020-03-23 03:12:21",
-        "updated_at": "2020-03-24 07:46:03",
-        "icon_class": "mdi-iframe-outline",
-        "disable": 0,
-        "temp": [
-            {
-                "category_id": 1,
-                "course_id": 33,
-                "name": "H\u1ecdc l\u1eadp tr\u00ecnh 1",
-                "CourseCount": 3
-            },
-            {
-                "category_id": 1,
-                "course_id": 34,
-                "name": "H\u1ecdc l\u1eadp tr\u00ecnh 2",
-                "CourseCount": 2
-            },
-            {
-                "category_id": 1,
-                "course_id": 35,
-                "name": "H\u1ecdc l\u1eadp tr\u00ecnh 3",
-                "CourseCount": 1
-            }
-        ]
-    },
-    {
-        "category_id": 2,
-        "name": "L\u1eadp tr\u00ecnh Android",
-        "created_at": "2020-03-24 03:31:50",
-        "updated_at": "2020-03-24 03:31:50",
-        "icon_class": "fab fa-android",
-        "disable": 0,
-        "temp": []
-    },
-    {
-        "category_id": 3,
-        "name": "L\u1eadp tr\u00ecnh IOS",
-        "created_at": "2020-03-24 03:32:58",
-        "updated_at": "2020-03-24 07:06:04",
-        "icon_class": "fab fa-apple",
-        "disable": 0,
-        "temp": []
-    },
-    {
-        "category_id": 4,
-        "name": "L\u1eadp tr\u00ecnh C#",
-        "created_at": "2020-03-24 07:04:11",
-        "updated_at": "2020-03-24 07:06:07",
-        "icon_class": "mdi-language-csharp",
-        "disable": 0,
-        "temp": []
-    },
-    {
-        "category_id": 5,
-        "name": "L\u1eadp tr\u00ecnh C\/C++",
-        "created_at": "2020-03-24 07:42:30",
-        "updated_at": "2020-03-24 07:42:30",
-        "icon_class": "mdi-language-cpp",
-        "disable": 0,
-        "temp": []
-    },
-    {
-        "category_id": 6,
-        "name": "Microsoft Office",
-        "created_at": "2020-03-24 07:44:01",
-        "updated_at": "2020-03-26 03:21:12",
-        "icon_class": "fab fa-windows",
-        "disable": 0,
-        "temp": []
-    },
-    {
-        "category_id": 7,
-        "name": "To\u00e1n",
-        "created_at": "2020-03-24 07:48:21",
-        "updated_at": "2020-04-18 02:46:11",
-        "icon_class": "fas fa-infinity",
-        "disable": 0,
-        "temp": []
-    },
-    {
-        "category_id": 8,
-        "name": "L\u00fd",
-        "created_at": "2020-03-26 02:45:12",
-        "updated_at": "2020-03-26 02:45:12",
-        "icon_class": "mdi-atom",
-        "disable": 0,
-        "temp": []
-    },
-    {
-        "category_id": 9,
-        "name": "H\u00f3a",
-        "created_at": "2020-04-08 17:47:36",
-        "updated_at": "2020-04-08 17:47:36",
-        "icon_class": "mdi-flask",
-        "disable": 0,
-        "temp": []
-    }
-]
+{
+    "list": [
+        {
+            "category_id": 1,
+            "name": "L\u1eadp tr\u00ecnh Web",
+            "created_at": "2020-03-23 03:12:21",
+            "updated_at": "2020-03-24 07:46:03",
+            "icon_class": "mdi-iframe-outline",
+            "disable": 0,
+            "topCourseList": [
+                {
+                    "course_id": 33,
+                    "author": "vinhdlv995@gmail.com",
+                    "description": "<p>sdsfdsfddddddddddddddddddddd<\/p>",
+                    "name": "H\u1ecdc l\u1eadp tr\u00ecnh 1",
+                    "CourseCount": 3,
+                    "whatLearn": {
+                        "connection": {},
+                        "grammar": {},
+                        "processor": {},
+                        "bindings": {
+                            "select": [],
+                            "from": [],
+                            "join": [],
+                            "where": [
+                                33
+                            ],
+                            "having": [],
+                            "order": [],
+                            "union": []
+                        },
+                        "aggregate": null,
+                        "columns": null,
+                        "distinct": false,
+                        "from": "what_learn_instructor_course",
+                        "joins": null,
+                        "wheres": [
+                            {
+                                "type": "Basic",
+                                "column": "course_id",
+                                "operator": "=",
+                                "value": 33,
+                                "boolean": "and"
+                            }
+                        ],
+                        "groups": null,
+                        "havings": null,
+                        "orders": null,
+                        "limit": null,
+                        "offset": null,
+                        "unions": null,
+                        "unionLimit": null,
+                        "unionOffset": null,
+                        "unionOrders": null,
+                        "lock": null,
+                        "operators": [
+                            "=",
+                            "<",
+                            ">",
+                            "<=",
+                            ">=",
+                            "<>",
+                            "!=",
+                            "<=>",
+                            "like",
+                            "like binary",
+                            "not like",
+                            "ilike",
+                            "&",
+                            "|",
+                            "^",
+                            "<<",
+                            ">>",
+                            "rlike",
+                            "regexp",
+                            "not regexp",
+                            "~",
+                            "~*",
+                            "!~",
+                            "!~*",
+                            "similar to",
+                            "not similar to",
+                            "not ilike",
+                            "~~*",
+                            "!~~*"
+                        ],
+                        "useWritePdo": false
+                    }
+                },
+                {
+                    "course_id": 34,
+                    "author": "vinhdlv995@gmail.com",
+                    "description": "<p>sadsaasdsad<\/p>",
+                    "name": "H\u1ecdc l\u1eadp tr\u00ecnh 2",
+                    "CourseCount": 2,
+                    "whatLearn": {
+                        "connection": {},
+                        "grammar": {},
+                        "processor": {},
+                        "bindings": {
+                            "select": [],
+                            "from": [],
+                            "join": [],
+                            "where": [
+                                34
+                            ],
+                            "having": [],
+                            "order": [],
+                            "union": []
+                        },
+                        "aggregate": null,
+                        "columns": null,
+                        "distinct": false,
+                        "from": "what_learn_instructor_course",
+                        "joins": null,
+                        "wheres": [
+                            {
+                                "type": "Basic",
+                                "column": "course_id",
+                                "operator": "=",
+                                "value": 34,
+                                "boolean": "and"
+                            }
+                        ],
+                        "groups": null,
+                        "havings": null,
+                        "orders": null,
+                        "limit": null,
+                        "offset": null,
+                        "unions": null,
+                        "unionLimit": null,
+                        "unionOffset": null,
+                        "unionOrders": null,
+                        "lock": null,
+                        "operators": [
+                            "=",
+                            "<",
+                            ">",
+                            "<=",
+                            ">=",
+                            "<>",
+                            "!=",
+                            "<=>",
+                            "like",
+                            "like binary",
+                            "not like",
+                            "ilike",
+                            "&",
+                            "|",
+                            "^",
+                            "<<",
+                            ">>",
+                            "rlike",
+                            "regexp",
+                            "not regexp",
+                            "~",
+                            "~*",
+                            "!~",
+                            "!~*",
+                            "similar to",
+                            "not similar to",
+                            "not ilike",
+                            "~~*",
+                            "!~~*"
+                        ],
+                        "useWritePdo": false
+                    }
+                },
+                {
+                    "course_id": 35,
+                    "author": "vinhdlv995@gmail.com",
+                    "description": "<p>adsasd<\/p>",
+                    "name": "H\u1ecdc l\u1eadp tr\u00ecnh 3",
+                    "CourseCount": 1,
+                    "whatLearn": {
+                        "connection": {},
+                        "grammar": {},
+                        "processor": {},
+                        "bindings": {
+                            "select": [],
+                            "from": [],
+                            "join": [],
+                            "where": [
+                                35
+                            ],
+                            "having": [],
+                            "order": [],
+                            "union": []
+                        },
+                        "aggregate": null,
+                        "columns": null,
+                        "distinct": false,
+                        "from": "what_learn_instructor_course",
+                        "joins": null,
+                        "wheres": [
+                            {
+                                "type": "Basic",
+                                "column": "course_id",
+                                "operator": "=",
+                                "value": 35,
+                                "boolean": "and"
+                            }
+                        ],
+                        "groups": null,
+                        "havings": null,
+                        "orders": null,
+                        "limit": null,
+                        "offset": null,
+                        "unions": null,
+                        "unionLimit": null,
+                        "unionOffset": null,
+                        "unionOrders": null,
+                        "lock": null,
+                        "operators": [
+                            "=",
+                            "<",
+                            ">",
+                            "<=",
+                            ">=",
+                            "<>",
+                            "!=",
+                            "<=>",
+                            "like",
+                            "like binary",
+                            "not like",
+                            "ilike",
+                            "&",
+                            "|",
+                            "^",
+                            "<<",
+                            ">>",
+                            "rlike",
+                            "regexp",
+                            "not regexp",
+                            "~",
+                            "~*",
+                            "!~",
+                            "!~*",
+                            "similar to",
+                            "not similar to",
+                            "not ilike",
+                            "~~*",
+                            "!~~*"
+                        ],
+                        "useWritePdo": false
+                    }
+                }
+            ]
+        },
+        {
+            "category_id": 2,
+            "name": "L\u1eadp tr\u00ecnh Android",
+            "created_at": "2020-03-24 03:31:50",
+            "updated_at": "2020-03-24 03:31:50",
+            "icon_class": "fab fa-android",
+            "disable": 0,
+            "topCourseList": []
+        },
+        {
+            "category_id": 3,
+            "name": "L\u1eadp tr\u00ecnh IOS",
+            "created_at": "2020-03-24 03:32:58",
+            "updated_at": "2020-03-24 07:06:04",
+            "icon_class": "fab fa-apple",
+            "disable": 0,
+            "topCourseList": []
+        },
+        {
+            "category_id": 4,
+            "name": "L\u1eadp tr\u00ecnh C#",
+            "created_at": "2020-03-24 07:04:11",
+            "updated_at": "2020-03-24 07:06:07",
+            "icon_class": "mdi-language-csharp",
+            "disable": 0,
+            "topCourseList": []
+        },
+        {
+            "category_id": 5,
+            "name": "L\u1eadp tr\u00ecnh C\/C++",
+            "created_at": "2020-03-24 07:42:30",
+            "updated_at": "2020-03-24 07:42:30",
+            "icon_class": "mdi-language-cpp",
+            "disable": 0,
+            "topCourseList": []
+        },
+        {
+            "category_id": 6,
+            "name": "Microsoft Office",
+            "created_at": "2020-03-24 07:44:01",
+            "updated_at": "2020-03-26 03:21:12",
+            "icon_class": "fab fa-windows",
+            "disable": 0,
+            "topCourseList": []
+        },
+        {
+            "category_id": 7,
+            "name": "To\u00e1n",
+            "created_at": "2020-03-24 07:48:21",
+            "updated_at": "2020-04-18 02:46:11",
+            "icon_class": "fas fa-infinity",
+            "disable": 0,
+            "topCourseList": []
+        },
+        {
+            "category_id": 8,
+            "name": "L\u00fd",
+            "created_at": "2020-03-26 02:45:12",
+            "updated_at": "2020-03-26 02:45:12",
+            "icon_class": "mdi-atom",
+            "disable": 0,
+            "topCourseList": []
+        },
+        {
+            "category_id": 9,
+            "name": "H\u00f3a",
+            "created_at": "2020-04-08 17:47:36",
+            "updated_at": "2020-04-08 17:47:36",
+            "icon_class": "mdi-flask",
+            "disable": 0,
+            "topCourseList": []
+        }
+    ]
+}
