@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div v-if="!userGetDetailCourseLoading">
+    <div v-if="!guestGetDetailCourseLoading">
       <div class="row" id="stickyInfo" style="background: #29303b;position: relative;">
         <div class="col-7" id="DetailSubject">
-          <h1>{{ this.userGetDetailCourse.name }}</h1>
+          <h1>{{ this.guestGetDetailCourse.name }}</h1>
           <h2>Learn to create Process Flowcharts, User Stories, Use Cases, SWOT, RACI Matrices, Org Charts, User Stories, and more!</h2>
           <br />
           <br />
           <p>4.5 (2,800 ratings) 19,711 students</p>
-          <p>Được hướng dẫn bởi : {{ this.userGetDetailCourse.user_id }}</p>
+          <p>Được hướng dẫn bởi : {{ this.guestGetDetailCourse.user_id }}</p>
         </div>
         <div class="my-card-container">
           <img src="https://freepikpsd.com/wp-content/uploads/2019/10/course-%C3%A0-pied-png-3.png" />
@@ -870,6 +870,7 @@ export default {
 
       guestGetDetailCourseAmountReview:"guestGetDetailCourseAmountReview",
       guestGetDetailCourse: "guestGetDetailCourse",
+      guestGetDetailCourseLoading: "guestGetDetailCourseLoading"
     }),
     loadIsHover() {
       //console.log("dsadsadasdadas", this.chooseRatingValue);
