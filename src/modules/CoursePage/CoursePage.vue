@@ -4,7 +4,7 @@
       <div class="row" id="stickyInfo" style="background: #29303b;position: relative;">
         <div class="col-7" id="DetailSubject">
           <h1>{{ this.guestGetDetailCourse.name }}</h1>
-          <h2>Learn to create Process Flowcharts, User Stories, Use Cases, SWOT, RACI Matrices, Org Charts, User Stories, and more!</h2>
+          <h2>Learn to create Process Flowcharts, User Stories, Use k, SWOT, RACI Matrices, Org Charts, User Stories, and more!</h2>
           <br />
           <br />
           <p>4.5 (2,800 ratings) 19,711 students</p>
