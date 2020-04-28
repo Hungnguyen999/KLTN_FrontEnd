@@ -91,10 +91,12 @@
         </div>
       </div>
     </div>
+    <HistoryCourse></HistoryCourse>
   </div>
 </template>
 <script>
 import Collection from "../../components/Collection/Collection";
+import HistoryCourse from "../../components/GuestHistoryCourse/GuestHistoryCourse"
 import { mapGetters } from "vuex";
 export default {
   data() {
@@ -109,7 +111,7 @@ export default {
       currentCategory: {}
     };
   },
-  components: { Collection },
+  components: { Collection, HistoryCourse },
   methods: {
     changeCategory(cate) {
       this.currentCategory = cate;

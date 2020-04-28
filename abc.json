@@ -10,240 +10,99 @@
             "topCourseList": [
                 {
                     "course_id": 33,
-                    "author": "vinhdlv995@gmail.com",
-                    "description": "<p>sdsfdsfddddddddddddddddddddd<\/p>",
+                    "author": "vinh dao le van",
+                    "description": "<p>\u0111\u00e2y l\u00e0 m\u00f4 t\u1ea3 \u0111\u00e2y l\u00e0 m\u00f4 t\u1ea3 \u0111\u00e2y l\u00e0 m\u00f4 t\u1ea3 \u0111\u00e2y l\u00e0 m\u00f4 t\u1ea3 \u0111\u00e2y l\u00e0 m\u00f4 t\u1ea3<\/p>",
                     "name": "H\u1ecdc l\u1eadp tr\u00ecnh 1",
                     "CourseCount": 3,
-                    "whatLearn": {
-                        "connection": {},
-                        "grammar": {},
-                        "processor": {},
-                        "bindings": {
-                            "select": [],
-                            "from": [],
-                            "join": [],
-                            "where": [
-                                33
-                            ],
-                            "having": [],
-                            "order": [],
-                            "union": []
+                    "totalVideo": 2,
+                    "totalTime": "00:06:35",
+                    "priceTier": 0,
+                    "whatLearn": [
+                        {
+                            "learn_id": 1,
+                            "learn": "H\u1ecdc \u0111\u01b0\u1ee3c 1 trong kh\u00f3a h\u1ecdc l\u1eadp tr\u00ecnh 1",
+                            "course_id": 33,
+                            "created_at": "2020-04-27 11:07:30",
+                            "updated_at": "2020-04-27 11:07:30"
                         },
-                        "aggregate": null,
-                        "columns": null,
-                        "distinct": false,
-                        "from": "what_learn_instructor_course",
-                        "joins": null,
-                        "wheres": [
-                            {
-                                "type": "Basic",
-                                "column": "course_id",
-                                "operator": "=",
-                                "value": 33,
-                                "boolean": "and"
-                            }
-                        ],
-                        "groups": null,
-                        "havings": null,
-                        "orders": null,
-                        "limit": null,
-                        "offset": null,
-                        "unions": null,
-                        "unionLimit": null,
-                        "unionOffset": null,
-                        "unionOrders": null,
-                        "lock": null,
-                        "operators": [
-                            "=",
-                            "<",
-                            ">",
-                            "<=",
-                            ">=",
-                            "<>",
-                            "!=",
-                            "<=>",
-                            "like",
-                            "like binary",
-                            "not like",
-                            "ilike",
-                            "&",
-                            "|",
-                            "^",
-                            "<<",
-                            ">>",
-                            "rlike",
-                            "regexp",
-                            "not regexp",
-                            "~",
-                            "~*",
-                            "!~",
-                            "!~*",
-                            "similar to",
-                            "not similar to",
-                            "not ilike",
-                            "~~*",
-                            "!~~*"
-                        ],
-                        "useWritePdo": false
-                    }
+                        {
+                            "learn_id": 2,
+                            "learn": "H\u1ecdc \u0111\u01b0\u1ee3c 2 trong kh\u00f3a h\u1ecdc l\u1eadp tr\u00ecnh 1",
+                            "course_id": 33,
+                            "created_at": "2020-04-27 11:07:30",
+                            "updated_at": "2020-04-27 11:07:30"
+                        }
+                    ],
+                    "commentCount": [
+                        {
+                            "COUNT": 0
+                        }
+                    ],
+                    "rating": 0
                 },
                 {
                     "course_id": 34,
-                    "author": "vinhdlv995@gmail.com",
-                    "description": "<p>sadsaasdsad<\/p>",
+                    "author": "vinh dao le van",
+                    "description": "<p>\u0111\u00e2y l\u00e0 m\u00f4 t\u1ea3<\/p>",
                     "name": "H\u1ecdc l\u1eadp tr\u00ecnh 2",
                     "CourseCount": 2,
-                    "whatLearn": {
-                        "connection": {},
-                        "grammar": {},
-                        "processor": {},
-                        "bindings": {
-                            "select": [],
-                            "from": [],
-                            "join": [],
-                            "where": [
-                                34
-                            ],
-                            "having": [],
-                            "order": [],
-                            "union": []
+                    "totalVideo": 0,
+                    "totalTime": "00:00:00",
+                    "priceTier": 0,
+                    "whatLearn": [
+                        {
+                            "learn_id": 3,
+                            "learn": "H\u1ecdc \u0111\u01b0\u1ee3c 1 trong kh\u00f3a h\u1ecdc l\u1eadp tr\u00ecnh 2",
+                            "course_id": 34,
+                            "created_at": "2020-04-27 11:08:31",
+                            "updated_at": "2020-04-27 11:08:31"
                         },
-                        "aggregate": null,
-                        "columns": null,
-                        "distinct": false,
-                        "from": "what_learn_instructor_course",
-                        "joins": null,
-                        "wheres": [
-                            {
-                                "type": "Basic",
-                                "column": "course_id",
-                                "operator": "=",
-                                "value": 34,
-                                "boolean": "and"
-                            }
-                        ],
-                        "groups": null,
-                        "havings": null,
-                        "orders": null,
-                        "limit": null,
-                        "offset": null,
-                        "unions": null,
-                        "unionLimit": null,
-                        "unionOffset": null,
-                        "unionOrders": null,
-                        "lock": null,
-                        "operators": [
-                            "=",
-                            "<",
-                            ">",
-                            "<=",
-                            ">=",
-                            "<>",
-                            "!=",
-                            "<=>",
-                            "like",
-                            "like binary",
-                            "not like",
-                            "ilike",
-                            "&",
-                            "|",
-                            "^",
-                            "<<",
-                            ">>",
-                            "rlike",
-                            "regexp",
-                            "not regexp",
-                            "~",
-                            "~*",
-                            "!~",
-                            "!~*",
-                            "similar to",
-                            "not similar to",
-                            "not ilike",
-                            "~~*",
-                            "!~~*"
-                        ],
-                        "useWritePdo": false
-                    }
+                        {
+                            "learn_id": 4,
+                            "learn": "H\u1ecdc \u0111\u01b0\u1ee3c 2 trong kh\u00f3a h\u1ecdc l\u1eadp tr\u00ecnh 2",
+                            "course_id": 34,
+                            "created_at": "2020-04-27 11:08:31",
+                            "updated_at": "2020-04-27 11:08:31"
+                        }
+                    ],
+                    "commentCount": [
+                        {
+                            "COUNT": 0
+                        }
+                    ],
+                    "rating": 0
                 },
                 {
                     "course_id": 35,
-                    "author": "vinhdlv995@gmail.com",
-                    "description": "<p>adsasd<\/p>",
+                    "author": "vinh dao le van",
+                    "description": "<p>\u0111\u00e2y l\u00e0 m\u00f4 t\u1ea3<\/p>",
                     "name": "H\u1ecdc l\u1eadp tr\u00ecnh 3",
                     "CourseCount": 1,
-                    "whatLearn": {
-                        "connection": {},
-                        "grammar": {},
-                        "processor": {},
-                        "bindings": {
-                            "select": [],
-                            "from": [],
-                            "join": [],
-                            "where": [
-                                35
-                            ],
-                            "having": [],
-                            "order": [],
-                            "union": []
+                    "totalVideo": 0,
+                    "totalTime": "00:00:00",
+                    "priceTier": 0,
+                    "whatLearn": [
+                        {
+                            "learn_id": 5,
+                            "learn": "H\u1ecdc \u0111\u01b0\u1ee3c 1 trong kh\u00f3a h\u1ecdc l\u1eadp tr\u00ecnh 3",
+                            "course_id": 35,
+                            "created_at": "2020-04-27 11:08:55",
+                            "updated_at": "2020-04-27 11:08:55"
                         },
-                        "aggregate": null,
-                        "columns": null,
-                        "distinct": false,
-                        "from": "what_learn_instructor_course",
-                        "joins": null,
-                        "wheres": [
-                            {
-                                "type": "Basic",
-                                "column": "course_id",
-                                "operator": "=",
-                                "value": 35,
-                                "boolean": "and"
-                            }
-                        ],
-                        "groups": null,
-                        "havings": null,
-                        "orders": null,
-                        "limit": null,
-                        "offset": null,
-                        "unions": null,
-                        "unionLimit": null,
-                        "unionOffset": null,
-                        "unionOrders": null,
-                        "lock": null,
-                        "operators": [
-                            "=",
-                            "<",
-                            ">",
-                            "<=",
-                            ">=",
-                            "<>",
-                            "!=",
-                            "<=>",
-                            "like",
-                            "like binary",
-                            "not like",
-                            "ilike",
-                            "&",
-                            "|",
-                            "^",
-                            "<<",
-                            ">>",
-                            "rlike",
-                            "regexp",
-                            "not regexp",
-                            "~",
-                            "~*",
-                            "!~",
-                            "!~*",
-                            "similar to",
-                            "not similar to",
-                            "not ilike",
-                            "~~*",
-                            "!~~*"
-                        ],
-                        "useWritePdo": false
-                    }
+                        {
+                            "learn_id": 6,
+                            "learn": "H\u1ecdc \u0111\u01b0\u1ee3c 2 trong kh\u00f3a h\u1ecdc l\u1eadp tr\u00ecnh 3",
+                            "course_id": 35,
+                            "created_at": "2020-04-27 11:08:55",
+                            "updated_at": "2020-04-27 11:08:55"
+                        }
+                    ],
+                    "commentCount": [
+                        {
+                            "COUNT": 0
+                        }
+                    ],
+                    "rating": 0
                 }
             ]
         },

@@ -28,7 +28,7 @@
                 <b>
                   <startRating
                     :inline="true"
-                    :rating="3.6"
+                    :rating="course.rating"
                     :increment="0.1"
                     :fixed-points="1"
                     :star-size="18"
@@ -36,11 +36,12 @@
                   ></startRating>
                 </b>
                 &nbsp;
-                <i style="font-size: 13px">(789456)</i>
+                <i style="font-size: 13px">({{course.commentCount}})</i>
               </div>
               <div style="width: 100%;position: relative;text-align: right">
                 <span>
-                  <h4>$12.99</h4>
+                  <h4 v-if="course.priceTier!=0">{{course.priceTier}} VND</h4>
+                  <h4 v-else>Free</h4>
                 </span>
               </div>
             </v-card-text>
@@ -75,18 +76,27 @@
               <v-btn style="width: 100%" class="addCartButton">Thêm vào giỏ hàng</v-btn>
             </div>
             <div class="col-2">
-              <button class="btn" @click="likeOrUnlike()" @mouseover="hoverHeart = true" @mouseout="hoverHeart = false">
-                <i
-                  style="font-size: 2rem;margin-top: -0.4rem;color: red"
-                  v-if="!hoverHeart"
-                  class="far fa-heart"
-                ></i>
-                <i
-                  style="font-size: 2rem;margin-top: -0.4rem;color: red"
-                  v-if="hoverHeart"
-                  class="fas fa-heart"
-                ></i>
+              <button
+                style="background-color: transparent;border: none;"
+                class="btn-like"
+                v-if="!userCourseLikeLoading"
+                @click="likeOrUnlike()"
+                @mouseover="hoverHeart = true"
+                @mouseout="hoverHeart = false"
+                @mouseleave="hoverHeart = false"
+              >
+                <div v-if="!hoverHeart">
+                  <v-icon style="font-size: 2rem;color: red" v-if="!liked">mdi-heart-outline</v-icon>
+                  <v-icon style="font-size: 2rem;color: red" v-if="liked">mdi-heart</v-icon>
+                </div>
+                <v-icon style="font-size: 2rem;color: red" v-if="hoverHeart">mdi-heart</v-icon>
               </button>
+              <v-progress-circular
+                indeterminate
+                color="red"
+                v-if="userCourseLikeLoading"
+                :loading="userCourseLikeLoading"
+              ></v-progress-circular>
             </div>
           </div>
         </v-card-actions>
@@ -96,22 +106,43 @@
 </template>
 <script>
 import startRating from "../../../node_modules/vue-star-rating/src/star-rating";
+import { mapGetters } from "vuex";
 export default {
   components: { startRating },
   props: ["course"],
   data() {
     return {
       hoverHeart: false,
-      isHover: false,
-      readMore: false
+      readMore: false,
+      liked: false
     };
   },
   methods: {
     likeOrUnlike() {
-      this.$store.dispatch('userLikeOrUnLikeCourseLike', this.course.course_id)
+      this.$store
+        .dispatch("userLikeOrUnLikeCourseLike", this.course.course_id)
+        .then(() => this.checkLike());
+    },
+    checkLike() {
+      let flag = false;
+      for (let i = 0; i < this.userCourseLikeList.length; i++) {
+        if (this.userCourseLikeList[i].course_id == this.course.course_id) {
+          this.liked = true;
+          flag = true;
+          break;
+        }
+      }
+      if (flag === false) {
+        this.liked = false;
+        this.hoverHeart = false;
+      }
     }
   },
   computed: {
+    ...mapGetters({
+      userCourseLikeList: "userCourseLikeList",
+      userCourseLikeLoading: "userCourseLikeLoading"
+    }),
     summaryName() {
       if (this.course.name.length > 40) {
         return this.course.name.substring(0, 40) + "...";
@@ -121,9 +152,6 @@ export default {
       if (this.course.author.length > 20) {
         return this.course.author.substring(0, 20) + "...";
       } else return this.course.author;
-    },
-    loadIsHover() {
-      return this.isHover;
     }
   }
 };
@@ -147,7 +175,13 @@ export default {
 }
 button:focus {
   outline: 0px !important;
-    -webkit-appearance: none;
-    box-shadow: none !important;
+  -webkit-appearance: none;
+  box-shadow: none !important;
+}
+.btn-like {
+  background-color: transparent !important;
+  &:hover {
+    background-color: transparent !important;
+  }
 }
 </style>
