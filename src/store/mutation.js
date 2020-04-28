@@ -245,5 +245,20 @@ export default {
     },
     guest_getDetailCourse_error(state){
         state.guestDetailCourseState.loading = false
+    },
+    user_course_like_request(state) {
+        state.userCourseLike.loading = true
+    },
+    user_course_like_success(state, data) {
+        state.userCourseLike.loading = false
+        if(data.list) {
+            state.userCourseLike.list = data.list
+        }
+        if(data.object) {
+            state.userCourseLike.object = data.object
+        }
+    },
+    user_course_like_error(state) {
+        state.userCourseLike.loading = false
     }
 }
