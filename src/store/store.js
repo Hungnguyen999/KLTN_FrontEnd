@@ -24,7 +24,7 @@ export const store = new Vuex.Store({
             user: {},
             loading: false,
         },
-        ATCState: {
+        userATCState: {
             loading: false,
             cart: {}
         },
@@ -86,7 +86,7 @@ export const store = new Vuex.Store({
             loading: false,
             list:[]
         },
-        top5CourseState:{
+        guestTop5CourseState:{
             loading: false,
             list: [],
             topfive: [],
@@ -97,7 +97,7 @@ export const store = new Vuex.Store({
             totalCourse: 0,
             infoInstructor: {}
         },
-        detailCourseState:{
+        guestDetailCourseState:{
             loading: false,
             detailCourse: {},
             amountReview: 0,

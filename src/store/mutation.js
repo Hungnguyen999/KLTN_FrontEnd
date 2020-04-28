@@ -185,63 +185,42 @@ export default {
         state.guestCategoryWithTopCouseState.loading = false
     },
     
-    field_request(state){
-        state.fieldState.loading = false
+    user_ATC_request(state){
+        state.userATCState.loading = true
     },
-    field_success(state){
-        state.fieldState.loading = false
-    },
-    field_error(state){
-        state.fieldState.loading = false
-    },
-    ATC_request(state){
-        state.ATCstate.loading = true
-    },
-    ATC_success(state, data){
+    user_ATC_success(state, data){
         if(data.carts){
-            state.ATCstate.carts = data.carts
+            state.userATCState.carts = data.carts
             //alert('here')
-           // //console.log(data)
+            console.log(data.carts)
         }
         if(data.total){
-            state.ATCstate.total = data.total
+            state.userATCState.total = data.total
         }
-        state.ATCstate.loading = false
+        state.userATCState.loading = false
     },
-    ATc_error(state){
-        state.ATCstate.loading = false
+    user_ATC_error(state){
+        state.userATCState.loading = false
     },
-    getCourse_request(state){
-        state.courseState.loading = true
-    },
-    getCourse_success(state,data){
-        state.courseState.loading = false
-        if(data.list){
-            state.courseState.list = data.list
-        }
-    },
-    getCourse_error(state){
-        state.courseState.loading = false
-    },
-    courseComment_request(state){
+    user_courseComment_request(state){
         state.userCommentState.loading = true
     },
-    courseComment_success(state,data){
-        //console.log("cái này là check",data.list)
+    user_courseComment_success(state,data){
+        console.log("cái này là check",data.list)
         state.userCommentState.list = data.list
         state.userCommentState.loading = false
     },
-    courseComment_error(state){
+    user_courseComment_error(state){
         state.userCommentState.loading = false
     },
-    top5Course_request(state){
-        state.top5CourseState.loading = true
+    guest_top5Course_request(state){
+        state.guestTop5CourseState.loading = true
     },
-    top5Course_success(state){
-        state.top5CourseState.loading = false
+    guest_top5Course_success(state){
+        state.guestTop5CourseState.loading = false
     },
-    top5Course_error(state){
-        state.top5CourseState.loading = false
+    guest_top5Course_error(state){
+        state.guestTop5CourseState.loading = false
     },
     getInfoInstructor_request(state){
         state.infoInstructorState.loading = true
@@ -252,34 +231,19 @@ export default {
     getInfoInstructor_error(state){
         state.infoInstructorState.loading = false
     },
-    getDetailCourse_request(state){
-        state.detailCourseState.loading = true
+    guest_getDetailCourse_request(state){
+        state.guestDetailCourseState.loading = true
     },
-    getDetailCourse_success(state,data){
+    guest_getDetailCourse_success(state,data){
         if(data.detail){
-            state.detailCourseState.detailCourse = data.detail
+            state.guestDetailCourseState.detailCourse = data.detail
         }
         if(data.amounReview){
-            state.detailCourseState.amountReview = data.amountReview
+            state.guestDetailCourseState.amountReview = data.amountReview
         }
-        state.detailCourseState.loading = false
+        state.guestDetailCourseState.loading = false
     },
-    getDetailCourse_error(state){
-        state.detailCourseState.loading = false
-    },
-    user_course_like_request(state) {
-        state.userCourseLike.loading = true
-    },
-    user_course_like_success(state, data) {
-        state.userCourseLike.loading = false
-        if(data.list) {
-            state.userCourseLike.list = data.list
-        }
-        if(data.object) {
-            state.userCourseLike.object = data.object
-        }
-    },
-    user_course_like_error(state) {
-        state.userCourseLike.loading = false
+    guest_getDetailCourse_error(state){
+        state.guestDetailCourseState.loading = false
     }
 }

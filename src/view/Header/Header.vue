@@ -55,10 +55,10 @@
               <button v-b-modal.singup-modal class="btn btn-danger">Đăng ký</button>
             </div>
             <div v-if="loadStateLogin && !userUserInfoLoading">
-              <button class="btn btn-default circle-button normal-button" id="cart">
+              <router-link :to="{ name: 'cart-page' }" class="btn btn-default circle-button normal-button" id="cart">
                 <i class="fa fa-shopping-cart"></i>
                 <b-badge style="margin-left: 0.5rem" variant="light">4</b-badge>
-              </button>
+              </router-link>
               <b-popover target="cart" triggers="hover" placement="top">
                 <div v-for="i in 3" :key="i">
                   <ItemOfList></ItemOfList>

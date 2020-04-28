@@ -3,12 +3,12 @@
   <div>
     <div class="row" id="stickyInfo" style="background: #29303b;position: relative;">
       <div class="col-7" id="DetailSubject">
-        <h1>{{ this.userGetDetailCourse.name }}</h1>
+        <h1>{{ this.guestGetDetailCourse.name }}</h1>
         <h2>Learn to create Process Flowcharts, User Stories, Use Cases, SWOT, RACI Matrices, Org Charts, User Stories, and more!</h2>
         <br />
         <br />
         <p>4.5 (2,800 ratings) 19,711 students</p>
-        <p>Được hướng dẫn bởi : {{ this.userGetDetailCourse.user_id }}</p>
+        <p>Được hướng dẫn bởi : {{ this.guestGetDetailCourse.user_id }}</p>
       </div>
       <div class="my-card-container">
         <img src="https://freepikpsd.com/wp-content/uploads/2019/10/course-%C3%A0-pied-png-3.png" />
@@ -24,8 +24,8 @@
             </div>
           </div>
 
-          <button class="btn btn-danger" @click="AddtoCartDB(1)">Add To Cart</button>
-          <button class="btn" style="border: 1px solid black">Go To Cart</button>
+          <button class="btn btn-danger" @click="AddtoCartDB()">Add To Cart</button>
+          <router-link :to='{name:"cart-page"}' class="btn" style="border: 1px solid black;width:100%;height:2.5rem;color:black;">Go To Cart</router-link>
           <ul>
             <p style="font-size: 15pt;">This course includes</p>
             <li>29 hours on-demand video</li>
@@ -77,7 +77,7 @@
     <div class id="description-container">
       <h2>Description</h2>
       <p>
-      {{ this.userGetDetailCourse.description }}
+      {{ this.guestGetDetailCourse.description }}
         <span
           id="dots"
         >...</span>
@@ -576,15 +576,15 @@ export default {
   },
   methods: {
     getDetailCourse(){
-      this.$store.dispatch("userGetDetailCourse",this.$route.params.id).then(()=>{
-        console.log("userGetDetailCourse",this.userGetDetailCourse)
-        console.log("amountReview",this.userGetDetailCourseAmountReview)
+      this.$store.dispatch("guestGetDetailCourse",this.$route.params.id).then(()=>{
+        console.log("guestGetDetailCourse",this.guestGetDetailCourse)
+        console.log("amountReview",this.guestGetDetailCourseAmountReview)
       })
     },
     getPosts() {
       var vm = this
-      this.$store.dispatch("userGetListComment",this.$route.params.id).then(()=> {
-          console.log('data',this.userCommentState.length)
+      this.$store.dispatch("guestGetListComment",this.$route.params.id).then(()=> {
+          console.log('data',this.userCommentState)
           vm.listComment = this.userCommentState;
           let comment;
           for (let i = 0; i < this.userCommentState.length; i++) {
@@ -597,11 +597,10 @@ export default {
     },
     getTop5course(){
       var vm = this
-      this.$store.dispatch("userGetTop5CourseByTopic",this.$route.params.id).then(function(response){
+      this.$store.dispatch("guestGetTop5CourseByTopic",this.$route.params.id).then(function(response){
         console.log("list",response.data.list);
         console.log("top5",response.data.topfive)
         vm.Top5Course = response.data.topfive;
-        console.log("casdsadkhfjkds",this.Top5Course)
       })
     },
     getInfoInstructor(){
@@ -694,7 +693,7 @@ export default {
       Swal.showLoading();
       console.log("Nó chạy vào addtocart r này");
       this.$store
-        .dispatch("AddtoCart", this.$route.params.id) //this.$route.params.id  : cái này ở trong router.js
+        .dispatch("userAddtoCart", this.$route.params.id) //this.$route.params.id  : cái này ở trong router.js
         .then(function(response) {
           let icon = "success";
           if (response.data.RequestSuccess == false) {
@@ -834,8 +833,8 @@ export default {
       userTop5CourseStateList: "userTop5CourseStateList",
       userTop5CourseStateTop5:"userTop5CourseStateTop5",
 
-      userGetDetailCourseAmountReview:"userGetDetailCourseAmountReview",
-      userGetDetailCourse: "userGetDetailCourse",
+      guestGetDetailCourseAmountReview:"guestGetDetailCourseAmountReview",
+      guestGetDetailCourse: "guestGetDetailCourse",
     }),
     loadIsHover() {
       //console.log("dsadsadasdadas", this.chooseRatingValue);

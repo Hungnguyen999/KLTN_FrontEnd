@@ -29,14 +29,16 @@ var apiURL = {
 
     // hung
     userInsertComment: apiAddress + "/user/course/insertcomment",
-    userGetListComment: apiAddress + '/guest/course/getListComment',
-    userGetTop5CourseByTopic: apiAddress + '/guest/course/getTop5CourseByTopic',
-    userGetDetailCourse: apiAddress + '/guest/course/getDetailCourse',
-    fieldCRUD: apiAddress + "/fieldCRUD",
-    addtoCart: apiAddress + "/addToCart",
-    carts: apiAddress +'/carts',
+    guestGetListComment: apiAddress + "/guest/course/getlistcomment",
+    guestGetTop5CourseByTopic: apiAddress + "/guest/course/gettop5course",
+    guestGetDetailCourse: apiAddress + "/guest/course/getdetailcourse",
+    guestGetInfoInstructor: apiAddress + "/guest/course/getinfoinstructor",
+    
+    userAddtoCart: apiAddress + "/user/addtocart",
+    userGetCart: apiAddress +'/user/getcart',
+    userDeleteCarts: apiAddress + '/deleteCarts',
     getCourse: apiAddress + '/getCourse',
-    deleteCarts: apiAddress + '/deleteCarts',
+
 }
 
 exports.apiURL = apiURL

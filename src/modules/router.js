@@ -9,6 +9,7 @@ import InstructorCoursePage from "./InstructorCoursePage/InstructorCoursePage"
 import InstructorLessonPage from "./InstructorLessonPage/InstructorLessonPage"
 import InstructorMessagePage from "./InstructorMessagePage/InstructorMessagePage"
 import InstructorAnnoucementPage from "./InstructorAnnoucementPage/InstructorAnnoucementPage"
+import Cart from "./Cart/Cart.vue";
 export default [
     // Guest
     {
@@ -36,6 +37,11 @@ export default [
         path: '/mypage',
         name: 'my-page',
         component: MyPage
+    },
+    {
+        path: '/cart',
+        name: 'cart-page',
+        component: Cart
     },
     {
         path: '/instructor',

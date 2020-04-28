@@ -79,10 +79,11 @@
               </div>
             </div>
           </div>
-
+      
           <div class="row" id="body" v-else>
+                <h1>sdaaaaaaaa{{ this.userLoadCart }}</h1>
             <div class="col-8">
-              <div class="row" id="rowCart" v-for="(item,index) in loadCarts" :key="index">
+              <div class="row" id="rowCart" v-for="(item,index) in userLoadCart" :key="index">
                 <div class="col-2">
                   <img
                     alt="The Complete Storytelling Course for Speaking &amp; Presenting"
@@ -185,18 +186,16 @@ export default {
     this.types = Object.keys(this.$refs.skeleton.rootTypes);
   },
   created() {
-    this.$store.dispatch("getCarts").then(() => {
+    this.$store.dispatch("userGetCart").then(() => {
       this.SOF_getCarts = true;
-      this.amountCourse = this.loadCarts.length;
-      console.log("dsad", this.loadCarts);
-      console.log("Đây là loadCartsTotal", this.loadCartsTotal);
-      this.totalCart = this.loadCartsTotal;
+      console.log("dsad", this.userLoadCart);
+      console.log("Đây là loadCartsTotal", this.userLoadCartTotal);
+      this.totalCart = this.userLoadCartTotal;
     });
   },
 
   methods: {
     deleteCarts(index) {
-      console.log("index", index);
       Swal.fire({
         title: "Xóa khóa học khỏi giỏ hàng ?",
         text: "Thao tác sẽ không thể hoàn lại !",
@@ -207,14 +206,14 @@ export default {
         confirmButtonText: "Xóa"
       }).then(result => {
         if (result.value) {
-          this.$store.dispatch("deleteCarts", index).then(response => {
+          this.$store.dispatch("userDeleteCart", index).then(response => {
             console.log("Đây là id của khóa học trong carts", index);
             console.log("here", response.data);
-            this.amountCourse = this.loadCarts.length;
-            this.$store.dispatch("getCarts").then(() => {
+            this.amountCourse = this.userLoadCart.length;
+            this.$store.dispatch("userGetCart").then(() => {
               this.SOF_getCarts = true;
-              this.amountCourse = this.loadCarts.length;
-              this.totalCart = this.loadCartsTotal;
+              this.amountCourse = this.userLoadCart.length;
+              this.totalCart = this.userLoadCartTotal;
             });
           });
           Swal.fire("Đã xóa !", "Đã xóa khóa học", "success");
@@ -227,8 +226,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      loadCarts: "loadCarts",
-      loadCartsTotal: "loadCartsTotal"
+      userLoadCart: "userLoadCart",
+      userLoadCartTotal: "userLoadCartTotal"
     })
   }
 };

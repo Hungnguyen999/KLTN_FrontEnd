@@ -1,5 +1,5 @@
 {
-    "apiURL": "http://localhost:8080/KLTN-Server/public",
+    "apiURL": "http://localhost:8080/KLTN-2020-update/KLTN-Server/public",
     "baseURL": "http://localhost:8081",
     "apiURLOnline": "https://goodlearningserver.herokuapp.com",
     "baseURLOnline": "https://goodlearningclient.herokuapp.com",

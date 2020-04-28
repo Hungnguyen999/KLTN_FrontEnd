@@ -49,13 +49,13 @@ export default {
     userGetInfoInstructorTotalCourse: state => state.infoInstructorState.total,
     userGetInfoInstructor: state => state.infoInstructorState.infoInstructor,
     userGetInfoInstructorLoading: state => state.infoInstructorState.loading,
+    userLoadCart: state => state.userATCState.carts,
+    userLoadCartTotal: state => state.userATCState.total,
     
-    userGetDetailCourseAmountReview: state => state.detailCourseState.amountReview,
-    userGetDetailCourse: state => state.detailCourseState.detailCourse,
-    userGetDetailCourseLoading: state => state.detailCourseState.loading,
     // guest
-    loadCarts: state => state.ATCstate.carts,
-    loadCartsTotal: state => state.ATCstate.total,
+    guestGetDetailCourseAmountReview: state => state.guestDetailCourseState.amountReview,
+    guestGetDetailCourse: state => state.guestDetailCourseState.detailCourse,
+    guestGetDetailCourseLoading: state => state.guestDetailCourseState.loading,
+
     loadCourse: state => state.courseState.list,
-    getCarts: state => state.cartState.carts,
 }
