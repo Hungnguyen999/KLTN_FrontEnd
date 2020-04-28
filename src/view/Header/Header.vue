@@ -3,11 +3,7 @@
     <div class="page-container">
       <b-navbar toggleable="lg" type="light" variant="default">
         <b-navbar-brand :href="baseURL">
-          <b-img
-            rounded="circle"
-            style="width: 4rem; height: 4rem"
-            :src="goodLearning"
-          ></b-img>&nbsp;
+          <b-img rounded="circle" style="width: 4rem; height: 4rem" :src="goodLearning"></b-img>&nbsp;
           <span style="position: absolute;margin-top: 0.5rem;margin-left: 0.5rem">
             <div>
               <b>GoodLearning</b>
@@ -49,6 +45,7 @@
             <div v-if="!loadStateLogin && !userUserInfoLoading">
               <button class="btn btn-default circle-button normal-button">
                 <i class="fa fa-shopping-cart"></i>
+                <b-badge style="margin-left: 0.5rem" variant="light">4</b-badge>
               </button>
               <button
                 v-b-modal.login-modal
@@ -60,6 +57,7 @@
             <div v-if="loadStateLogin && !userUserInfoLoading">
               <button class="btn btn-default circle-button normal-button" id="cart">
                 <i class="fa fa-shopping-cart"></i>
+                <b-badge style="margin-left: 0.5rem" variant="light">4</b-badge>
               </button>
               <b-popover target="cart" triggers="hover" placement="top">
                 <div v-for="i in 3" :key="i">
@@ -76,13 +74,26 @@
                 class="btn btn-default circle-button normal-button"
               >
                 <i class="fas fa-heart" style="color: red;"></i>
+                <b-badge
+                  style="margin-left: 0.5rem"
+                  variant="light"
+                  v-if="userCourseLikeList.course != null"
+                >{{userCourseLikeList.course.length}}</b-badge>
               </button>
               <b-popover target="like" triggers="hover" placement="top">
-                <div v-for="i in 3" :key="i">
-                  <ItemOfList></ItemOfList>
+                <div v-for="(course,index) in userCourseLikeList" :key="index">
+                  <ItemOfList :Item="course.course"></ItemOfList>
                 </div>
                 <div style="margin-top: 1rem;width:100%">
-                  <button style="width:100%;" class="btn btn-info">Xem thêm</button>
+                  <button
+                    style="width:100%;"
+                    class="btn btn-info"
+                    v-if="userCourseLikeList.course != null && userCourseLikeList.course.length > 3"
+                  >Xem thêm</button>
+                  <h5
+                    v-if="(userCourseLikeList.course != null && userCourseLikeList.course.length==0)"
+                    class="text-center"
+                  >Danh sách rỗng!</h5>
                 </div>
               </b-popover>
               <button
@@ -127,7 +138,7 @@ import ItemOfListMyCourse from "../../components/ItemOfListMyCourse/ItemOfListMy
 import ItemOfList from "../../components/ItemOfList/ItemOfList";
 import UserMenuButton from "../../components/UserMenuButton/UserMenuButton";
 import apiConfig from "../../API/api.json";
-import goodLearning from "../../assets/goodlearning.jpg"
+import goodLearning from "../../assets/goodlearning.jpg";
 import { mapGetters } from "vuex";
 export default {
   components: {
@@ -149,22 +160,22 @@ export default {
   props: ["show"],
   watch: {
     show(newVal) {
-      if(newVal!=null) {
-        this.isStudent = newVal
+      if (newVal != null) {
+        this.isStudent = newVal;
       }
     }
   },
   methods: {},
   created() {
-    console.log(JSON.stringify(this.userUserInfo) !== JSON.stringify({}));
+    this.$store.dispatch("userGetCourseLike");
     if (JSON.stringify(this.userUserInfo) !== JSON.stringify({}))
       this.isLogin = true;
     else this.isLogin = false;
     if (this.$route.meta.instructor == true) {
       this.isStudent = false;
     }
-    if(this.show != null) {
-      this.isStudent = this.show
+    if (this.show != null) {
+      this.isStudent = this.show;
     }
   },
   updated() {
@@ -175,7 +186,9 @@ export default {
   computed: {
     ...mapGetters({
       userUserInfo: "userUserInfo",
-      userUserInfoLoading: "userUserInfoLoading"
+      userUserInfoLoading: "userUserInfoLoading",
+      userCourseLikeList: "userCourseLikeList",
+      userCourseLikeLoading: "userCourseLikeLoading"
     }),
     loadStateLogin() {
       return this.isLogin;

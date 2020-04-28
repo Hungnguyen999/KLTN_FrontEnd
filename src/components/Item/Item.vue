@@ -1,9 +1,18 @@
 <template>
   <div>
-    <v-menu open-on-hover offset-x :close-on-click="false" :close-on-content-click="false">
+    <v-menu
+      style="z-index: 3"
+      open-on-hover
+      offset-x
+      :close-on-click="false"
+      :close-on-content-click="false"
+    >
       <template v-slot:activator="{ on }">
         <v-card v-on="on" style="width: 100%;height: 100%;background: white;">
-          <router-link class="item-link" :to="{name: 'about-page'}">
+          <router-link
+            class="item-link"
+            :to="{name: 'course-detail-page', params: {id: course.course_id}}"
+          >
             <v-img style="width: 100%;height: 8rem" src="https://picsum.photos/600/300/?image=25"></v-img>
             <v-card-text style="color: black;height: 100%;">
               <div>
@@ -47,10 +56,12 @@
         </v-card-subtitle>
         <v-card-subtitle style="margin-top: -1rem;margin-left: -1rem;font-size: 12px">
           <span>
-            <v-icon>mdi-arrow-left-drop-circle</v-icon>&nbsp;{{course.totalVideo}} video
+            <v-icon>mdi-arrow-left-drop-circle</v-icon>
+            &nbsp;{{course.totalVideo}} video
           </span>
           <span style="margin-left: 2rem">
-            <v-icon>mdi-alarm</v-icon>&nbsp;{{course.totalTime}} giờ
+            <v-icon>mdi-alarm</v-icon>
+            &nbsp;{{course.totalTime}}
           </span>
         </v-card-subtitle>
         <div v-html="course.description"></div>
@@ -59,7 +70,25 @@
           <li v-for="(learn,index) in course.whatLearn" :key="index">{{learn.learn}}</li>
         </ul>
         <v-card-actions>
-          <v-btn class="addCartButton">Thêm vào giỏ hàng</v-btn>
+          <div class="row">
+            <div class="col-9">
+              <v-btn style="width: 100%" class="addCartButton">Thêm vào giỏ hàng</v-btn>
+            </div>
+            <div class="col-2">
+              <button class="btn" @click="likeOrUnlike()" @mouseover="hoverHeart = true" @mouseout="hoverHeart = false">
+                <i
+                  style="font-size: 2rem;margin-top: -0.4rem;color: red"
+                  v-if="!hoverHeart"
+                  class="far fa-heart"
+                ></i>
+                <i
+                  style="font-size: 2rem;margin-top: -0.4rem;color: red"
+                  v-if="hoverHeart"
+                  class="fas fa-heart"
+                ></i>
+              </button>
+            </div>
+          </div>
         </v-card-actions>
       </v-card>
     </v-menu>
@@ -72,24 +101,15 @@ export default {
   props: ["course"],
   data() {
     return {
-      items: [
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me" },
-        { title: "Click Me 2" }
-      ],
-      //https://picsum.photos/600/300/?image=25
-      Item: {
-        name: "Become a Product Manager | Learn the Skills & Get the Job",
-        author: "ABCXYZ",
-        description:
-          "The most complete course available on Product Management. 13+ hours of videos, activities, interviews, & more",
-        stars: 5,
-        sold: 20000
-      },
+      hoverHeart: false,
       isHover: false,
       readMore: false
     };
+  },
+  methods: {
+    likeOrUnlike() {
+      this.$store.dispatch('userLikeOrUnLikeCourseLike', this.course.course_id)
+    }
   },
   computed: {
     summaryName() {
@@ -124,5 +144,10 @@ export default {
     color: white !important;
     background-color: #f8172b !important;
   }
+}
+button:focus {
+  outline: 0px !important;
+    -webkit-appearance: none;
+    box-shadow: none !important;
 }
 </style>

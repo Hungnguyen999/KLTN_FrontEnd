@@ -101,6 +101,11 @@ export const store = new Vuex.Store({
             loading: false,
             detailCourse: {},
             amountReview: 0,
+        },
+        userCourseLike: {
+            loading: false,
+            list: [],
+            object: {}
         }
     },
     mutations,

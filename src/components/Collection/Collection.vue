@@ -1,26 +1,43 @@
 <template>
   <div class="my-conatiner">
-    <v-tabs style="width: 92%; margin: 5%;margin-top: 1rem">
+    <v-tabs style="width: 100%;">
       <v-tab
         @click="changeCategory(category)"
         v-for="(category, index) in guestCategoryTopCourseList"
         :key="index"
       >{{category.name}}</v-tab>
     </v-tabs>
-    <v-app class="my-container" style="margin-top: -3.5rem;height: 20rem;">
-      <v-carousel hide-delimiters style="height: 20rem;width: 90%;margin: 0 5%">
-        <v-carousel-item
-          v-for="(temp, index) in courseList"
-          :key="index"
-          style="width: 100%;height:100%"
-        >
-          <div class="my-row" style="width: 100%;">
-            <div class="item" v-for="(course, indexc) in temp.slide" :key="indexc">
-              <Item :course="course"></Item>
+
+    <v-app style="padding-top: 1rem;height: 20rem">
+      <div id="itemCollection" class="carousel slide" data-ride="carousel" style="width: 100%;">
+        <div class="carousel-inner">
+          <div
+            class="carousel-item"
+            :class="{'active' : index == 0}"
+            v-for="(temp, index) in courseList"
+            :key="index"
+          >
+            <div class="my-row" style="width: 100%;">
+              <div class="item" v-for="(course, indexc) in temp.slide" :key="indexc">
+                <Item :course="course"></Item>
+              </div>
             </div>
           </div>
-        </v-carousel-item>
-      </v-carousel>
+          <div
+            v-if="guestCategoryTopCourseLoading"
+            class="carousel-item"
+            :class="{'active' : guestCategoryTopCourseLoading}"
+          >
+            <div class="my-row" style="width: 100%;">
+              <div class="item" v-for="(index) in 5" :key="index">
+                <v-skeleton-loader type="card"></v-skeleton-loader>
+              </div>
+            </div>
+          </div>
+        </div>
+        <v-btn dark style="position: absolute;top: 7rem;left: -1.5rem" fab @click="back()">Back</v-btn>
+        <v-btn dark style="position: absolute;top: 7rem;right: -1.5rem" fab @click="next()">Next</v-btn>
+      </div>
     </v-app>
   </div>
 </template>
@@ -39,14 +56,21 @@ export default {
     return {
       categorySelected: {},
       topCourseList: [],
-      perSlide: 5,
+      perSlide: 3,
       courseList: []
     };
   },
   methods: {
+    next() {
+      $("#itemCollection").carousel("next");
+    },
+    back() {
+      $("#itemCollection").carousel("prev");
+    },
     changeCategory(category) {
       this.categorySelected = category;
       this.topCourseList = category.topCourseList;
+      //console.log(category.topCourseList);
       this.handleTopCourseList();
     },
     handleTopCourseList() {
@@ -59,11 +83,10 @@ export default {
           indexCourseList++;
           courseList[indexCourseList] = {};
           courseList[indexCourseList].slide = [];
-        } else {
-          courseList[indexCourseList].slide.push(this.topCourseList[i]);
         }
+        courseList[indexCourseList].slide.push(this.topCourseList[i]);
       }
-      console.log(courseList);
+      //console.log(courseList);
       this.courseList = courseList;
     }
   },
@@ -85,5 +108,9 @@ export default {
     height: 100%;
     padding: 0.5rem;
   }
+}
+.my-conatiner {
+  width: 90%;
+  margin: 1rem 5%;
 }
 </style>

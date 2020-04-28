@@ -25,6 +25,8 @@ export default {
     userLessonList: state => state.userLessonState.list,
     userLessonLoading: state => state.userLessonState.loading,
     userLessonObject: state => state.userLessonState.object,
+    userCourseLikeList: state => state.userCourseLike.list,
+    userCourseLikeLoading: state => state.userCourseLike.loading,
     // guest
     guestCategoryList: state => state.guestCategoryState.list,
     guestCategoryLoading: state => state.guestCategoryState.loading,

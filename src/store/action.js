@@ -774,4 +774,35 @@ export default {
                 })
         })
     },
+    userGetCourseLike({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userCourseLike
+            commit('user_course_like_request')
+            axios.get(apiURL, { params: { token: localStorage.token } })
+                .then(function (response) {
+                    commit('user_course_like_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_course_like_error')
+                    reject(error)
+                })
+        })
+    },
+    userLikeOrUnLikeCourseLike({ commit }, course_id) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userCourseLike
+            commit('user_course_like_request')
+            axios.post(apiURL, {}, { params: { token: localStorage.token, course_id: course_id } })
+                .then(function (response) {
+                    commit('user_course_like_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_course_like_error')
+                    // console.log(error)
+                    reject(error)
+                })
+        })
+    }
 }

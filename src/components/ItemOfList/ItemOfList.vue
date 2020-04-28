@@ -11,11 +11,11 @@
           <div class="col-8">
             <div>
               <span>
-                <b>Khóa học lập trình php</b>
+                <b>{{Item.name}}</b>
               </span>
             </div>
             <div class="cost">
-              <b>$45.99</b>
+              <b>${{Item.price_tier.priceTier}}</b>
             </div>
           </div>
         </div>
@@ -24,7 +24,9 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+  props: ["Item"]
+};
 </script>
 <style  lang="scss" scoped>
 a {

@@ -20,7 +20,7 @@ var apiURL = {
     userEditProfile: apiAddress + "/user/edit/profile",
     userLesson: apiAddress + "/user/lesson",
     userEditLesson: apiAddress + "/user/lesson/edit",
-
+    userCourseLike: apiAddress + "/user/courseLike",
     //guest
     guestGetCategory: apiAddress + "/guest/category",
     guestGetCategoryWithTopCourse: apiAddress + "/guest/category/topCourse",

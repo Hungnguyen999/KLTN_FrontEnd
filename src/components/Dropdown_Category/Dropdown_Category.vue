@@ -9,12 +9,12 @@
         aria-haspopup="true"
         aria-expanded="false"
         @mouseover="displayCol2 = false; displayCol3 = false"
-      >Thể loại
-      </button>
+      >Thể loại</button>
       <div
         class="dropdown-menu"
         style="background-color: transparent;padding:0"
         aria-labelledby="dropdownMenuButton"
+        v-if="!guestCategoryLoading"
         :style="resize"
       >
         <div class="row" style="background-color: transparent;min-height: 30rem;">
@@ -27,17 +27,17 @@
             </div>
             <div v-if="!guestCategoryLoading">
               <div
-              class="cate-item"
-              @mouseover="hoverCol1(cate)"
-              v-for="(cate,index) in guestCategoryList"
-              :key="index"
-            >
-              <span class="cate-item-grid text-center">
-                <i :class="cate.icon_class" class="fa-lg" v-if="!cate.icon_class.includes('mdi')"></i>
-                <v-icon style="margin:0;padding:0;color:black;" v-else>{{cate.icon_class}}</v-icon>
-                <b class="text-left">{{cate.name}}</b>
-              </span>
-            </div>
+                class="cate-item"
+                @mouseover="hoverCol1(cate)"
+                v-for="(cate,index) in guestCategoryList"
+                :key="index"
+              >
+                <span class="cate-item-grid text-center">
+                  <i :class="cate.icon_class" class="fa-lg" v-if="!cate.icon_class.includes('mdi')"></i>
+                  <v-icon style="margin:0;padding:0;color:black;" v-else>{{cate.icon_class}}</v-icon>
+                  <b class="text-left">{{cate.name}}</b>
+                </span>
+              </div>
             </div>
           </div>
           <div
@@ -45,6 +45,7 @@
             :style="loadDisplayCol2"
             @mouseout="outCol2"
             style="display: none;background: #FAFDFE;padding: 0"
+            v-if="topicList != null || topicList.length == 0"
           >
             <div
               class="cate-item"

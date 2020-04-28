@@ -99,7 +99,7 @@ export default {
         state.guestCategoryState.loading = false
         if (data.list) {
             state.guestCategoryState.list = data.list
-            console.log(state.guestCategoryState.list)
+            //console.log(state.guestCategoryState.list)
         }
         if (data.object) {
             state.guestCategoryState.object = data.object
@@ -175,7 +175,7 @@ export default {
         state.guestCategoryWithTopCouseState.loading = false
         if (data.list) {
             state.guestCategoryWithTopCouseState.list = data.list
-            console.log(state.guestCategoryWithTopCouseState.list)
+            //console.log(state.guestCategoryWithTopCouseState.list)
         }
         if (data.object) {
             state.guestCategoryWithTopCouseState.object = data.object
@@ -201,7 +201,7 @@ export default {
         if(data.carts){
             state.ATCstate.carts = data.carts
             //alert('here')
-           // console.log(data)
+           // //console.log(data)
         }
         if(data.total){
             state.ATCstate.total = data.total
@@ -227,7 +227,7 @@ export default {
         state.userCommentState.loading = true
     },
     courseComment_success(state,data){
-        console.log("cái này là check",data.list)
+        //console.log("cái này là check",data.list)
         state.userCommentState.list = data.list
         state.userCommentState.loading = false
     },
@@ -266,5 +266,20 @@ export default {
     },
     getDetailCourse_error(state){
         state.detailCourseState.loading = false
+    },
+    user_course_like_request(state) {
+        state.userCourseLike.loading = true
+    },
+    user_course_like_success(state, data) {
+        state.userCourseLike.loading = false
+        if(data.list) {
+            state.userCourseLike.list = data.list
+        }
+        if(data.object) {
+            state.userCourseLike.object = data.object
+        }
+    },
+    user_course_like_error(state) {
+        state.userCourseLike.loading = false
     }
 }
