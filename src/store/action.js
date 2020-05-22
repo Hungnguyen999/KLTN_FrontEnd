@@ -219,10 +219,13 @@ export default {
             }
             let formData = new FormData()
             formData.append('category_id', course.category_id)
-            formData.append('topic_id_list', course.topics)
+            formData.append('topic_id_list', JSON.stringify(course.topics))
+            console.log(course)
             formData.append('name', course.name)
             formData.append('description', course.description)
             formData.append('image', course.imageInput)
+            formData.append('whatYouLearn', JSON.stringify(course.whatYouLearn))
+            formData.append('priceTier_id', course.priceTier)
             //formData.append('video', course.lessons[0].videoInput)
             /*
             formData.append('lesson_count', course.lessons.length)
@@ -612,16 +615,12 @@ export default {
                 })
         })
     },
-    userAddtoCart({ commit }, course_id) {
-        const apiURL = apiConfig.userAddtoCart;
-        // let a = JSON.parse(localStorage.user);
-        // let x = a.user_id;
+    userAddToCart({ commit }, course_id) {
+        const apiURL = apiConfig.userCart;
         let data = {
             token: localStorage.token,
             course_id: course_id,
-            // user_id: x,
         };
-        // console.log('response',data.user_id);
         commit("user_ATC_request");
         return new Promise((resolve, reject) => {
             axios
@@ -637,17 +636,13 @@ export default {
         });
     },
     userGetCart({ commit }) {
-        const apiURL = apiConfig.userGetCart;
-        let data = {
-            token: localStorage.token,
-        };
+        const apiURL = apiConfig.userCart;
         commit("user_ATC_request");
         return new Promise((resolve, reject) => {
             axios
-                .post(apiURL, {}, { params: data })
+                .get(apiURL, { params: { token: localStorage.token } })
                 .then(function (response) {
                     commit("user_ATC_success", response.data);
-
                     resolve(response);
                 })
                 .catch(function (err) {
@@ -657,7 +652,7 @@ export default {
         });
     },
     userDeleteCart({ commit }, course_id) {
-        const apiURL = apiConfig.userDeleteCart;
+        const apiURL = apiConfig.userCart;
         let data = {
             token: localStorage.token,
             course_id: course_id,
@@ -800,6 +795,174 @@ export default {
                 .catch(function (error) {
                     commit('user_course_like_error')
                     // console.log(error)
+                    reject(error)
+                })
+        })
+    },
+    userGetCoursePriceTier({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userCoursePriceTier
+            commit('user_course_price_tier_request')
+            axios.get(apiURL, { params: { token: localStorage.token } })
+                .then(function (response) {
+                    commit('user_course_price_tier_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_course_price_tier_error')
+                    reject(error)
+                })
+        })
+    },
+    userPublicOrUnPublicCourse({ commit }, course_id) {
+        console.log('vinh')
+        return new Promise((resolve, reject) => {
+            commit('user_public_course_request')
+            let apiURL = apiConfig.userCourse
+            axios.patch(apiURL, {}, { params: { token: localStorage.token, course_id: course_id } })
+                .then(function (response) {
+                    commit('user_public_course_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_public_course_error')
+                    reject(error)
+                })
+        })
+    },
+    userForgotPassword({ commit }, user_id) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userForgotPassword
+            commit('user_forgot_password_request')
+            axios.get(apiURL, { params: { user_id: user_id } })
+                .then(function (response) {
+                    commit('user_forgot_password_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_forgot_password_error')
+                    reject(error)
+                })
+        })
+    },
+    userAfterForgotPassword({ commit }, user) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userForgotPassword
+            commit('user_forgot_password_request')
+            axios.post(apiURL, {}, { params: user })
+                .then(function (response) {
+                    commit('user_forgot_password_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_forgot_password_error')
+                    reject(error)
+                })
+        })
+    },
+    guestGetCourseDetail({ commit }, course_id) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.guestDetailCourse
+            commit('guest_course_detail_request')
+            axios.get(apiURL, { params: { course_id: course_id } })
+                .then(function (response) {
+                    commit('guest_course_detail_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('guest_course_detail_error')
+                    reject(error)
+                })
+        })
+    },
+    userGetStudentCourse({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userStudentCourse
+            commit('user_student_course_request')
+            axios.get(apiURL, { params: { token: localStorage.token } })
+                .then(function (response) {
+                    commit('user_student_course_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_student_course_error')
+                    reject(error)
+                })
+        })
+    },
+    userGetStudentLesson({ commit }, course_id) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userStudentCourseLesson
+            commit('user_student_lesson_request')
+            axios.get(apiURL, { params: { token: localStorage.token, course_id: course_id } })
+                .then(function (response) {
+                    commit('user_student_lesson_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_student_lesson_error')
+                    reject(error)
+                })
+        })
+    },
+    userGetCommentStudentLesson({ commit }, lesson_id) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userStudentCourseLessonComment
+            commit('user_student_lesson_comment_request')
+            axios.get(apiURL, { params: { token: localStorage.token, lesson_id: lesson_id } })
+                .then(function (response) {
+                    commit('user_student_lesson_comment_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_student_lesson_comment_error')
+                    reject(error)
+                })
+        })
+    },
+    userCommentStudentLesson({ commit }, comment) {
+        return new Promise((resolve, reject) => {
+            comment.token = localStorage.token
+            let apiURL = apiConfig.userStudentCourseLessonComment
+            commit('user_student_lesson_comment_request')
+            axios.post(apiURL, {},{ params: comment })
+                .then(function (response) {
+                    commit('user_student_lesson_comment_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_student_lesson_comment_error')
+                    reject(error)
+                })
+        })
+    },
+    userDeleteCommentStudentLesson({ commit }, comment) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.userStudentCourseLessonComment
+            commit('user_student_lesson_comment_request')
+            comment.token = localStorage.token
+            axios.delete(apiURL, { params: comment })
+                .then(function (response) {
+                    commit('user_student_lesson_comment_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('user_student_lesson_comment_error')
+                    reject(error)
+                })
+        })
+    },
+    guestGetSearch({ commit }) {
+        return new Promise((resolve, reject) => {
+            let apiURL = apiConfig.guestSearch
+            commit('guest_search_request')
+            axios.get(apiURL)
+                .then(function (response) {
+                    commit('guest_search_success', response.data)
+                    resolve(response)
+                })
+                .catch(function (error) {
+                    commit('guest_search_error')
                     reject(error)
                 })
         })

@@ -1,5 +1,6 @@
 <template>
   <div id="my-container-login-modal">
+    {{myRoute}}
     <b-modal
       @hidden="reset()"
       hide-footer
@@ -8,12 +9,22 @@
       :title="forgotPassword ? 'Đăng nhập với tài khoản GoodLearning' : 'Nhập Email của bạn'"
     >
       <div v-if="!forgotPassword">
-        <button type="button" href="#" class="btn fb">
+        <a
+          type="button"
+          @click="socialLogin('fb')"
+          class="btn fb"
+          style="width: 100%;margin: 0.5rem 0"
+        >
           <i class="fab fa-facebook-f"></i> Login with Facebook
-        </button>
-        <button type="button" href="#" class="btn google">
+        </a>
+        <a
+          type="button"
+          @click="socialLogin('gg')"
+          class="btn google"
+          style="width: 100%;margin: 0.5rem 0"
+        >
           <i class="fab fa-google-plus-g"></i> Login with Google+
-        </button>
+        </a>
         <div class="input-container">
           <input
             class="form-control"
@@ -38,17 +49,34 @@
         <a href="#" @click="forgotPassword = true">Quên mật khẩu ?</a>
       </div>
       <div v-if="forgotPassword">
+        <b-alert
+          :show="authenForgot"
+          :variant="stateRequestForgot ? 'info' : 'danger'"
+        >{{msgForgot}}</b-alert>
         <div class="input-container">
-          <input class="form-control" v-model="user.user_id" type="email" placeholder="Email" />
+          <input
+            :disabled="userForgotPasswordLoading"
+            class="form-control"
+            @keyup.enter="ForgotPassword()"
+            v-model="user.user_id"
+            type="email"
+            placeholder="Email"
+          />
           <i class="fas fa-envelope-square fa-lg" aria-hidden="true"></i>
         </div>
-        <button class="btn btn-primary" @click="ForgotPassword">Xác nhận</button>
-        <a href="#" @click="forgotPassword=false">Quai lại</a>
+        <v-btn
+          style="background-color: #1976D2;color:white"
+          :loading="userForgotPasswordLoading"
+          @click="ForgotPassword()"
+        >Xác nhận</v-btn>
+        <a href="#" @click="forgotPassword=false">Quay lại</a>
       </div>
     </b-modal>
   </div>
 </template>
 <script>
+import { mapGetters } from "vuex";
+import apiConfig from "../../API/api.json";
 export default {
   mounted() {
     let vm = this;
@@ -56,22 +84,33 @@ export default {
       vm.forgotPassword = false;
     });
   },
+  computed: {
+    ...mapGetters({
+      userForgotPasswordLoading: "userForgotPasswordLoading"
+    })
+  },
   data() {
     return {
+      fbURL: apiConfig.socialURLRedirect + "/facebook",
+      ggURL: apiConfig.socialURLRedirect + "/google",
       forgotPassword: false,
       user: {
         user_id: "",
         password: ""
       },
+      authenForgot: false,
+      msgForgot: "",
+      stateRequestForgot: false,
+      myRoute: "",
       //eslint-disable-next-line
       emailRegex: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     };
   },
   methods: {
     reset() {
-      (this.user.user_id = ""),
-        (this.user.password = ""),
-        (this.forgotPassword = false);
+      this.user.user_id = "";
+      this.user.password = "";
+      this.forgotPassword = false;
     },
     checkLogin() {
       if (this.user.user_id == "" || this.user.password == "") {
@@ -102,7 +141,7 @@ export default {
       this.reset();
       this.$swal.close();
       this.$refs["login-modal"].hide();
-      location.reload();
+      //location.reload();
     },
     loginFaild(data, vm) {
       vm.$swal({
@@ -122,18 +161,43 @@ export default {
           text: "Email không hợp lệ"
         });
       } else {
-        this.$swal({
-          icon: "success",
-          title: "Thông Báo",
-          text: "Vui lòng đăng nhập vài Email để xác nhận"
-        });
-        this.$refs["login-modal"].hide();
+        this.$store
+          .dispatch("userForgotPassword", this.user.user_id)
+          .then(response => {
+            this.stateRequestForgot = response.data.RequestSuccess;
+            this.msgForgot = response.data.msg;
+            this.authenForgot = true;
+          });
       }
+    },
+    socialLogin(flag) {
+      let url = "";
+      if (flag == "fb") {
+        url =
+          this.fbURL +
+          "?currentURL=" +
+          apiConfig.baseURL +
+          this.$route.path +
+          "&social=facebook";
+      } else {
+        url =
+          this.ggURL +
+          "?currentURL=" +
+          apiConfig.baseURL +
+          this.$route.path +
+          "&social=google";
+      }
+      setTimeout(function() {
+        location.href = url;
+      }, 100);
     }
   }
 };
 </script>
 <style lang="scss" scoped>
+.login-modal {
+  padding-right: 0 !important;
+}
 a {
   text-decoration: none;
   color: black;

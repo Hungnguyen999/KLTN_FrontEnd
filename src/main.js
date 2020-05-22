@@ -12,7 +12,6 @@ import 'jquery'
 import 'sweetalert2/dist/sweetalert2.min.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import Slick from 'vue-slick';
-import Agile from 'vue-agile';
 import vuetify from './plugins/vuetify.js'
 import { VueContext } from 'vue-context';
 import { BSidebar } from 'bootstrap-vue'
@@ -57,7 +56,6 @@ Vue.use(VueSweetalert2)
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(Slick)
-Vue.use(Agile)
 Vue.use(VueContext )
 import '../node_modules/slick-carousel/slick/slick.css';
 import 'bootstrap/dist/css/bootstrap.css'

@@ -1,36 +1,40 @@
 <template>
   <div>
     <div class="comment-container">
-      <CommentBox :replay="false"></CommentBox>
+      <CommentBox  :replay="false"></CommentBox>
       <ul class="list-history-comment">
-        <li class="history-comment" v-for="i in 10" :key="i">
-          <CommentView :i="'i'+i"></CommentView>
-          <div class="replay-view">
+        <li
+          class="history-comment"
+          v-for="(comment, index) in userStudentCourseLessonCommentList"
+          :key="index"
+        >
+          <CommentView :rootComment="comment" :i="'comment'+index" :comment="comment"></CommentView>
+          <div class="replay-view" v-if="comment.replies !=null && comment.replies.length > 0">
             <a
               role="button"
               data-toggle="collapse"
               aria-expanded="false"
-              :href="'#list-replay-view' + i"
-              @click="updateCurrentIndex(i-1,0)"
-              v-if="!loadArrayShowView[i-1] "
+              :href="'#list-replay-view' + index"
+              @click="updateCurrentIndex(index-1,0)"
+              v-if="!arrayShowView[index-1] "
             >
-              Xem 5 trả lời
+              Xem {{comment.replies.length}} trả lời
               <b-icon-chevron-down></b-icon-chevron-down>
             </a>
             <a
               role="button"
               data-toggle="collapse"
               aria-expanded="false"
-              :href="'#list-replay-view' + i"
-              @click="updateCurrentIndex(i-1,1)"
-              v-if="loadArrayShowView[i-1]"
+              :href="'#list-replay-view' + index"
+              @click="updateCurrentIndex(index-1,1)"
+              v-if="arrayShowView[index-1]"
             >
-              Ẩn 5 trả lời
+              Ẩn {{comment.replies.length}} trả lời
               <b-icon-chevron-up></b-icon-chevron-up>
             </a>
-            <div :id="'list-replay-view' + i" class="collapse">
-              <div v-for="index in 5" :key="index">
-                <CommentView :i="'index'+index"></CommentView>
+            <div :id="'list-replay-view' + index" class="collapse">
+              <div v-for="(reply, i) in comment.replies" :key="i">
+                <CommentView :rootComment="comment" :i="'reply_'+index+'_'+i" :comment="reply"></CommentView>
               </div>
             </div>
           </div>
@@ -42,12 +46,13 @@
 <script>
 import CommentBox from "../CommentBox/CommentBox";
 import CommentView from "../CommentView/CommentView";
+import { mapGetters } from "vuex";
 export default {
   components: { CommentBox, CommentView },
   created() {
-      for(let i =0;i<10;i++) {
-          this.arrayShowView[i] = false
-      }
+    for (let i = 0; i < 10; i++) {
+      this.arrayShowView[i] = false;
+    }
   },
   data() {
     return {
@@ -57,22 +62,23 @@ export default {
     };
   },
   methods: {
-      updateCurrentIndex(index, type) {
-          this.currentIndex = index
-          if(type===0) {
-              this.arrayShowView[index] = true
-          } else  {
-              this.arrayShowView[index] = false
-          }
-          this.arrayShowView.push(true)
-          this.arrayShowView.splice(this.arrayShowView.length-1,1)
-          console.log(this.arrayShowView)
+    updateCurrentIndex(index, type) {
+      this.currentIndex = index;
+      if (type === 0) {
+        this.arrayShowView[index] = true;
+      } else {
+        this.arrayShowView[index] = false;
       }
+      this.arrayShowView.push(true);
+      this.arrayShowView.splice(this.arrayShowView.length - 1, 1);
+    }
   },
   computed: {
-    loadArrayShowView() {
-      return this.arrayShowView;
-    }
+    ...mapGetters({
+      userCurrentVideoLesson: "userCurrentVideoLesson",
+      userStudentCourseLessonCommentList: "userStudentCourseLessonCommentList",
+      userStudentCourseLessonCommentLoading: "userStudentCourseLessonCommentLoading"
+    })
   }
 };
 </script>

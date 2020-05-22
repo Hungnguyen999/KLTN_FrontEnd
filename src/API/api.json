@@ -1,8 +1,11 @@
 {
-    "apiURL": "http://localhost:8080/KLTN-Server/public",
+    "apiURL": "http://goodlearning.com/",
+    "socialURLRedirect": "https://localhost/KLTN-Server/public/redirect",
+    "apiURLs": "https://localhost/KLTN-Server/public",
     "baseURL": "http://localhost:8081",
-    "apiURLOnline": "https://goodlearningserver.herokuapp.com",
+    "apiURLapiURL": "https://goodlearningserver.herokuapp.com",
     "baseURLOnline": "https://goodlearningclient.herokuapp.com",
-    "imageURL" : "http://localhost:8080/KLTN-Server/public/uploads/images",
-    "videoURL" : "http://localhost:8080/KLTN-Server/public/uploads/videos"
+    "imageURL" : "https://localhost/KLTN-Server/public/uploads/images",
+    "videoURL" : "https://localhost/KLTN-Server/public/uploads/videos",
+    "avatarURL" : "https://localhost/KLTN-Server/public/uploads/users"
 }

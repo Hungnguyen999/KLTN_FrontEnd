@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-menu
-      style="z-index: 3"
+      style="z-index: 10"
       open-on-hover
       offset-x
       :close-on-click="false"
@@ -13,7 +13,7 @@
             class="item-link"
             :to="{name: 'course-detail-page', params: {id: course.course_id}}"
           >
-            <v-img style="width: 100%;height: 8rem" src="https://picsum.photos/600/300/?image=25"></v-img>
+            <v-img :style="setBackground" class="my-image"></v-img>
             <v-card-text style="color: black;height: 100%;">
               <div>
                 <b>{{summaryName}}</b>
@@ -49,15 +49,16 @@
         </v-card>
       </template>
       <v-card width="350" class="p-3">
-        <p>Last updated: 20/1/2019</p>
+        <p>Last updated: {{course.updated_at}}</p>
         <h5>{{course.name}}</h5>
         <v-card-subtitle style="margin-top: -1rem;margin-left: -1rem">
-          <a href="#">Python</a>|
-          <a href="#">abc</a>
+          <span v-for="(topic,index) in course.topicEnable" :key="index">
+            <a href="#">{{topic.name}}</a>&nbsp;
+          </span>
         </v-card-subtitle>
         <v-card-subtitle style="margin-top: -1rem;margin-left: -1rem;font-size: 12px">
           <span>
-            <v-icon>mdi-arrow-left-drop-circle</v-icon>
+            <v-icon>mdi-play-circle</v-icon>
             &nbsp;{{course.totalVideo}} video
           </span>
           <span style="margin-left: 2rem">
@@ -65,7 +66,10 @@
             &nbsp;{{course.totalTime}}
           </span>
         </v-card-subtitle>
-        <div v-html="course.description"></div>
+        <div class="item-description" v-html="course.description"></div>
+        <div style="margin: 1rem 0">
+          <router-link :to="{name: 'course-detail-page', params: {id: course.course_id}}">Xem thêm</router-link>
+        </div>
         <span>Kiến thức học được:</span>
         <ul style="font-size: 14px">
           <li v-for="(learn,index) in course.whatLearn" :key="index">{{learn.learn}}</li>
@@ -73,7 +77,13 @@
         <v-card-actions>
           <div class="row">
             <div class="col-9">
-              <v-btn style="width: 100%" class="addCartButton">Thêm vào giỏ hàng</v-btn>
+              <v-btn
+                style="width: 100%"
+                @click="addToCart()"
+                class="addCartButton"
+                :loading="userCourseListCartLoading"
+              >
+              <span v-if="course.priceTier==0">Thêm vào kho</span><span v-else>Thêm vào giỏ hàng</span></v-btn>
             </div>
             <div class="col-2">
               <button
@@ -83,13 +93,14 @@
                 @click="likeOrUnlike()"
                 @mouseover="hoverHeart = true"
                 @mouseout="hoverHeart = false"
-                @mouseleave="hoverHeart = false"
               >
                 <div v-if="!hoverHeart">
-                  <v-icon style="font-size: 2rem;color: red" v-if="!liked">mdi-heart-outline</v-icon>
-                  <v-icon style="font-size: 2rem;color: red" v-if="liked">mdi-heart</v-icon>
+                  <v-icon style="font-size: 2rem;color: red" v-if="!checkLike">mdi-heart-outline</v-icon>
+                  <v-icon style="font-size: 2rem;color: red" v-if="checkLike">mdi-heart</v-icon>
                 </div>
-                <v-icon style="font-size: 2rem;color: red" v-if="hoverHeart">mdi-heart</v-icon>
+                <div v-else>
+                  <v-icon style="font-size: 2rem;color: red">mdi-heart</v-icon>
+                </div>
               </button>
               <v-progress-circular
                 indeterminate
@@ -106,6 +117,8 @@
 </template>
 <script>
 import startRating from "../../../node_modules/vue-star-rating/src/star-rating";
+
+import apiConfig from "../../API/api.json";
 import { mapGetters } from "vuex";
 export default {
   components: { startRating },
@@ -114,34 +127,53 @@ export default {
     return {
       hoverHeart: false,
       readMore: false,
-      liked: false
+      liked: false,
+      imageURL: "",
+      setBackground: "",
+      checkLogin: "login-modal"
     };
+  },
+  mounted() {
+    if (localStorage.token) this.checkLogin = "";
+    this.imageURL =
+      apiConfig.imageURL +
+      "/" +
+      this.course.course_id +
+      "/" +
+      this.course.course_id +
+      ".png";
+    this.setBackground = "background-image: url('" + this.imageURL + "')";
   },
   methods: {
     likeOrUnlike() {
-      this.$store
-        .dispatch("userLikeOrUnLikeCourseLike", this.course.course_id)
-        .then(() => this.checkLike());
-    },
-    checkLike() {
-      let flag = false;
-      for (let i = 0; i < this.userCourseLikeList.length; i++) {
-        if (this.userCourseLikeList[i].course_id == this.course.course_id) {
-          this.liked = true;
-          flag = true;
-          break;
-        }
-      }
-      if (flag === false) {
-        this.liked = false;
+      if (localStorage.token) {
+        this.$store.dispatch(
+          "userLikeOrUnLikeCourseLike",
+          this.course.course_id
+        );
         this.hoverHeart = false;
+      } else {
+        this.$emit("openLoginModal");
       }
+    },
+    addToCart() {
+      this.$store
+        .dispatch("userAddToCart", this.course.course_id)
+        .then(response => {
+          let icon = "";
+          response.data.RequestSuccess ? (icon = "success") : (icon = "error");
+          this.$swal({
+            icon: icon,
+            title: response.data.msg
+          });
+        });
     }
   },
   computed: {
     ...mapGetters({
       userCourseLikeList: "userCourseLikeList",
-      userCourseLikeLoading: "userCourseLikeLoading"
+      userCourseLikeLoading: "userCourseLikeLoading",
+      userCourseListCartLoading: "userCourseListCartLoading"
     }),
     summaryName() {
       if (this.course.name.length > 40) {
@@ -152,11 +184,26 @@ export default {
       if (this.course.author.length > 20) {
         return this.course.author.substring(0, 20) + "...";
       } else return this.course.author;
+    },
+    checkLike() {
+      for (let i = 0; i < this.userCourseLikeList.length; i++) {
+        if (this.userCourseLikeList[i].course_id == this.course.course_id) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 };
 </script>
 <style lang="scss" scoped>
+.my-image {
+  width: 100%;
+  height: 10rem;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .item-link {
   text-decoration: none;
   &:hover {
@@ -183,5 +230,10 @@ button:focus {
   &:hover {
     background-color: transparent !important;
   }
+}
+.item-description {
+  max-height: 10rem;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
 }
 </style>

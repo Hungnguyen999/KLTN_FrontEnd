@@ -1,131 +1,80 @@
 <template>
-  <div id="header" v-if="loadStudent">
-    <div class="page-container">
-      <b-navbar toggleable="lg" type="light" variant="default">
-        <b-navbar-brand :href="baseURL">
-          <b-img rounded="circle" style="width: 4rem; height: 4rem" :src="goodLearning"></b-img>&nbsp;
-          <span style="position: absolute;margin-top: 0.5rem;margin-left: 0.5rem">
-            <div>
-              <b>GoodLearning</b>
-            </div>
-            <div style="font-size: 9pt;">
-              <i>
-                <b>Học tập Online</b>
-              </i>
-            </div>
-          </span>
-        </b-navbar-brand>
-
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-
-        <b-collapse id="nav-collapse" is-nav>
-          <!-- Right aligned nav items -->
-          <b-navbar-nav class="ml-auto">
-            <DropdownCategory></DropdownCategory>
-            <input class="form-control input-search" placeholder="Search..." type="text" />
-            <button class="btn btn-info btn-search">
-              <i class="fa fa-search"></i>
-            </button>
-            <a v-if="!loadStateLogin" href="google" class="btn normal-button">Miễn phí</a>
-            <a
-              v-if="loadStateLogin"
-              :href="baseURL + '/instructor/course'"
-              class="btn normal-button"
-            >Giảng Viên</a>
-            <div style="border-left: 1px solid;margin-right: 1rem;"></div>
-            <a class="btn normal-button" id="mycourse">Khóa Học</a>
-            <b-popover target="mycourse" triggers="hover" placement="top">
-              <div v-for="i in 3" :key="i">
-                <ItemOfListMyCourse></ItemOfListMyCourse>
+  <div v-if="loadStudent" class="my-container">
+    <v-app id="header">
+      <div class="page-container">
+        <b-navbar toggleable="lg" type="light" variant="default">
+          <b-navbar-brand :href="baseURL">
+            <b-img rounded="circle" style="width: 4rem; height: 4rem" :src="goodLearning"></b-img>&nbsp;
+            <span style="position: absolute;margin-top: 0.5rem;margin-left: 0.5rem">
+              <div>
+                <b>GoodLearning</b>
               </div>
-              <div style="margin-top: 1rem;width:100%">
-                <button style="width:100%;" class="btn btn-info">Xem thêm</button>
+              <div style="font-size: 9pt;">
+                <i>
+                  <b>Học tập Online</b>
+                </i>
               </div>
-            </b-popover>
-            <div v-if="!loadStateLogin && !userUserInfoLoading">
-              <button class="btn btn-default circle-button normal-button">
-                <i class="fa fa-shopping-cart"></i>
-                <b-badge style="margin-left: 0.5rem" variant="light">4</b-badge>
+            </span>
+          </b-navbar-brand>
+
+          <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+          <b-collapse id="nav-collapse" is-nav>
+            <!-- Right aligned nav items -->
+            <b-navbar-nav class="ml-auto">
+              <DropdownCategory></DropdownCategory>
+              <input v-model="search" @keyup.enter="searchFunction()" class="form-control input-search" placeholder="Search..." type="text" />
+              <button @click="searchFunction()" class="btn btn-info btn-search">
+                <i class="fa fa-search"></i>
               </button>
-              <button
-                v-b-modal.login-modal
-                class="btn btn-outline-secondary"
-                style="margin-right: 1rem;"
-              >Đăng nhập</button>
-              <button v-b-modal.singup-modal class="btn btn-danger">Đăng ký</button>
-            </div>
-            <div v-if="loadStateLogin && !userUserInfoLoading">
-              <router-link :to="{ name: 'cart-page' }" class="btn btn-default circle-button normal-button" id="cart">
-                <i class="fa fa-shopping-cart"></i>
-                <b-badge style="margin-left: 0.5rem" variant="light">4</b-badge>
-              </router-link>
-              <b-popover target="cart" triggers="hover" placement="top">
-                <div v-for="i in 3" :key="i">
-                  <ItemOfList></ItemOfList>
-                </div>
-                <div style="margin-top: 1rem;width:100%">
-                  <button style="width:100%;" class="btn btn-info">Xem thêm</button>
-                </div>
-              </b-popover>
-              <button
-                id="like"
-                aria-haspopup="true"
-                aria-expanded="false"
-                class="btn btn-default circle-button normal-button"
-              >
-                <i class="fas fa-heart" style="color: red;"></i>
-                <b-badge
-                  style="margin-left: 0.5rem"
-                  variant="light"
-                  v-if="userCourseLikeList.course != null"
-                >{{userCourseLikeList.course.length}}</b-badge>
-              </button>
-              <b-popover target="like" triggers="hover" placement="top">
-                <div v-for="(course,index) in userCourseLikeList" :key="index">
-                  <ItemOfList :Item="course.course"></ItemOfList>
-                </div>
-                <div style="margin-top: 1rem;width:100%">
-                  <button
-                    style="width:100%;"
-                    class="btn btn-info"
-                    v-if="userCourseLikeList.course != null && userCourseLikeList.course.length > 3"
-                  >Xem thêm</button>
-                  <h5
-                    v-if="(userCourseLikeList.course != null && userCourseLikeList.course.length==0)"
-                    class="text-center"
-                  >Danh sách rỗng!</h5>
-                </div>
-              </b-popover>
-              <button
-                id="annouce"
-                aria-haspopup="true"
-                aria-expanded="false"
-                class="btn btn-default circle-button normal-button"
-              >
-                <i class="fas fa-bell"></i>
-              </button>
-              <b-popover target="annouce" triggers="hover" placement="top">
-                <ul>
-                  <li>item 1item 1item 1item 1item 1item 1item 1item 1item 1item 1item 1item 1</li>
-                  <li>item 1</li>
-                  <li>item 1</li>
-                  <li>item 1</li>
-                  <li>item 1</li>
-                </ul>
-              </b-popover>
-              <button>
-                <UserMenuButton :account="userUserInfo"></UserMenuButton>
-              </button>
-            </div>
-            <div v-if="userUserInfoLoading" class="loading-container">
-              <v-skeleton-loader type="avatar"></v-skeleton-loader>
-              <v-skeleton-loader type="avatar"></v-skeleton-loader>
-              <v-skeleton-loader type="avatar"></v-skeleton-loader>
-            </div>
-          </b-navbar-nav>
-        </b-collapse>
-      </b-navbar>
-    </div>
+              <a
+                v-if="!loadStateLogin && !userUserInfoLoading"
+                href="google"
+                class="btn normal-button"
+              >Miễn phí</a>
+              <router-link
+                v-if="loadStateLogin && !userUserInfoLoading"
+                :to="{name: 'instructor-page'}"
+                class="btn normal-button"
+              >Giảng Viên</router-link>
+              <div v-if="!userUserInfoLoading" style="border-left: 1px solid;margin-right: 1rem;"></div>
+              <HeaderMyCourseList v-if="loadStateLogin && !userUserInfoLoading"></HeaderMyCourseList>
+              <HeaderCartList v-if="loadStateLogin && !userUserInfoLoading"></HeaderCartList>
+              <HeaderLikeList v-if="loadStateLogin && !userUserInfoLoading"></HeaderLikeList>
+              <HeaderAnnouceList v-if="loadStateLogin && !userUserInfoLoading"></HeaderAnnouceList>
+              <HeaderUserButton
+                :account="userUserInfo"
+                v-if="loadStateLogin && !userUserInfoLoading"
+              ></HeaderUserButton>
+
+              <div v-if="!loadStateLogin && !userUserInfoLoading">
+                <button
+                  v-b-modal.login-modal
+                  class="btn btn-outline-secondary"
+                  style="margin-right: 1rem;"
+                >Đăng nhập</button>
+                <button v-b-modal.singup-modal class="btn btn-danger">Đăng ký</button>
+              </div>
+              <v-skeleton-loader
+                v-if="userUserInfoLoading"
+                type="button"
+                style="margin-top: 0.5rem"
+              ></v-skeleton-loader>
+              <div v-if="userUserInfoLoading" style="border-left: 1px solid;margin: 0 1rem;"></div>
+              <v-skeleton-loader
+                v-if="userUserInfoLoading"
+                type="button"
+                style="margin-top: 0.5rem;margin-right: 1rem"
+              ></v-skeleton-loader>
+              <v-skeleton-loader v-if="userUserInfoLoading" type="avatar"></v-skeleton-loader>
+              <v-skeleton-loader v-if="userUserInfoLoading" type="avatar"></v-skeleton-loader>
+              <v-skeleton-loader v-if="userUserInfoLoading" type="avatar"></v-skeleton-loader>
+              <v-skeleton-loader v-if="userUserInfoLoading" type="avatar"></v-skeleton-loader>
+            </b-navbar-nav>
+          </b-collapse>
+        </b-navbar>
+      </div>
+    </v-app>
     <Login_Modal></Login_Modal>
     <Singup_Modal></Singup_Modal>
   </div>
@@ -134,27 +83,34 @@
 import DropdownCategory from "../../components/Dropdown_Category/Dropdown_Category";
 import Login_Modal from "../../components/Login_Modal/Login_Modal";
 import Singup_Modal from "../../components/SignUp_Modal/SignUp_Modal";
-import ItemOfListMyCourse from "../../components/ItemOfListMyCourse/ItemOfListMyCourse";
-import ItemOfList from "../../components/ItemOfList/ItemOfList";
-import UserMenuButton from "../../components/UserMenuButton/UserMenuButton";
+//import ItemOfList from "../../components/ItemOfList/ItemOfList";
+import HeaderLikeList from "../../components/HeaderLikeList/HeaderLikeList";
+import HeaderCartList from "../../components/HeaderCartList/HeaderCartList";
+import HeaderMyCourseList from "../../components/HeaderMyCourseList/HeaderMyCourseList";
+import HeaderAnnouceList from "../../components/HeaderAnnouceList/HeaderAnnouceList";
+import HeaderUserButton from "../../components/HeaderUserButton/HeaderUserButton";
 import apiConfig from "../../API/api.json";
 import goodLearning from "../../assets/goodlearning.jpg";
 import { mapGetters } from "vuex";
 export default {
   components: {
-    UserMenuButton,
     DropdownCategory,
     Login_Modal,
     Singup_Modal,
-    ItemOfListMyCourse,
-    ItemOfList
+    HeaderLikeList,
+    HeaderCartList,
+    HeaderMyCourseList,
+    HeaderAnnouceList,
+    HeaderUserButton
   },
   data() {
     return {
       goodLearning: goodLearning,
       isLogin: false,
       isStudent: true,
-      baseURL: apiConfig.baseURL
+      baseURL: apiConfig.baseURL,
+      baseImage: apiConfig.imageURL,
+      search: ""
     };
   },
   props: ["show"],
@@ -165,18 +121,21 @@ export default {
       }
     }
   },
-  methods: {},
+  methods: {
+    searchFunction() {
+        if(this.$route.name != 'search-page') {
+          this.$router.push({name: 'search-page', query: { search: this.search }})
+        } else {
+          this.$store.commit('guest_set_search', this.search)
+          document.getElementById('search-button-for-vuex').click()
+        }
+    }
+  },
   created() {
     this.$store.dispatch("userGetCourseLike");
     if (JSON.stringify(this.userUserInfo) !== JSON.stringify({}))
       this.isLogin = true;
     else this.isLogin = false;
-    if (this.$route.meta.instructor == true) {
-      this.isStudent = false;
-    }
-    if (this.show != null) {
-      this.isStudent = this.show;
-    }
   },
   updated() {
     if (JSON.stringify(this.userUserInfo) !== JSON.stringify({}))
@@ -224,8 +183,11 @@ a {
 }
 .normal-button {
   height: 2.5rem;
+  color: black;
 }
 #header {
+  color: black;
+  height: 5.5rem;
   font-family: "Quicksand";
 }
 .btn-search {
@@ -257,4 +219,9 @@ a {
     }
   }
 }
+// .my-container {
+//   position: sticky;
+//   top: 0;
+//   z-index: 5;
+// }
 </style>

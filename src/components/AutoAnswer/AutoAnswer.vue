@@ -1,12 +1,13 @@
 <template>
   <div>
     <v-app
-      style="position: fixed;bottom:0;right: 0rem;width: auto;height: 2.2rem;background-color: transparent;z-index: 3"
+      style="position: fixed;bottom:0;right: 0rem;width: auto;height: 2.2rem;background-color: transparent;z-index: 6"
     >
       <v-btn
         color="green darken-1"
         style="color: white;"
         v-b-toggle.sidebar-right
+        @click="checkLogin()"
       >Tư vấn tự động trực tuyến</v-btn>
       <b-sidebar
         no-header
@@ -113,7 +114,8 @@ export default {
       message: "",
       userName: "",
       flag: false,
-      firstMessage: true
+      firstMessage: true,
+      start: false
     };
   },
   methods: {
@@ -178,12 +180,18 @@ export default {
           this.scrollToLastMessage();
         });
       }
+    },
+    checkLogin() {
+      if(this.userUserInfo != null && this.start == false) {
+        this.userName = this.userUserInfo.name
+      }
     }
   },
   computed: {
     ...mapGetters({
       guestBotLoading: "guestBotLoading",
-      guestBotObject: "guestBotObject"
+      guestBotObject: "guestBotObject",
+      userUserInfo: 'userUserInfo'
     })
   }
 };
@@ -250,7 +258,7 @@ export default {
     word-break: break-all;
     label {
       text-align: right;
-      height: 100%;
+      min-height: 2rem;
       max-width: 80%;
       padding: 0.5rem;
       width: auto;

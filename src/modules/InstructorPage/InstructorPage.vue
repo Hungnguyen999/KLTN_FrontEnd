@@ -21,10 +21,12 @@
   </div>
 </template>
 <script>
-import AnnouceButton from "../../components/AnnouncementButton/AnnouncementButton";
-import UserButton from "../../components/UserMenuButton/UserMenuButton";
+import AnnouceButton from "../../components/HeaderAnnouceList/HeaderAnnouceList";
+import UserButton from "../../components/HeaderUserButton/HeaderUserButton";
 import LeftMenu from "../../components/LeftMenu_Ins_Admin/LeftMenu_Ins_Admin";
 import { mapGetters } from "vuex";
+import { CommonService } from "../../service/common.service.js";
+var commonService = new CommonService();
 export default {
   components: { AnnouceButton, LeftMenu, UserButton },
   data() {
@@ -73,6 +75,22 @@ export default {
       ]
     };
   },
+  created() {
+    this.$store.commit("HideHeaderUser");
+    this.$store.commit("HideFooterUser");
+    this.$store.commit("HideAutoAnswer");
+    if (localStorage.token) {
+      this.$store.dispatch("userInfo").then(response => {
+        if (response.data.errorToken == true) {
+          commonService.checkErrorToken(this, response.data.msg);
+        } else {
+          localStorage.token = response.data.token;
+        }
+      });
+    } else {
+      this.$router.push({ name: "not-found-page" });
+    }
+  },
   methods: {
     redirect(name) {
       this.$router.push({ name: name });
@@ -80,7 +98,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userUserInfo: "userUserInfo"
+      userUserInfo: "userUserInfo",
+      guestHideAutoAnswer: "guestHideAutoAnswer"
     })
   }
 };
@@ -109,7 +128,7 @@ export default {
       padding-top: 0;
     }
     .col-11 {
-      padding-right: 3.5rem;
+      padding-right: 1.5rem;
     }
   }
 }

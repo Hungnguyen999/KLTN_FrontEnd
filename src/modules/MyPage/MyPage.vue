@@ -23,11 +23,20 @@
           </v-tab>
 
           <v-tab
+            :class="'course-tab' == mypageTab ? 'my-active-class' : '' "
+            @click="goTab('course-tab')"
+            class="my-tab"
+          >
+            <v-icon style="position: absolute;left: 1rem">mdi-book</v-icon>
+            <span>Khóa học</span>
+          </v-tab>
+
+          <v-tab
             :class="'annouce-tab' == mypageTab ? 'my-active-class' : '' "
             @click="goTab('annouce-tab')"
             class="my-tab"
           >
-            <v-icon style="position: absolute;left: 1rem">mdi-bell-alert</v-icon>
+            <v-icon style="position: absolute;left: 1rem">mdi-bell</v-icon>
             <span style="font-size: 13px;">Thông báo</span>
           </v-tab>
 
@@ -36,13 +45,14 @@
             class="my-tab"
             @click="goTab('msg-tab')"
           >
-            <v-icon style="position: absolute;left: 1rem">mdi-chat-alert</v-icon>
+            <v-icon style="position: absolute;left: 1rem">mdi-chat</v-icon>
             <span>Tin nhắn</span>
           </v-tab>
         </div>
         <v-tabs-items :value="mypageTab" class="list-item">
           <InfoTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></InfoTab>
           <ProfileTab :account="userUserInfo"></ProfileTab>
+          <CourseTab :account="userUserInfo"></CourseTab>
           <AnnouceAdminTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></AnnouceAdminTab>
           <MessageTab :account="userUserInfo" :accountLoading="userUserInfoLoading"></MessageTab>
         </v-tabs-items>
@@ -53,30 +63,72 @@
 <script>
 import InfoTab from "../../components/InfoTab/InfoTab";
 import AnnouceAdminTab from "../../components/AnnouceAdminTab/AnnouceAdminTab";
+import CourseTab from "../../components/CourseTab/CourseTab";
 import MessageTab from "../../components/MessageTab/MessageTab";
 import ProfileTab from "../../components/ProfileTab/ProfileTab";
 import { mapGetters } from "vuex";
 import { CommonService } from "../../service/common.service.js";
 var commonService = new CommonService();
 export default {
-  components: { ProfileTab, InfoTab, AnnouceAdminTab, MessageTab },
+  components: { ProfileTab, InfoTab, AnnouceAdminTab, MessageTab, CourseTab },
   created() {
+    this.$store.commit("ShowHeaderUser");
+    this.$store.commit("ShowFooterUser");
+
+
     if (localStorage.token) {
       this.$store.dispatch("userInfo").then(response => {
         if (response.data.errorToken == true) {
           commonService.checkErrorToken(this, response.data.msg);
+          this.$router.push({ name: "not-found-page" });
         } else {
           localStorage.token = response.data.token;
         }
       });
+    } else {
+      this.$router.push({ name: "not-found-page" });
     }
+
+    this.checkPayment();
   },
   data() {
-    return {};
+    return {
+      status: [
+        { code: "00", msg: "Giao dịch thành công" },
+        { code: "07", msg: "Giao dịch bị nghi ngờ là giao dịch gian lận" },
+        {
+          code: "09",
+          msg: "Giao dịch thất bại, tài khoản chưa liên kết internet banking"
+        },
+        { code: "11", msg: "Giao dịch thất bại, hết hạn giao dịch" },
+        { code: "08", msg: "Giao dịch thất bại, ngân hàng bảo trì" }
+      ]
+    };
   },
   methods: {
     goTab(flag) {
       this.$store.commit("changeTab", flag);
+    },
+    checkPayment() {
+      let flag = false;
+      this.status.forEach(stt => {
+        if (this.$route.query.status == stt.code) {
+          icon = "";
+          stt.code == "00" ? (icon = "success") : (icon = "error");
+          this.$swal({
+            icon: icon,
+            title: stt.msg
+          });
+          flag = true;
+          this.$store.commit('changeTab', 'course-tab')
+        }
+      });
+      if (flag == false && this.$route.query.status != null) {
+        this.$swal({
+          icon: "error",
+          title: "Đã xảy ra lỗi!"
+        });
+      }
     }
   },
   computed: {

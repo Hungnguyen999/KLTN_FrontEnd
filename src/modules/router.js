@@ -9,6 +9,8 @@ import InstructorCoursePage from "./InstructorCoursePage/InstructorCoursePage"
 import InstructorLessonPage from "./InstructorLessonPage/InstructorLessonPage"
 import InstructorMessagePage from "./InstructorMessagePage/InstructorMessagePage"
 import InstructorAnnoucementPage from "./InstructorAnnoucementPage/InstructorAnnoucementPage"
+import ForgotPasswordPage from "./ForgotPasswordPage/ForgotPasswordPage"
+import SearchPage from "./SearchPage/SearchPage.vue"
 import Cart from "./Cart/Cart.vue";
 export default [
     // Guest
@@ -25,12 +27,18 @@ export default [
     {
         path: 'course/:id',
         name: 'course-detail-page',
+        props: true,
         component: CoursePage
     },
     {
-        path: 'course/:id/lesson',
+        path: 'courseLesson/:id',
         name: 'lesson-page',
         component: VideoCoursePage
+    },
+    {
+        path: 'search',
+        name: 'search-page',
+        component: SearchPage
     },
     // user
     {
@@ -86,6 +94,11 @@ export default [
                 }
             }
         ]
+    },
+    {
+        path: '/forgotPassword',
+        name: 'forgot-password-page',
+        component: ForgotPasswordPage
     },
     {
         path: '/404',

@@ -8,7 +8,7 @@
       >{{category.name}}</v-tab>
     </v-tabs>
 
-    <v-app style="padding-top: 1rem;height: 20rem">
+    <v-app style="padding-top: 1rem;height: 23rem;margin-bottom: 1rem;">
       <div id="itemCollection" class="carousel slide" data-ride="carousel" style="width: 100%;">
         <div class="carousel-inner">
           <div
@@ -19,7 +19,7 @@
           >
             <div class="my-row" style="width: 100%;">
               <div class="item" v-for="(course, indexc) in temp.slide" :key="indexc">
-                <Item :course="course"></Item>
+                <Item v-on:openLoginModal="openLoginModal" :course="course"></Item>
               </div>
             </div>
           </div>
@@ -35,10 +35,15 @@
             </div>
           </div>
         </div>
-        <v-btn dark style="position: absolute;top: 7rem;left: -1.5rem" fab @click="back()">Back</v-btn>
-        <v-btn dark style="position: absolute;top: 7rem;right: -1.5rem" fab @click="next()">Next</v-btn>
+        <v-btn style="position: absolute;top: 7rem;left: -1.5rem" fab @click="back()">
+          <v-icon size="2rem">mdi-chevron-left</v-icon>
+        </v-btn>
+        <v-btn style="position: absolute;top: 7rem;right: -1.5rem" fab @click="next()">
+          <v-icon size="2rem">mdi-chevron-right</v-icon>
+        </v-btn>
       </div>
     </v-app>
+    <button v-b-modal.login-modal ref="open"></button>
   </div>
 </template>
 <script>
@@ -56,7 +61,7 @@ export default {
     return {
       categorySelected: {},
       topCourseList: [],
-      perSlide: 3,
+      perSlide: 5,
       courseList: []
     };
   },
@@ -88,6 +93,9 @@ export default {
       }
       //console.log(courseList);
       this.courseList = courseList;
+    },
+    openLoginModal() {
+      this.$refs.open.click()
     }
   },
   computed: {

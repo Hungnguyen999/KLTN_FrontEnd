@@ -27,6 +27,21 @@ export default {
     userLessonObject: state => state.userLessonState.object,
     userCourseLikeList: state => state.userCourseLike.list,
     userCourseLikeLoading: state => state.userCourseLike.loading,
+    userCoursePriceTierList: state => state.userPriceTierState.list,
+    userCoursePriceTierLoading: state => state.userPriceTierState.loading,
+    userPublicCourseList: state => state.userPublicCourseState.list,
+    userPublicCourseLoading: state => state.userPublicCourseState.loading,
+    userForgotPasswordLoading: state => state.userForgotPassword.loading,
+    userCourseListCartList: state => state.userCourseListCartState.list,
+    userCourseListCartLoading: state => state.userCourseListCartState.loading,
+    userStudentCourseList: state => state.userStudentCourseState.list,
+    userStudentCourseLoading: state => state.userStudentCourseState.loading,
+    userStudentCourseLessonList: state => state.userStudentCourseLessonState.list,
+    userStudentCourseLessonLoading: state => state.userStudentCourseLessonState.loading,
+    userCurrentVideoLesson: state => state.userCurrentVideoState.object,
+    userStudentCourseLessonCommentList: state => state.userStudentCourseLessonCommentState.list,
+    userStudentCourseLessonCommentLoading: state => state.userStudentCourseLessonCommentState.loading,
+    userDeleteCommentLoading: state => state.userDeleteCommentState.loading,
     // guest
     guestCategoryList: state => state.guestCategoryState.list,
     guestCategoryLoading: state => state.guestCategoryState.loading,
@@ -36,6 +51,26 @@ export default {
     guestBotObject: state => state.guestMessageBotState.object,
     guestCategoryTopCourseList: state => state.guestCategoryWithTopCouseState.list,
     guestCategoryTopCourseLoading: state => state.guestCategoryWithTopCouseState.loading,
+    hideHeader: state => state.headerStateUser.hide,
+    hideFooter: state => state.footerStateUser.hide,
+    guestHideAutoAnswer: state => state.guestAutoAnswerState.hide,
+    guestCourseDetailObject: state => state.guestCourseDetail.object,
+    guestCourseDetailLoading: state => state.guestCourseDetail.loading,
+    historyCourseList: state => state.historyCourseState.list,
+    guestSearchList: state => state.guestSearchState.list,
+    guestSearch: state => state.guestSearchState.search,
+    guestSearchLoading: state => state.guestSearchState.loading,
+
+
+
+
+
+
+
+
+
+
+
 
 
     // hung

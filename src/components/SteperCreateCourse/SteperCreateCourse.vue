@@ -2,15 +2,17 @@
   <div>
     <v-stepper v-model="e1">
       <v-stepper-header>
-        <v-stepper-step step="1" :complete="e1 > 1">Đề tài và lĩnh vực</v-stepper-step>
+        <v-stepper-step step="1" :complete="e1 > 0">Đề tài và lĩnh vực</v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step step="2" :complete="e1 > 1">Ảnh đại diện</v-stepper-step>
         <v-divider></v-divider>
         <v-stepper-step step="3" :complete="e1 > 2">Mô tả khóa học</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="4" :complete="e1 > 3">Giá tiền</v-stepper-step>
+        <v-stepper-step step="4" :complete="e1 > 3">Kiến thức đạt được</v-stepper-step>
         <v-divider></v-divider>
-        <v-stepper-step step="5">Hoàn thành</v-stepper-step>
+        <v-stepper-step step="5" :complete="e1 > 4">Giá tiền</v-stepper-step>
+        <v-divider></v-divider>
+        <v-stepper-step step="6">Hoàn thành</v-stepper-step>
       </v-stepper-header>
       <v-stepper-items>
         <v-stepper-content step="1">
@@ -23,7 +25,6 @@
                 <div class="col-7">
                   <v-select
                     v-model="selectedCategory"
-                    menu-props="auto"
                     :loading="userGetCategoryLoading"
                     :items="loadCurrentCategory"
                     @change="updateCurrentTopic()"
@@ -40,10 +41,9 @@
                     chips
                     multiple
                     menu-props="auto"
-                    :items="loadCurrentTopic"
-                    :loading="userGetCategoryLoading"
-                    item-value="array"
                     v-model="selectedTopic"
+                    :items="currentTopic"
+                    :loading="userGetCategoryLoading"
                     style="margin-top: -1.5rem;"
                     @change="checkLimit()"
                   ></v-select>
@@ -85,6 +85,34 @@
           </v-card>
         </v-stepper-content>
         <v-stepper-content step="4">
+          <v-card class="mb-12" color="white">
+            <h3>Những kiến thức sau khi học</h3>
+
+            <v-btn
+              rounded
+              style="position:absolute;right:0;top:0"
+              color="warning"
+              @click="addWhatYouLearn"
+            >Thêm</v-btn>
+            <div id="whatYouLearn-content" ref="whatYouLearnContent">
+              <div class="row learn-item" v-for="(learn,index) in course.whatYouLearn" :key="index">
+                <div class="col-11">
+                  <v-text-field
+                    :id="'learn'+index"
+                    dense
+                    v-model="learn.text"
+                    outlined
+                    :label="'Kiến thức: #'+(index+1)"
+                  ></v-text-field>
+                </div>
+                <div class="col-1">
+                  <v-icon v-if="index > 0" @click="removeLearn(learn)">mdi-close-circle</v-icon>
+                </div>
+              </div>
+            </div>
+          </v-card>
+        </v-stepper-content>
+        <v-stepper-content step="5">
           <v-card class="mb-12" color="white" height="22rem">
             <h3>Course Price Tier</h3>
             <span>
@@ -105,7 +133,13 @@
                   </div>
                   <div></div>
                   <div>
-                    <v-select v-model="selectedTierPrice" dense :items="price" label="Giá" outlined></v-select>
+                    <v-select
+                      v-model="selectedTierPrice"
+                      dense
+                      :items="priceTier"
+                      label="Giá"
+                      outlined
+                    ></v-select>
                   </div>
                   <div></div>
                   <div>
@@ -119,7 +153,7 @@
             </div>
           </v-card>
         </v-stepper-content>
-        <v-stepper-content step="5">
+        <v-stepper-content step="6">
           <v-card class="mb-12 text-center" style="padding-top: 5rem" color="white" height="22rem">
             <button
               v-if="!userCourseLoading"
@@ -160,6 +194,7 @@ import { mapGetters } from "vuex";
 import { CommonService } from "../../service/common.service.js";
 var commonService = new CommonService();
 export default {
+  props: ["priceTier"],
   components: { VueEditor },
   created() {
     this.c = this.a + this.b;
@@ -173,22 +208,15 @@ export default {
         this.updateCurrentTopic();
       }
     });
-    this.$store.dispatch("userGetInsCourse")
+    this.$store.dispatch("userGetInsCourse");
   },
   data() {
     return {
       selectedMoneyType: "",
       selectedTierPrice: "",
       monneyType: [{ value: 1, text: "VND" }],
-      price: [
-        { value: 1, text: "free" },
-        { value: 2, text: "$19.99 (tier 1)" },
-        { value: 3, text: "$29.99 (tier 2)" },
-        { value: 4, text: "$39.99 (tier 3)" },
-        { value: 5, text: "$49.99 (tier 4)" }
-      ],
       e1: 1,
-      maxStep: 5,
+      maxStep: 6,
       selectedTopic: [],
       currentTopic: [],
       currentCategory: [],
@@ -198,7 +226,8 @@ export default {
         topics: [],
         name: "",
         imageInput: {},
-        description: ""
+        description: "",
+        whatYouLearn: [{ text: "" }]
       }
     };
   },
@@ -222,14 +251,14 @@ export default {
       this.selectedTopic = [];
       for (let i = 0; i < this.currentCategory.length; i++) {
         if (this.selectedCategory == this.currentCategory[i].value) {
-          selected = this.currentCategory[i];
+          for (let j = 0; j < this.currentCategory[i].topics.length; j++) {
+            this.currentTopic.push({
+              value: this.currentCategory[i].topics[j].topic_id,
+              text: this.currentCategory[i].topics[j].name
+            });
+          }
+          break;
         }
-      }
-      if (selected.topics && selected.topics.length > 0) {
-        //console.log(selected.topics)
-        selected.topics.forEach(function(topic) {
-          vm.currentTopic.push({ value: topic.topc_id, text: topic.name });
-        });
       }
     },
     handleGetData() {
@@ -248,6 +277,13 @@ export default {
       }
     },
     closeModal(flag) {
+      this.course = {
+        topics: [],
+        whatYouLearn: [{ text: "" }]
+      };
+      this.selectedTopic = [];
+      this.e1 = 1;
+      this.selectedTierPrice = "";
       this.$emit("closeModal", false, flag);
     },
     setImage(e) {
@@ -269,16 +305,18 @@ export default {
         this.course.name == "" ||
         this.selectedCategory == "" ||
         this.selectedTopic.length == 0 ||
-        this.course.description == ""
+        this.course.description == "" ||
+        this.course.whatYouLearn.length == 0
       ) {
         return true;
       } else return false;
     },
     insertCourse() {
-      let vm = this
+      let vm = this;
       if (!this.emptyCourse()) {
         this.course.category_id = this.selectedCategory;
-        this.course.topics = this.selectedTopic
+        this.course.topics = this.selectedTopic;
+        this.course.priceTier = this.selectedTierPrice;
         this.$store.dispatch("userInsertCourse", this.course).then(response => {
           let icon = "success";
           if (response.data.RequestSuccess == false) icon = "error";
@@ -287,7 +325,7 @@ export default {
             title: "Thông Báo",
             text: response.data.msg
           }).then(() => {
-            vm.closeModal(true)
+            vm.closeModal(true);
           });
         });
       } else {
@@ -297,20 +335,31 @@ export default {
           text: "Nhập thiếu thông tin"
         });
       }
+    },
+    addWhatYouLearn() {
+      this.course.whatYouLearn.push({ text: "" });
+      let vm = this;
+      setTimeout(() => {
+        let container = document.getElementById("whatYouLearn-content");
+        let div = document.getElementById(
+          "learn" + (vm.course.whatYouLearn.length - 1)
+        );
+        container.scrollTop = container.scrollTop + div.clientHeight + 30;
+      }, 100);
+    },
+    removeLearn(learn) {
+      let index = this.course.whatYouLearn.indexOf(learn);
+      this.course.whatYouLearn.splice(index, 1);
     }
   },
   computed: {
     ...mapGetters({
       userGetCategories: "userGetCategories",
       userGetCategoryLoading: "userGetCategoryLoading",
-      userCourseList: "userCourseList",
       userCourseLoading: "userCourseLoading"
     }),
     loadCurrentCategory() {
       return this.currentCategory;
-    },
-    loadCurrentTopic() {
-      return this.currentTopic;
     },
     loadSelectedTopic() {
       return this.selectedTopic;
@@ -325,6 +374,21 @@ export default {
 .my-grid {
   display: grid;
   grid-template-columns: 15% 5% 60% 5% 10%;
+}
+.learn-item {
+  margin-top: -1.5rem !important;
+  height: 5rem;
+}
+#whatYouLearn-content {
+  border: 3px solid rgb(236, 226, 226);
+  border-radius: 5px;
+  margin-top: 1rem;
+  width: 100%;
+  min-height: 18.9rem;
+  max-height: 18.9rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1.5rem 0.5rem 0.5rem 0.5rem;
 }
 
 @import "~vue2-editor/dist/vue2-editor.css";

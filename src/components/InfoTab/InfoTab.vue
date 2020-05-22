@@ -2,7 +2,7 @@
   <div>
     <v-tab-item value="info-tab">
       <div v-if="!accountLoading" class="row">
-        <div class="col-4 text-left">
+        <div class="col-4 text-left" v-if="editAccount.social_id == null">
           <div>
             <label>
               Tài khoản:
@@ -24,7 +24,7 @@
             >Đổi mật khẩu ?</button>
           </div>
         </div>
-        <div class="col-4 text-left">
+        <div class="col-4 text-left" >
           <div>
             <label>
               Họ tên:
@@ -132,11 +132,15 @@ import apiConfig from "../../API/api.json";
 export default {
   props: ["account", "accountLoading"],
   beforeUpdate() {
-    this.avatarURL =
-      apiConfig.apiURL +
-      "/uploads/users/" +
-      this.editAccount.user_id +
-      "/avatar.png";
+    if (this.editAccount.social_id != null && this.editAccount.avatar != null) {
+      this.avatarURL = this.editAccount.avatar
+    } else {
+      this.avatarURL =
+        apiConfig.apiURL +
+        "/uploads/users/" +
+        this.editAccount.user_id +
+        "/avatar.png";
+    }
   },
   watch: {
     account(newVal) {
@@ -201,8 +205,7 @@ export default {
       });
     },
     cancel(flag) {
-      if(flag==null)
-        this.dialog = false;
+      if (flag == null) this.dialog = false;
       this.currentPassword = "";
       this.newPassword = "";
       this.confirm = "";
@@ -218,7 +221,7 @@ export default {
         .then(response => {
           vm.RequestSuccess = response.data.RequestSuccess;
           vm.msg = response.data.msg;
-          vm.cancel(1)
+          vm.cancel(1);
         });
     }
   },

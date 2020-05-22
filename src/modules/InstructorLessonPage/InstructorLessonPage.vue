@@ -53,8 +53,14 @@
             <hr />
             <div class="row" style="margin: 0">
               <div class="col-6" style="padding: 0;padding-left: 2rem">
-                <div class="player-container">
-                  <VideoPlayer ref="video" :lesson="loadSelectedLesson" :options="videoOptions"></VideoPlayer>
+                <div class="player-container">  
+                  <b-embed
+                    :src="videoURL + '/'+loadSelectedLesson.course_id +'/' +loadSelectedLesson.lesson_id+'.mp4'"
+                    type="iframe"
+                    aspect="16by9"
+                    allowfullscreen
+                  ></b-embed>
+                  <!-- <VideoPlayer ref="video" :lesson="loadSelectedLesson" :options="videoOptions"></VideoPlayer> -->
                 </div>
               </div>
               <div class="col-6" style="padding: 0;padding-left: 2rem">
@@ -77,6 +83,7 @@
                 <v-btn
                   v-if="edit"
                   @click="edit = false"
+                  id="fix-button"
                   color="yellow darken-1"
                   v-b-toggle.collapse-update-lesson
                 >Hủy bỏ</v-btn>
@@ -171,9 +178,9 @@ import { mapGetters } from "vuex";
 //import UTF8 from "../../assets/UTF8.json"
 import "../../../node_modules/vue-core-video-player/dist/vue-core-video-player.umd.js";
 import apiConfig from "../../API/api.json";
-import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
+// import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
 export default {
-  components: { VideoPlayer },
+  //components: { VideoPlayer },
   created() {
     this.$store.dispatch("userGetInsCourse").then(() => {
       if (this.$route.course_id != "") {
@@ -241,7 +248,7 @@ export default {
       if (FileReader && files && files.length) {
         vm.updateLesson.videoInput = files[0];
       }
-      console.log(vm.updateLesson.videoInput)
+      console.log(vm.updateLesson.videoInput);
     },
     refresh() {
       this.newLesson = {
@@ -314,15 +321,15 @@ export default {
               title: "Thông Báo",
               text: response.data.msg
             }).then(() => {
-              if(response.data.RequestSuccess === true) {
-                vm.dialogLessonDetail = false
-                vm.edit = false
+              if (response.data.RequestSuccess === true) {
+                vm.dialogLessonDetail = false;
+                document.getElementById("fix-button").click();
               }
             });
           });
         this.refresh();
       } else {
-        console.log(this.updateLesson)
+        console.log(this.updateLesson);
         this.$swal({
           icon: "error",
           title: "Thông Báo",

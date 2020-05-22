@@ -113,10 +113,10 @@ export default {
     },
     user_lesson_success(state, data) {
         state.userLessonState.loading = false
-        if(data.list) {
+        if (data.list) {
             state.userLessonState.list = data.list
         }
-        if(data.object) {
+        if (data.object) {
             state.userLessonState.object = data.object
         }
     },
@@ -128,10 +128,10 @@ export default {
     },
     admin_question_bot_success(state, data) {
         state.adminQuestionBotState.loading = false
-        if(data.list) {
+        if (data.list) {
             state.adminQuestionBotState.list = data.list
         }
-        if(data.object) {
+        if (data.object) {
             state.adminQuestionBotState.object = data.object
         }
     },
@@ -143,10 +143,10 @@ export default {
     },
     admin_message_bot_success(state, data) {
         state.adminMessageBotState.loading = false
-        if(data.list) {
+        if (data.list) {
             state.adminMessageBotState.list = data.list
         }
-        if(data.object) {
+        if (data.object) {
             state.adminMessageBotState.object = data.object
         }
     },
@@ -158,10 +158,10 @@ export default {
     },
     guest_message_bot_success(state, data) {
         state.guestMessageBotState.loading = false
-        if(data.list) {
+        if (data.list) {
             state.guestMessageBotState.list = data.list
         }
-        if(data.object) {
+        if (data.object) {
             state.guestMessageBotState.object = data.object
         }
     },
@@ -184,66 +184,64 @@ export default {
     guest_category_topCourse_error(state) {
         state.guestCategoryWithTopCouseState.loading = false
     },
-    
-    user_ATC_request(state){
-        state.userATCState.loading = true
+
+    user_ATC_request(state) {
+        state.userCourseListCartState.loading = true
     },
-    user_ATC_success(state, data){
-        if(data.carts){
-            state.userATCState.carts = data.carts
-            //alert('here')
-            console.log(data.carts)
+    user_ATC_success(state, data) {
+        if (data.list) {
+            state.userCourseListCartState.list = data.list
         }
-        if(data.total){
-            state.userATCState.total = data.total
+        if(data.object) {
+            state.userCourseListCartState.object = data.object
         }
-        state.userATCState.loading = false
+        state.userCourseListCartState.loading = false
     },
-    user_ATC_error(state){
-        state.userATCState.loading = false
+    user_ATC_error(state) {
+        state.userCourseListCartState.loading = false
     },
-    user_courseComment_request(state){
+    user_courseComment_request(state) {
         state.userCommentState.loading = true
     },
-    user_courseComment_success(state,data){
-        console.log("cái này là check",data.list)
+    user_courseComment_success(state, data) {
+        console.log("cái này là check", data.list)
         state.userCommentState.list = data.list
         state.userCommentState.loading = false
     },
-    user_courseComment_error(state){
+    user_courseComment_error(state) {
         state.userCommentState.loading = false
     },
-    guest_top5Course_request(state){
+    guest_top5Course_request(state) {
         state.guestTop5CourseState.loading = true
     },
-    guest_top5Course_success(state){
+    guest_top5Course_success(state) {
         state.guestTop5CourseState.loading = false
     },
-    guest_top5Course_error(state){
+    guest_top5Course_error(state) {
         state.guestTop5CourseState.loading = false
     },
-    getInfoInstructor_request(state){
+    getInfoInstructor_request(state) {
         state.infoInstructorState.loading = true
     },
-    getInfoInstructor_success(state){
+    getInfoInstructor_success(state) {
         state.infoInstructorState.loading = false
     },
-    getInfoInstructor_error(state){
+    getInfoInstructor_error(state) {
         state.infoInstructorState.loading = false
     },
-    guest_getDetailCourse_request(state){
+    guest_getDetailCourse_request(state) {
         state.guestDetailCourseState.loading = true
     },
-    guest_getDetailCourse_success(state,data){
-        if(data.detail){
+    guest_getDetailCourse_success(state, data) {
+        if (data.detail) {
             state.guestDetailCourseState.detailCourse = data.detail
         }
-        if(data.amounReview){
+        if (data.amounReview) {
             state.guestDetailCourseState.amountReview = data.amountReview
         }
         state.guestDetailCourseState.loading = false
     },
-    guest_getDetailCourse_error(state){
+    guest_getDetailCourse_error(state) {
         state.guestDetailCourseState.loading = false
     },
     user_course_like_request(state) {
@@ -251,14 +249,161 @@ export default {
     },
     user_course_like_success(state, data) {
         state.userCourseLike.loading = false
-        if(data.list) {
+        if (data.list) {
             state.userCourseLike.list = data.list
         }
-        if(data.object) {
+        if (data.object) {
             state.userCourseLike.object = data.object
         }
     },
     user_course_like_error(state) {
         state.userCourseLike.loading = false
+    },
+    ShowHeaderUser(state) {
+        state.headerStateUser.hide = false
+    },
+    HideHeaderUser(state) {
+        state.headerStateUser.hide = true
+    },
+    ShowFooterUser(state) {
+        state.footerStateUser.hide = false
+    },
+    HideFooterUser(state) {
+        state.footerStateUser.hide = true
+    },
+    HideAutoAnswer(state) {
+        state.guestAutoAnswerState.hide = true
+    },
+    user_course_price_tier_request(state) {
+        state.userPriceTierState.loading = true
+    },
+    user_course_price_tier_success(state, data) {
+        state.userPriceTierState.loading = false
+        if (data.list) {
+            state.userPriceTierState.list = data.list
+        }
+        if (data.object) {
+            state.userPriceTierState.object = data.object
+        }
+    },
+    user_course_price_tier_error(state) {
+        state.userPriceTierState.loading = false
+    },
+    user_public_course_request(state) {
+        state.userPriceTierState.loading = true
+    },
+    user_public_course_success(state, data) {
+        state.userPublicCourseState.loading = false
+        if (data.list) {
+            state.userPublicCourseState.list = data.list
+        }
+        if (data.object) {
+            state.userPublicCourseState.object = data.object
+        }
+    },
+    user_public_course_error(state) {
+        state.userPublicCourseState.loading = false
+    },
+    user_forgot_password_request(state) {
+        state.userForgotPassword.loading = true
+    },
+    user_forgot_password_success(state, data) {
+        state.userForgotPassword.loading = false
+        if (data.list) {
+            state.userForgotPassword.list = data.list
+        }
+        if (data.object) {
+            state.userForgotPassword.object = data.object
+        }
+    },
+    user_forgot_password_error(state) {
+        state.userForgotPassword.loading = false
+    },
+    guest_course_detail_request(state) {
+        state.guestCourseDetail.loading = true
+    },
+    guest_course_detail_success(state, data) {
+        state.guestCourseDetail.loading = false
+        if (data.list) {
+            state.guestCourseDetail.list = data.list
+        }
+        if (data.object) {
+            state.guestCourseDetail.object = data.object
+        }
+    },
+    guest_course_detail_error(state) {
+        state.guestCourseDetail.loading = false
+    },
+    updateHistoryCourseList(state) {
+        state.historyCourseState.list = JSON.parse(localStorage.historyCourseList)
+    },
+    user_student_course_request(state) {
+        state.userStudentCourseState.loading = true
+    },
+    user_student_course_success(state, data) {
+        state.userStudentCourseState.loading = false
+        if (data.list) {
+            state.userStudentCourseState.list = data.list
+        }
+        if (data.object) {
+            state.userStudentCourseState.object = data.object
+        }
+    },
+    user_student_course_error(state) {
+        state.userStudentCourseState.loading = false
+    },
+    user_student_lesson_request(state) {
+        state.userStudentCourseLessonState.loading = true
+    },
+    user_student_lesson_success(state, data) {
+        state.userStudentCourseLessonState.loading = false
+        if (data.list) {
+            state.userStudentCourseLessonState.list = data.list
+        }
+        if (data.object) {
+            state.userStudentCourseLessonState.object = data.object
+        }
+    },
+    user_student_lesson_error(state) {
+        state.userStudentCourseLessonState.loading = false
+    },
+    user_set_current_video_link(state, object) {
+        state.userCurrentVideoState.object = object
+    },
+    user_student_lesson_comment_request(state) {
+        state.userStudentCourseLessonCommentState.loading = true
+    },
+    user_student_lesson_comment_success(state, data) {
+        state.userStudentCourseLessonCommentState.loading = false
+        if (data.list) {
+            state.userStudentCourseLessonCommentState.list = data.list
+        }
+        if (data.object) {
+            state.userStudentCourseLessonCommentState.object = data.object
+        }
+    },
+    user_student_lesson_comment_error(state) {
+        state.userStudentCourseLessonCommentState.loading = false
+    },
+    user_student_lesson_comment_delete(state, flag) {
+        state.userDeleteCommentState.loading = flag
+    },
+    guest_search_request(state) {
+        state.guestSearchState.loading = true
+    },
+    guest_search_success(state, data) {
+        state.guestSearchState.loading = false
+        if (data.list) {
+            state.guestSearchState.list = data.list
+        }
+        if (data.object) {
+            state.guestSearchState.object = data.object
+        }
+    },
+    guest_search_error(state) {
+        state.guestSearchState.loading = false
+    },
+    guest_set_search(state, search) {
+        state.guestSearchState.search = search
     }
 }

@@ -1,6 +1,5 @@
 <template>
-<main>
-  <body>
+  <div style="margin-bottom: 3rem">
     <div id="Top" class="col-12">
       <div class="row">
         <div class="container">
@@ -18,13 +17,8 @@
       <div class="row">
         <!--Body-->
         <div class="container1">
-          <div class="row" id="title">
-            <div class="col-5" v-if="this.SOF_getCarts == true">
-              <h4>{{ amountCourse }} course in cart</h4>
-            </div>
-          </div>
 
-          <div class="row" id="body" v-if="this.SOF_getCarts == false">
+          <div class="row" id="body" v-if="userCourseListCartLoading">
             <v-responsive class="mx-left mb-12" max-width="700">
               <v-skeleton-loader
                 ref="skeleton"
@@ -50,7 +44,11 @@
             </v-responsive>
           </div>
 
-          <div class="row" id="body" v-if="this.SOF_getCarts == true && this.amountCourse == 0">
+          <div
+            class="row"
+            id="body"
+            v-if="userCourseListCartList==null || (!userCourseListCartLoading && userCourseListCartList != null && userCourseListCartList.length == 0)"
+          >
             <div class="container">
               <div class="row">
                 <div class="col align-end offset-4" style="margin-left:30%">
@@ -79,92 +77,67 @@
               </div>
             </div>
           </div>
-      
-          <div class="row" id="body" v-else>
-                <h1>sdaaaaaaaa{{ this.userLoadCart }}</h1>
-            <div class="col-8">
-              <div class="row" id="rowCart" v-for="(item,index) in userLoadCart" :key="index">
-                <div class="col-2">
-                  <img
-                    alt="The Complete Storytelling Course for Speaking &amp; Presenting"
-                    width="110%"
-                    height="100%"
-                    class
-                    src="https://i.udemycdn.com/course/125_H/1854668_0473_3.jpg"
-                    srcset="https://i.udemycdn.com/course/125_H/1854668_0473_3.jpg 1x, https://i.udemycdn.com/course/240x135/1854668_0473_3.jpg 2x"
-                  />
-                </div>
-                <div class="col-5">{{ item.name }}</div>
-                <div class="col-2" id="option">
-                  <div class="row">
-                    <a style="cursor: pointer;" @click="deleteCarts(item.course_id)">Remove</a>
-                  </div>
-                  <div class="row">
-                    <a style="cursor: pointer;">Move to wishlist</a>
-                  </div>
-                </div>
-                <div class="col-2" id="price">
-                  <div class="row" id="realPrice">
-                    <span>{{ item.priceTier }} VND</span>
-                  </div>
-                  <div class="row">
-                    <del>600.000 VND</del>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-3" id="totalCart" v-if="this.amountCourse > 0">
-              <div>
-                <div class="title">
-                  <div class="row">
-                    <h4>Total</h4>
-                  </div>
-                  <div class="row" :key="this.totalCart">
-                    <h2>{{ totalCart }} VND</h2>
-                  </div>
-                  <div class="row">
-                    <del>550.000 VND</del>
-                  </div>
-                  <div class="row">
-                    <p>91%</p>
-                  </div>
-                  <div class="row">
-                    <router-link type="button" :to="{ name: 'checkout-page'}"  id="buttonCheckout" class="btn btn-lg">Checkout</router-link>
-                  </div>
-                </div>
-              </div>
-              <div class="input-group mb-3" id="inputCoupon">
-                <input
-                  type="text"
-                  class="form-control"
-                  aria-label="Sizing example input"
-                  aria-describedby="inputGroup-sizing-default"
-                  placeholder="Nhập mã giảm giá"
-                />
-                <div class="input-group-append">
-                  <button class="btn btn-danger" type="button" id="button-addon2">Áp dụng</button>
-                </div>
-              </div>
-            </div>
-            <div class="col-3" id="totalCart" v-else>
-              <div class="row">
-                <div class="col-12"></div>
-              </div>
-            </div>
-          </div>
-          <!--end of body-->
-        <Footer></Footer>
         </div>
-        
       </div>
     </div>
-  </body>
-</main>
+    <div
+      class="my-container"
+      v-if="!userCourseListCartLoading && userCourseListCartList.length > 0"
+    >
+    <div style="font-size: 18px">{{userCourseListCartList.length}}&nbsp;Khóa học trong giỏ hàng</div>
+      <div class="row">
+        <div class="col-9">
+          <div class="course-item" v-for="(course,index) in userCourseListCartList" :key="index">
+            <div class="row">
+              <div class="col-2">
+                <router-link :to="{name: 'course-detail-page', params: {id: course.course_id}}">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQK60mFUNV8eXgrHZYzJwIKiYTPPhPW_jqFKlUcEcQGvxrF6F21&usqp=CAU"
+                  />
+                </router-link>
+              </div>
+              <div class="col-6">
+                <div>
+                  <router-link :to="{name: 'course-detail-page', params: {id: course.course_id}}">
+                    <b>{{course.name}}</b>
+                  </router-link>
+                </div>
+                <div>By&nbsp;{{course.instructor.name}}</div>
+              </div>
+              <div class="col-2 offset-2">
+                <b
+                  style="color: red;"
+                >{{course.price_tier.priceTier.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}}</b>
+              </div>
+            </div>
+
+            <a @click="deleteCart(course.course_id)" class="my-link" href="#">Xóa</a>
+          </div>
+        </div>
+        <div class="col-3" style="padding-left: 1.5rem;">
+          <div style="font-size: 18px">Tổng tiền:</div>
+          <div style="margin: 1rem 0">
+            <h2>{{totalPrice.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}}</h2>
+          </div>
+          <div>
+            <v-btn
+              height="3rem"
+              width="100%"
+              style="background-color:#ec5252;color:white"
+              :href="apiURL + '/user/payment?token='+token"
+              target="_blank"
+            >Thanh toán</v-btn>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
+import Recommend from "../../components/RecommendItem/RecommendItem"
 import { mapGetters } from "vuex";
 import Swal from "../../../node_modules/sweetalert2/dist/sweetalert2.all";
-import Footer from "../../view/Footer/Footer";
+import apiConfig from "../../API/api.json"
 export default {
   data() {
     return {
@@ -173,66 +146,75 @@ export default {
       tile: false,
       type: "list-item-avatar-three-line",
       types: [],
-      //SOF: status of function
-      SOF_getCarts: false,
-      amountCourse: 0,
-
-      totalCart: 0,
-      totalSale: 0
+      totalPrice: 0,
+      apiURL: apiConfig.apiURL,
+      token: localStorage.token
     };
-  },
-  watch: {},
-  mounted() {
-    this.types = Object.keys(this.$refs.skeleton.rootTypes);
   },
   created() {
     this.$store.dispatch("userGetCart").then(() => {
-      this.SOF_getCarts = true;
-      console.log("dsad", this.userLoadCart);
-      console.log("Đây là loadCartsTotal", this.userLoadCartTotal);
-      this.totalCart = this.userLoadCartTotal;
+      this.calculateTotalPrice();
     });
   },
 
   methods: {
-    deleteCarts(index) {
-      Swal.fire({
-        title: "Xóa khóa học khỏi giỏ hàng ?",
-        text: "Thao tác sẽ không thể hoàn lại !",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Xóa"
-      }).then(result => {
-        if (result.value) {
-          this.$store.dispatch("userDeleteCart", index).then(response => {
-            console.log("Đây là id của khóa học trong carts", index);
-            console.log("here", response.data);
-            this.amountCourse = this.userLoadCart.length;
-            this.$store.dispatch("userGetCart").then(() => {
-              this.SOF_getCarts = true;
-              this.amountCourse = this.userLoadCart.length;
-              this.totalCart = this.userLoadCartTotal;
-            });
-          });
-          Swal.fire("Đã xóa !", "Đã xóa khóa học", "success");
-        }
+    deleteCart(course_id) {
+      this.$store.dispatch("userDeleteCart", course_id);
+    },
+    calculateTotalPrice() {
+      this.totalPrice = 0;
+      this.userCourseListCartList.forEach(course => {
+        this.totalPrice += course.price_tier.priceTier;
       });
     }
   },
-  components: {
-    Footer
-  },
   computed: {
     ...mapGetters({
-      userLoadCart: "userLoadCart",
-      userLoadCartTotal: "userLoadCartTotal"
+      userCourseListCartList: "userCourseListCartList",
+      userCourseListCartLoading: "userCourseListCartLoading"
     })
   }
 };
 </script>
 <style lang="scss" scoped>
+.my-container {
+  width: 86%;
+  margin: 1rem 7%;
+}
+a {
+  text-decoration: none;
+  color: black;
+  &:hover {
+    text-decoration: none;
+    color: black;
+  }
+}
+
+.my-link {
+  position: absolute;
+  top: 1.5rem;
+  right: 10rem;
+  width: 3rem;
+  height: 1.5rem;
+  z-index: 3;
+  text-align: center;
+  color: #007791;
+  :hover {
+    text-decoration: underline;
+  }
+}
+.course-item {
+  .row {
+    border: 1px solid silver;
+    .col-2 {
+      img {
+        width: 100%;
+        height: 4rem;
+      }
+    }
+  }
+}
+
 #Top {
   background-color: #505763;
   width: 100%;
@@ -243,18 +225,12 @@ export default {
       width: 100%;
       color: whitesmoke;
     }
-    .col-9 {
-    }
   }
 }
 .container1 {
   text-align: left;
   margin-left: 12%;
   width: 100%;
-  .row {
-    .col-12 {
-    }
-  }
   #body {
     width: 100%;
     .col-8 {
@@ -263,10 +239,6 @@ export default {
       width: 100%;
       #rowCart {
         border: solid 0.2px rgb(247, 248, 250);
-        .col-2 {
-        }
-        .col-5 {
-        }
         #option {
           color: rgb(51, 102, 255);
           font-size: 10pt;

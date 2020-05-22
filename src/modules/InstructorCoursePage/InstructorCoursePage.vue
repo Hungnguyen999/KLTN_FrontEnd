@@ -28,7 +28,11 @@
             <i class="far fa-play-circle fa-lg"></i>&nbsp;Tạo khóa học
           </button>
           <v-dialog v-model="dialog" persistent width="1300">
-            <SteperCreateCourse style="margin:0" v-on:closeModal="closeModal"></SteperCreateCourse>
+            <SteperCreateCourse
+              :priceTier="handlePriceTier(userCoursePriceTierList)"
+              style="margin:0"
+              v-on:closeModal="closeModal"
+            ></SteperCreateCourse>
           </v-dialog>
         </div>
       </div>
@@ -36,7 +40,7 @@
         <div v-for="(course,index) in loadCourseList" :key="index">
           <InsCourseItem :course="course" :loading="loadLoading"></InsCourseItem>
         </div>
-        <div v-if="loadCourseList.length == 0" class="text-center">
+        <div v-if="loadCourseList == null || loadCourseList.length == 0" class="text-center">
           <img
             style="width: 10rem;"
             src="https://cdn3.iconfinder.com/data/icons/folders-files/512/empty_folder-512.png"
@@ -74,6 +78,7 @@ export default {
       this.courseList = this.userCourseList;
       this.updateTempCourseList();
     });
+    this.$store.dispatch("userGetCoursePriceTier");
   },
   data() {
     return {
@@ -93,7 +98,7 @@ export default {
       loading: false,
       dialog: false,
       flagSort: 1,
-      searchText: ""
+      searchText: "",
     };
   },
   methods: {
@@ -171,12 +176,29 @@ export default {
       this.dialog = value;
       this.courseList = this.userCourseList;
       this.updateTempCourseList();
+    },
+    handlePriceTier(priceTier) {
+      let temp = [];
+      for (let i = 0; i < priceTier.length; i++) {
+        let item = {
+          value: priceTier[i].priceTier_id,
+          text: priceTier[i].priceTier.toLocaleString("it-IT", {
+            style: "currency",
+            currency: "VND"
+          })
+        };
+        if (item.value == 0) item.text = "Free";
+        temp.push(item);
+      }
+      return temp;
     }
   },
   computed: {
     ...mapGetters({
       userCourseList: "userCourseList",
-      userCourseLoading: "userCourseLoading"
+      userCourseLoading: "userCourseLoading",
+      userCoursePriceTierList: "userCoursePriceTierList",
+      userCoursePriceTierLoading: "userCoursePriceTierLoading"
     }),
     loadCourseList() {
       return this.tempCourseList;

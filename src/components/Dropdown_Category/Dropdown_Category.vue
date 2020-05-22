@@ -9,7 +9,9 @@
         aria-haspopup="true"
         aria-expanded="false"
         @mouseover="displayCol2 = false; displayCol3 = false"
-      >Thể loại</button>
+      >
+        <v-icon size="20">mdi-apps</v-icon>&nbsp;Thể loại
+      </button>
       <div
         class="dropdown-menu"
         style="background-color: transparent;padding:0"
@@ -61,20 +63,6 @@
               </span>
             </div>
           </div>
-          <div
-            class="col-4 my-col-3"
-            @mouseover="hoverCol3()"
-            :style="loadDisplayCol3"
-            style="display: none"
-          >
-            <div>
-              <div class="cate-item" v-for="(course,index) in courseInTop" :key="index">
-                <span class="cate-item-grid">
-                  <b>{{topic.name}}</b>
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -86,7 +74,6 @@ export default {
   created() {
     let vm = this;
     this.$store.dispatch("guestGetCategory").then(() => {
-      console.log(vm.guestCategoryList);
     });
   },
   data() {

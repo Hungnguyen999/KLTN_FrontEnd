@@ -78,26 +78,26 @@ export const store = new Vuex.Store({
             list: [],
             object: {}
         },
-        courseState:{
+        courseState: {
             loading: false,
             list: []
         },
-        userCommentState:{
+        userCommentState: {
             loading: false,
-            list:[]
+            list: []
         },
-        guestTop5CourseState:{
+        guestTop5CourseState: {
             loading: false,
             list: [],
             topfive: [],
             count: 0,
         },
-        infoInstructorState:{
+        infoInstructorState: {
             loading: false,
             totalCourse: 0,
             infoInstructor: {}
         },
-        guestDetailCourseState:{
+        guestDetailCourseState: {
             loading: false,
             detailCourse: {},
             amountReview: 0,
@@ -106,7 +106,71 @@ export const store = new Vuex.Store({
             loading: false,
             list: [],
             object: {}
-        }
+        },
+        headerStateUser: {
+            hide: false
+        },
+        footerStateUser: {
+            hide: false
+        },
+        guestAutoAnswerState: {
+            hide: false
+        },
+        userPriceTierState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        userPublicCourseState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        userForgotPassword: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        guestCourseDetail: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        historyCourseState: {
+            list: []
+        },
+        userCourseListCartState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        userStudentCourseState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        userStudentCourseLessonState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        userCurrentVideoState: {
+            object: {}
+        },
+        userStudentCourseLessonCommentState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        userDeleteCommentState: {
+            loading: false
+        },
+        guestSearchState: {
+            loading: false,
+            list: [],
+            object: {},
+            search: ""
+        },
     },
     mutations,
     actions,

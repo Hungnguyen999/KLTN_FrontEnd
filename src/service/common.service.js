@@ -1,3 +1,5 @@
+import apiConfig from "../API/api.json"
+
 export class CommonService {
     checkSmartPhone() {
         if (document.documentElement.clientWidth > 992) {
@@ -19,11 +21,12 @@ export class CommonService {
     checkErrorToken(vm, msg) {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-        
         vm.$swal({
             icon: 'error',
             title: 'Thông báo',
             text: msg
+        }).then(() => {
+            //location.href = apiConfig.baseURL;
         })
     }
 }

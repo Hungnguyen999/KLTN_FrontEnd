@@ -99,6 +99,10 @@ import Collection from "../../components/Collection/Collection";
 import HistoryCourse from "../../components/GuestHistoryCourse/GuestHistoryCourse"
 import { mapGetters } from "vuex";
 export default {
+  created() {
+    this.$store.commit("ShowHeaderUser")
+    this.$store.commit("ShowFooterUser")
+  },
   data() {
     return {
       arrayCategory: [
@@ -115,6 +119,7 @@ export default {
   methods: {
     changeCategory(cate) {
       this.currentCategory = cate;
+      
     }
   },
   computed: {

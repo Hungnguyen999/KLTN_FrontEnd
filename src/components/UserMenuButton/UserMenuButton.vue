@@ -47,7 +47,6 @@ export default {
   methods: {
     goTab(flag) {
       this.$store.commit("changeTab", flag);
-      console.log(flag);
       if (this.$route.name != "my-page") {
         this.$router.push({ name: "my-page" });
       }

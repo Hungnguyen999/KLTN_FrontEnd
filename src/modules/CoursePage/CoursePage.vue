@@ -1,911 +1,578 @@
 <template>
-  <div>
-    <div v-if="!guestGetDetailCourseLoading">
+  <div style="margin-bottom: 10rem">
+    <div v-if="!guestCourseDetailLoading">
       <div class="row" id="stickyInfo" style="background: #29303b;position: relative;">
         <div class="col-7" id="DetailSubject">
-          <h1>{{ this.guestGetDetailCourse.name }}</h1>
-          <h2>Learn to create Process Flowcharts, User Stories, Use k, SWOT, RACI Matrices, Org Charts, User Stories, and more!</h2>
-          <br />
-          <br />
-          <p>4.5 (2,800 ratings) 19,711 students</p>
-          <p>Được hướng dẫn bởi : {{ this.guestGetDetailCourse.user_id }}</p>
+          <h3>{{guestCourseDetailObject.name}}</h3>
+          <p style="color:white">Được đăng bởi:&nbsp;{{guestCourseDetailObject.instructor.name}}</p>
         </div>
         <div class="my-card-container">
-          <img src="https://freepikpsd.com/wp-content/uploads/2019/10/course-%C3%A0-pied-png-3.png" />
+          <img :src="courseURL" />
           <div class="container">
             <div class="row">
               <div class="col-12" style="text-align: center;">
                 <h4>
-                  <span>1.500.000 VND</span>
+                  <span
+                    style="color:red"
+                    v-if="guestCourseDetailObject.price_tier.priceTier_id!=0"
+                  >{{guestCourseDetailObject.price_tier.priceTier.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}}</span>
+                  <span v-else style="color:red">Free</span>
                 </h4>
-                <h6>
-                  <del>2.000.000 VND</del>
-                </h6>
               </div>
             </div>
+            <v-app>
+              <v-btn
+                height="3rem"
+                v-if="guestCourseDetailObject.price_tier.priceTier_id!=0"
+                :loading="userCourseListCartLoading"
+                style="background-color:#ec5252;color:white"
+                @click="addToCart()"
+              >Thêm vào giỏ hàng</v-btn>
+              <v-btn
+                height="3rem"
+                v-else
+                style="background-color:#ec5252;color:white"
+                :loading="userCourseListCartLoading"
+                @click="addToCart()"
+              >Thêm vào kho</v-btn>
+              <router-link
+                style="height: 3rem;border: 1px solid;padding-top: 0.7rem"
+                class="btn-outline-default btn"
+                :to="{name: 'cart-page'}"
+              >Go To Cart</router-link>
+            </v-app>
+          </div>
+        </div>
+      </div>
 
-            <button class="btn btn-danger" @click="AddtoCartDB(1)">Add To Cart</button>
-            <button class="btn" style="border: 1px solid black">Go To Cart</button>
-            <ul>
-              <p style="font-size: 15pt;">This course includes</p>
-              <li>29 hours on-demand video</li>
-              <li>5 downloadable resources</li>
-              <li>Full lifetime access</li>
-              <li>Access on mobile and TV</li>
-              <li>Certificate of Completion</li>
-            </ul>
+      <div class="row">
+        <div class="col-7 offset-1" style="padding-left: 0">
+          <div id="content-container">
+            <h2>Các kiến thức đạt được</h2>
+            <div class="row">
+              <div
+                class="col-6"
+                v-for="(learn,index ) in guestCourseDetailObject.what_you_learn"
+                :key="index"
+              >
+                <span>
+                  <i class="fas fa-check"></i>
+                  {{learn.learn}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div id="description-container">
+            <h2>Mô tả</h2>
+            <div
+              class="my-align"
+              :class="{'miniContent' : !descriptionMore}"
+              v-html="guestCourseDetailObject.description"
+            ></div>
+            <div class="text-center" style="margin-top: 1rem;">
+              <a
+                style="color: black;cursor:pointer"
+                v-if="!descriptionMore"
+                @click="descriptionMore = true"
+              >
+                <b>Xem Thêm</b>
+              </a>
+            </div>
             <hr />
-            <button class="btn btn-primary" style="border: 1px solid black;border-color: #29303b;">
-              <p style="margin-top: 0.3rem;font-size: 15pt;">Share</p>
-            </button>
           </div>
-        </div>
-      </div>
-      <div id="content-container">
-        <h2>What you'll learn</h2>
-        <div class="row">
-          <div class="col-6">
-            <span>
-              <i class="fas fa-check"></i> Communicate confidently in all business and personal situations Communicate in an
-              understandable manner
-            </span>
-          </div>
-          <div class="col-6">
-            <span>
-              <i class="fas fa-check"></i>Communicate in a memorable way
-            </span>
-          </div>
-          <div class="col-6">
-            <span>
-              <i class="fas fa-check"></i> Communicate and influence people
-            </span>
-          </div>
-        </div>
-      </div>
 
-      <div id="requirement-container">
-        <h2>Requirement</h2>
-        <div>
-          <ul style="dot">
-            <li>No prior knowledge exasdasdpected! This course starts from ground-zero.</li>
-            <li>No prior knowledge expected! This course starts from ground-zero.</li>
-            <li>No prior knowledge expected! This course starts from ground-zero.</li>
-          </ul>
-        </div>
-      </div>
+          <div id="introduce-container">
+            <div class="row" style="margin-bottom:0">
+              <div class="col-3">
+                <img
+                  :src="ImageURL"
+                  class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
+                  alt
+                />
+                <div>
+                  <b>
+                    <v-icon size="22">mdi-star</v-icon>
+                    &nbsp;{{instructorAVGStar}}
+                  </b>&nbsp; Instructor rating
+                </div>
 
-    <div class id="description-container">
-      <h2>Description</h2>
-      <p>
-      {{ this.guestGetDetailCourse.description }}
-        <span
-          id="dots"
-        >...</span>
-        <span
-          id="more"
-        ></span>
-      </p>
-      <button @click="Readmore()" id="myBtn">Read more</button>
-    </div>
-
-      <div class id="introduce-container">
-        <div class="col-12">
-          <div class="row">
-            <div class="col-4">
-              <img
-                src="https://i.pinimg.com/originals/c4/c4/dc/c4c4dc0a54efab6050cea7f71e9ba1de.jpg"
-                class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
-                alt
-              />
-              4.7 Instructor Rating
-              114,802 Reviews
-              371,656 Students
-              7 Courses
-            </div>
-            <div class="col-8">
-              <h3>Thông tin cá nhân</h3>Angela Yu
-              Developer and Lead Instructor
-              I'm Angela, I'm a developer with a passion for teaching. I'm the lead instructor at the London App Brewery, London's leading Programming Bootcamp. I've helped hundreds of thousands of students learn to code and change their lives by becoming a developer. I've been invited by companies such as Twitter, Facebook and Google to teach their employees.
-              My first foray into programming was when I was just 12 years old, wanting to build my own Space Invader game. Since then, I've made hundred of websites, apps and games. But most importantly, I realised that my greatest passion is teaching.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="alsobought-container">
-        <!--Top 5 khóa học trong lĩnh vực-->
-        <h2>Students also bought</h2>
-
-        <div class="row" v-for="(item,index) in Top5Course" :key="index">
-          <div class="col-2">
-            <img
-              alt="The Complete Storytelling Course for Speaking &amp; Presenting"
-              width="100%"
-              class
-              src="https://i.udemycdn.com/course/125_H/1854668_0473_3.jpg"
-              srcset="https://i.udemycdn.com/course/125_H/1854668_0473_3.jpg 1x, https://i.udemycdn.com/course/240x135/1854668_0473_3.jpg 2x"
-            />
-          </div>
-          <div class="col-3">
-            <b>{{ item.name }}</b>
-          </div>
-          <div class="col-1">
-            {{ item.rating }}
-            <span class="fa fa-star checked"></span>
-          </div>
-          <div class="col-2">
-            {{ item.eroller }}
-            <i class="fas fa-user"></i>
-          </div>
-          <div class="col-3">
-            <div class="row" style="margin-top: -12px;">
-              <div class="col-7">
-                <p>1.000.000 VND</p>
-                <del>200.000 VND</del>
-              </div>
-              <div class="col-5">
-                <div class="col-3" style="cursor: pointer;font-size: 1.5rem;">
-                  <i
-                    type="button"
-                    @click="AddToWishList(index)"
-                    class="fas fa-heart"
-                    :id="[checkWishList(item.name) ? 'icon-heart':'icon-heart-unactive' ]"
-                  ></i>
+                <div>
+                  <b>
+                    <v-icon size="22">mdi-chat</v-icon>
+                    &nbsp;{{instructorReview}}
+                  </b>&nbsp; Reviews
+                </div>
+                <div>
+                  <b>
+                    <v-icon size="22">mdi-play-circle</v-icon>&nbsp;
+                    <span
+                      v-if="guestCourseDetailObject.instructor.ins_courses!=null"
+                    >{{guestCourseDetailObject.instructor.ins_courses.length}}</span>
+                    <span v-else>0</span>
+                  </b>
+                  &nbsp;Course
                 </div>
               </div>
-            </div>
-          </div>
-          <hr />
-        </div>
-      </div>
-      <div class="container" id="feedback-container">
-        <h2>Student feedback</h2>
-        <div class="row" id="row-average-rating">
-          <div class="col-2">
-            <div class="container" id="average-rating">
-              <div class="row justify-content-md-center">
-                <div class="col-md-auto">{{ this.CourseRatingValue }}</div>
-              </div>
-              <div class="row justify-content-md-center">
+              <div class="col-9" style="padding-left: 0">
+                <h3>
+                  <a href="#">{{guestCourseDetailObject.instructor.name}}</a>
+                </h3>
                 <div
-                  class="col-md-auto"
-                  style="font-size: 10pt;margin-top: -30px;"
-                >Đánh giá khóa học</div>
-              </div>
-              <div class="row justify-content-md-center">
-                <div class="col-md-auto">
-                  <Rating
-                    class="text-center"
-                    v-bind:increment="0.1"
-                    :show-rating="false"
-                    :read-only="true"
-                    :rating="CourseRatingValue"
-                    :star-size="20"
-                    style="margin-top:-50px"
-                  ></Rating>
+                  class="my-align"
+                  :class="{'miniContent' : !authorMore}"
+                >{{guestCourseDetailObject.instructor.profile}}</div>
+                <div class="text-center" style="margin-top: 1rem;">
+                  <a
+                    style="color: black;cursor:pointer"
+                    v-if="!authorMore"
+                    @click="authorMore = true"
+                  >
+                    <b>Xem Thêm</b>
+                  </a>
                 </div>
               </div>
             </div>
+            <hr style="margin-top: -0.5rem" />
           </div>
-          <div class="col-10">
-            <div class="col-sm-6 col-md-4 col-lg-9">
-              <!--Component rating star-->
-              <!--Phần hàng rating star-->
-              <div class="row" id="row-rating-star">
-                <div class="col-12">
-                  <span>
-                    <div class="row" id="rowBig">
-                      <div
-                        class="row"
-                        @click="chooseRating(rating1),showReview(rating1)"
-                        :class="{ 'ratingHover': isHover1 && loadIsHover!=0 }"
-                      >
-                        <div class="col-8" style="margin: 5px;">
-                          <b-progress
-                            :class="{ 'ratingHover': isHover1 && loadIsHover!=0 }"
-                            variant="secondary"
-                            :value="value1"
-                            :max="max"
-                            style="height:25px"
-                            class="mb-3"
-                          ></b-progress>
-                        </div>
-                        <div class="col-3">
-                          <div class="row">
-                            <Rating
-                              :show-rating="false"
-                              :read-only="true"
-                              :rating="rating1"
-                              :star-size="20"
-                            ></Rating>
-                            <p id="percent-value" style="font-size:13pt;color: blue;">{{ value1 }} %</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-1">
-                        <i
-                          v-if="isHover1==false  && loadIsHover"
-                          @click="refreshComment()"
-                          class="fas fa-window-close"
-                          style="font-size:13pt;color: blue;"
-                        ></i>
-                      </div>
-                    </div>
-                  </span>
-                </div>
-              </div>
-              <!--Kết thúc Phần hàng rating star-->
-              <div class="row" id="row-rating-star">
-                <div class="col-12">
-                  <span>
-                    <div class="row" id="rowBig">
-                      <div
-                        class="row"
-                        @click="chooseRating(rating2),showReview(rating2)"
-                        :class="{ 'ratingHover': isHover2 && loadIsHover!=0 }"
-                      >
-                        <div class="col-8" style="margin: 5px;">
-                          <b-progress
-                            variant="secondary"
-                            :class="{ 'ratingHover': isHover2 && loadIsHover!=0 }"
-                            :value="value2"
-                            :max="max"
-                            style="height:25px"
-                            class="mb-3"
-                          ></b-progress>
-                        </div>
-                        <div class="col-3">
-                          <div class="row">
-                            <Rating
-                              :show-rating="false"
-                              :read-only="true"
-                              :rating="rating2"
-                              :star-size="20"
-                            ></Rating>
-                            <p id="percent-value" style="font-size:13pt;color: blue;">{{ value5 }} %</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-1">
-                        <i
-                          v-if="isHover2==false  && loadIsHover"
-                          @click="refreshComment()"
-                          class="fas fa-window-close"
-                          style="font-size:13pt;color: blue;"
-                        ></i>
-                      </div>
-                    </div>
-                  </span>
-                </div>
-              </div>
-              <div class="row" id="row-rating-star">
-                <div class="col-12">
-                  <span>
-                    <div class="row" id="rowBig" style="padding-left:2%">
-                      <div
-                        class="row"
-                        @click="chooseRating(rating3),showReview(rating3)"
-                        :class="{ 'ratingHover':  isHover3 && loadIsHover!=0 }"
-                      >
-                        <div class="col-8" style="margin: 5px;">
-                          <b-progress
-                            variant="secondary"
-                            :class="{ 'ratingHover':  isHover3 && loadIsHover!=0 }"
-                            :value="value3"
-                            :max="max"
-                            style="height:25px"
-                            class="mb-3"
-                          ></b-progress>
-                        </div>
-                        <div class="col-3">
-                          <div class="row">
-                            <Rating
-                              :show-rating="false"
-                              :read-only="true"
-                              :rating="rating3"
-                              :star-size="20"
-                            ></Rating>
-                            <p id="percent-value" style="font-size:13pt;color: blue;">{{ value4 }} %</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-1">
-                        <i
-                          v-if="isHover3==false  && loadIsHover"
-                          @click="refreshComment()"
-                          class="fas fa-window-close"
-                          style="font-size:13pt;color: blue;"
-                        ></i>
-                      </div>
-                    </div>
-                  </span>
-                </div>
-              </div>
-              <div class="row" id="row-rating-star">
-                <div class="col-12">
-                  <span>
-                    <div class="row" id="rowBig">
-                      <div
-                        class="row"
-                        @click="chooseRating(rating4),showReview(rating4)"
-                        :class="{ 'ratingHover': isHover4 && loadIsHover }"
-                      >
-                        <div class="col-8" style="margin: 5px;">
-                          <b-progress
-                            :class="{ 'ratingHover': isHover4 && loadIsHover }"
-                            variant="secondary"
-                            :value="value4"
-                            :max="max"
-                            style="height:25px"
-                            class="mb-3"
-                          ></b-progress>
-                        </div>
-                        <div class="col-3">
-                          <div class="row">
-                            <Rating
-                              :show-rating="false"
-                              :read-only="true"
-                              :rating="rating4"
-                              :star-size="20"
-                            ></Rating>
-                            <p id="percent-value" style="font-size:13pt;color: blue;">{{ value1 }} %</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-1">
-                        <i
-                          v-if="isHover4==false  && loadIsHover"
-                          @click="refreshComment()"
-                          class="fas fa-window-close"
-                          style="font-size:13pt;color: blue;"
-                        ></i>
-                      </div>
-                    </div>
-                  </span>
-                </div>
-              </div>
-              <div class="row" id="row-rating-star">
-                <div class="col-12">
-                  <span>
-                    <div class="row" id="rowBig">
-                      <div
-                        class="row"
-                        @click="chooseRating(rating5),showReview(rating5)"
-                        :class="{ 'ratingHover': isHover5 && loadIsHover }"
-                      >
-                        <div class="col-8" style="margin: 5px;">
-                          <b-progress
-                            :class="{ 'ratingHover': isHover5 && loadIsHover }"
-                            variant="secondary"
-                            :value="value5"
-                            :max="max"
-                            style="height:25px"
-                            class="mb-3"
-                          ></b-progress>
-                        </div>
-                        <div class="col-3">
-                          <div class="row">
-                            <Rating
-                              :show-rating="false"
-                              :read-only="true"
-                              :rating="rating5"
-                              :star-size="20"
-                            ></Rating>
-                            <p id="percent-value" style="font-size:13pt;color: blue;">{{ value1 }} %</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-1">
-                        <i
-                          v-if="isHover5==false  && loadIsHover"
-                          @click="refreshComment()"
-                          class="fas fa-window-close"
-                          style="font-size:13pt;color: blue;"
-                        ></i>
-                      </div>
-                    </div>
-                  </span>
-                </div>
-              </div>
-              <!-- Kết thúc Component rating star-->
+          <div class="recommend-container">
+            <h3>Gợi ý khóa học</h3>
+            <div
+              class="reccommend-item"
+              v-for="(course, i) in guestCourseDetailObject.top5"
+              :key="i"
+            >
+              <RecommendItem
+                @openLoginModal="openLoginModal"
+                :course="course"
+                @changeItem="changeItem"
+              ></RecommendItem>
             </div>
+            <button v-b-modal.login-modal id="openLoginModal"></button>
           </div>
-        </div>
-      </div>
-
-      <div id="review-container">
-        <div>
-          <div class="row">
-            <div class="col-3">
-              <h2 ref="cmt-container">Review</h2>
-            </div>
-            <div class="col-2 offset-3">
-              <CoursePageComment style="background-color:white"></CoursePageComment>
-            </div>
-          </div>
-
-          <div
-            class="row"
-            style="position: relative;"
-            v-for="(item,index) in displayedPosts"
-            :key="index"
-          >
-            <div class="col-sm-6 col-md-4 col-lg-8" style="background-color:white">
-              <div class="row">
-                <div class="col-1">
-                  <img
-                    src="https://png.pngtree.com/png-clipart/20190906/original/pngtree-520-couple-avatar-boy-avatar-little-dinosaur-cartoon-cute-png-image_4561296.jpg"
-                    alt="Avatar"
-                    style="width:50px"
-                  />
-                </div>
-                <div class="col-3">
-                  <div>{{ item.created_at }}</div>
-                  <div>{{ item.user_id }}</div>
-                </div>
-                <div class="col-6" id="comment">
-                  <div class="row">
-                    <Rating
-                      v-bind:increment="0.5"
-                      :show-rating="false"
-                      :read-only="true"
-                      v-bind:rating="item.rating_value"
+          <div class="review-container">
+            <h3>Đánh giá của học viên</h3>
+            <div class="row">
+              <div class="col-3">
+                <h1 class="text-center">{{avgStar}}</h1>
+                <StarRating
+                  style="width: 80%;margin: 1rem 10%;margin-left: 15%;"
+                  :star-size="20"
+                  :increment="0.1"
+                  :show-rating="false"
+                  :rating="avgStar"
+                  :read-only="true"
+                ></StarRating>
+                <p class="text-center">Trung Bình</p>
+              </div>
+              <div class="col-9">
+                <div
+                  class="row"
+                  v-for="i in 5"
+                  :key="i"
+                  :class="activeProgress == i || activeProgress==-1 ? 'active' : 'unactive' "
+                  style="cursor: pointer"
+                >
+                  <div class="col-8" @click="getCommentListByStar(i)">
+                    <v-app>
+                      <v-progress-linear
+                        :value="perCentStar(i)"
+                        color="#8a92a3"
+                        height="20"
+                        reactive
+                      >
+                        <template v-slot="{ value }">
+                          <strong>{{ (value) }}%</strong>
+                        </template>
+                      </v-progress-linear>
+                    </v-app>
+                  </div>
+                  <div class="col-3" @click="getCommentListByStar(i)">
+                    <StarRating
+                      style="margin-top: -0.5rem"
                       :star-size="20"
-                    ></Rating>
+                      :show-rating="false"
+                      :rating="i"
+                      :perCentStar="i"
+                      :read-only="true"
+                    ></StarRating>
                   </div>
-                  <div class="row" style="font-size:12pt;">
-                    <div>{{ item.comment }}</div>
+                  <div class="col-1">
+                    <v-icon
+                      v-if="activeProgress == i"
+                      @click="closeSelectStar()"
+                      style="margin-top: -0.5rem;cursor:pointer"
+                    >mdi-close</v-icon>
                   </div>
                 </div>
-                <hr width="100%" style="margin: 0px;" align="center" color="whitesmoke" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-3" style="padding-top: 1.5rem">
+                <h5>Đánh giá</h5>
+              </div>
+              <div class="col-5 offset-4">
+                <v-spacer></v-spacer>
+                <v-app>
+                  <v-text-field
+                    @keyup="searchKeyWord"
+                    v-model="search"
+                    dense
+                    outlined
+                    label="Search"
+                  ></v-text-field>
+                </v-app>
+              </div>
+            </div>
+            <hr style="margin-top: -0.5rem;" />
+            <div v-if="commentList==null || commentList.length == 0">
+              <h3 class="text-center">Hiện tại không có đánh giá nào!</h3>
+            </div>
+            <div v-for="(comment, i) in commentList" :key="i">
+              <div class="row" style="margin-top: -1rem">
+                <div class="col-4">
+                  <div class="row">
+                    <div class="col-4">
+                      <b-avatar v-if="comment.author.social_id != 0" :src="comment.author.avatar"></b-avatar>
+                      <b-avatar v-else :src="avatarURL+'/'+comment.author.user_id+'/avatar.png'"></b-avatar>
+                    </div>
+                    <div class="col-8" style="padding-left: 0">
+                      <div>
+                        <b>{{comment.author.name}}</b>
+                      </div>
+                      <div>
+                        <i>{{comment.updated_at.slice(0, 10)}}</i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-8">
+                  <div style="margin-top: 0.6rem;margin-bottom: 1rem">
+                    <StarRating
+                      :star-size="20"
+                      :increment="0.1"
+                      :show-rating="false"
+                      :rating="comment.rating_value"
+                      :read-only="true"
+                    ></StarRating>
+                  </div>
+                  <div>{{comment.comment}}</div>
+                </div>
+              </div>
+              <hr />
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="history-course-container">
+            <div class="history-1">
+              <h3 class="text-center">Lịch sử đã xem</h3>
+              <div class="history-2">
+                <HisoryCoursePage
+                  @changeItem="changeItem"
+                  v-for="(course,index) in historyCourseList"
+                  :course="course"
+                  :key="index"
+                ></HisoryCoursePage>
               </div>
             </div>
           </div>
         </div>
-        <!--Phần comment -->
-        <div class="row">
-          <div class="col-5"></div>
-          <div class="col-6">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item">
-                  <button
-                    type="button"
-                    class="page-link"
-                    v-if="page != 1"
-                    @click="page--;scrollToTopcmt()"
-                  >Previous</button>
-                </li>
-                <li class="page-item">
-                  <button
-                    type="button"
-                    class="page-link"
-                    v-for="pageNumber in pages.slice(page-1, page+5)"
-                    @click="page = pageNumber;scrollToTopcmt()"
-                    :key="pageNumber"
-                  >{{pageNumber}}</button>
-                </li>
-                <li class="page-item">
-                  <button
-                    type="button"
-                    @click="page++;scrollToTopcmt()"
-                    v-if="page < pages.length"
-                    class="page-link"
-                  >Next</button>
-                </li>
-              </ul>
-            </nav>
-          </div>
-        </div>
       </div>
-
-      <!--Comment-->
     </div>
-    <div v-else>
-      <v-progress-circular indeterminate  size="50"></v-progress-circular>
+    <div v-else class="text-center" style="width: 100%;padding: 4rem 0;">
+      <v-progress-circular indeterminate size="100"></v-progress-circular>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-import Rating from "../../../node_modules/vue-star-rating/src/star-rating";
 import Swal from "../../../node_modules/sweetalert2/dist/sweetalert2.all";
-import CoursePageComment from "./CoursePage_comment";
-
+import apiConfig from "../../API/api.json";
+import StarRating from "../../../node_modules/vue-star-rating/src/star-rating";
+import RecommendItem from "../../components/RecommendItem/RecommendItem";
+import HisoryCoursePage from "../../components/HistoryCoursePage/HistoryCoursePage";
 export default {
-  props: {
-    id: Object
-  },
-
+  components: { StarRating, RecommendItem, HisoryCoursePage },
   data() {
     return {
-      value1: 50,
-      value2: 20,
-      value3: 30,
-      value4: 70,
-      value5: 100,
-      max: 100,
-      rating1: 5,
-      rating2: 4,
-      rating3: 3,
-      rating4: 2,
-      rating5: 1,
-      CourseRatingValue: 3.8,
-      isHoverHeart: false,
-
-      isHover: false,
-      isHover1: false,
-      isHover2: false,
-      isHover3: false,
-      isHover4: false,
-      isHover5: false,
-      chooseRatingValue: 0,
-      course: {
-        id: "6",
-        name: "Tnn",
-        code: "TT52"
-      },
-
-      Top5Course: [],
-
-      listComment: [],
-
-      infoInstructor: [],
-      totalCourse: 0,
-      list: [],
-
-      course_id: "",
-      posts: [],
-      page: 1,
-      perpage: 5,
-      pages: [],
-      refreshCommentValue: false,
-      user_id: "vanvinh"
+      ImageURL: "",
+      courseURL: "",
+      avatarURL: apiConfig.avatarURL,
+      activeProgress: -1,
+      descriptionMore: false,
+      authorMore: false,
+      commentList: [],
+      search: "",
+      countValueStar: [],
+      totalStars: 0,
+      avgStar: 0,
+      instructorAVGStar: 0,
+      instructorReview: 0
     };
   },
-  components: { Rating, CoursePageComment },
   created() {
-    //this.checkWishList();
-    //this.$store.dispatch("getCarts");
-    console.log(this.$route);
-    this.course_id = this.$route.params.id;
-    console.log("đây là course_id", this.course_id);
-    this.getDetailCourse();
-    this.getPosts();
-    this.getTop5course();
-    //this.getInfoInstructor();
-  },
-  watch: {
-    posts() {
-      this.setPage();
-    }
-  },
-  filters: {
-    trimWords(value) {
-      return (
-        value
-          .split(" ")
-          .splice(1, 20)
-          .join(" ") + "..."
-      );
-    }
+    this.loadCourseDetail();
+    this.$store.commit("updateHistoryCourseList");
   },
   methods: {
-    getDetailCourse(){
-      this.$store.dispatch("guestGetDetailCourse",this.$route.params.id).then(()=>{
-        console.log("guestGetDetailCourse",this.guestGetDetailCourse)
-        console.log("amountReview",this.guestGetDetailCourseAmountReview)
-      })
+    openLoginModal() {
+      document.getElementById("openLoginModal").click();
     },
-    getPosts() {
-      var vm = this
-      this.$store.dispatch("guestGetListComment",this.$route.params.id).then(()=> {
-          console.log('data',this.userCommentState)
-          vm.listComment = this.userCommentState;
-          let comment;
-          for (let i = 0; i < this.userCommentState.length; i++) {
-            comment = this.userCommentState[i];
-            //console.log("dsad",comment)
-            vm.posts.push(comment);
-            //console.log(this.posts);
-          }
-        });
-    },
-    getTop5course(){
-      var vm = this
-      this.$store.dispatch("guestGetTop5CourseByTopic",this.$route.params.id).then(function(response){
-        console.log("list",response.data.list);
-        console.log("top5",response.data.topfive)
-        vm.Top5Course = response.data.topfive;
-      })
-    },
-    getInfoInstructor() {
-      // var vm = this
-      // this.$store.dispatch("userGetTop5CourseByTopic",this.$route.params.id).then(function(response){
-      //   console.log("info",response.data.infoInstructor);
-      //   console.log("total",response.data.total)
-      //   vm.infoInstructor = this.response.data.infoInstructor;
-      //   vm.total = this.response.data.total;
-      // })
-    },
-    scrollToTopcmt() {
-      let target = this.$refs["cmt-container"];
-      let options = {
-        duration: 100,
-        offset: 200,
-        easing: "linear"
-      };
-      this.$vuetify.goTo(target, options);
-    },
-    setPage() {
-      let numberOfPages = Math.ceil(this.posts.length / this.perpage);
-      for (let index = 1; index <= numberOfPages; index++) {
-        this.pages.push(index);
-      }
-    },
-    paginate(posts) {
-      let page = this.page;
-      let perPage = this.perpage;
-      let from = page * perPage - perPage;
-      let to = page * perPage;
-      return posts.slice(from, to);
-    },
-    chooseRating(starValue) {
-      switch (starValue != 0) {
-        case starValue == this.rating1:
-          (this.isHover1 = false),
-            (this.isHover2 = true),
-            (this.isHover3 = true),
-            (this.isHover4 = true),
-            (this.isHover5 = true);
-          break;
-        case starValue == this.rating2:
-          (this.isHover1 = true),
-            (this.isHover2 = false),
-            (this.isHover3 = true),
-            (this.isHover4 = true),
-            (this.isHover5 = true);
-          break;
-        case starValue == this.rating3:
-          (this.isHover1 = true),
-            (this.isHover2 = true),
-            (this.isHover3 = false),
-            (this.isHover4 = true),
-            (this.isHover5 = true);
-          break;
-        case starValue == this.rating4:
-          (this.isHover1 = true),
-            (this.isHover2 = true),
-            (this.isHover3 = true),
-            (this.isHover4 = false),
-            (this.isHover5 = true);
-          break;
-        case starValue == this.rating5:
-          (this.isHover1 = true),
-            (this.isHover2 = true),
-            (this.isHover3 = true),
-            (this.isHover4 = true),
-            (this.isHover5 = false);
-          break;
-        default:
-          (this.isHover1 = false),
-            (this.isHover2 = false),
-            (this.isHover3 = false),
-            (this.isHover4 = false),
-            (this.isHover5 = false);
-      }
-      // this.isHover = true;
-      this.chooseRatingValue = starValue;
-    },
-    checkExistItem(cart) {
-      for (let i = 0; i < cart.length; i++) {
-        if (cart[i].id == this.course.id) {
-          return true;
-        }
-      }
-      return false;
-    },
-    AddtoCartDB() {
-      Swal.showLoading();
-      console.log("Nó chạy vào addtocart r này");
+    loadCourseDetail() {
+      let vm = this;
       this.$store
-        .dispatch("userAddtoCart", this.$route.params.id) //this.$route.params.id  : cái này ở trong router.js
-        .then(function(response) {
-          let icon = "success";
+        .dispatch("guestGetCourseDetail", this.$route.params.id)
+        .then(response => {
           if (response.data.RequestSuccess == false) {
-            icon = "error";
+            this.$router.push({ name: "not-found-page" });
           }
-          Swal.fire({
-            icon: icon,
-            title: "Thông Báo",
-            text: response.data.msg
-          });
-        });
-    },
-    AddtoCart() {
-      console.log("Đã click vào r");
-      let cart = [];
-      if (localStorage.cart) {
-        cart = JSON.parse(localStorage.cart);
-        console.log("Đã vào cart r");
-      }
-      console.log(this.course);
-      if (this.checkExistItem(cart)) {
-        console.log("vào if thứ 2 rs");
-        Swal.fire({
-          icon: "error",
-          title: "Thông báo",
-          text: "Khóa đã có trong cart"
-        });
-      } else {
-        cart.push(this.course);
-        Swal.fire({
-          icon: "success",
-          title: "Thông báo",
-          text: "Thêm thành công"
-        }).then(response => {
-          console.log(response);
-          localStorage.cart = JSON.stringify(cart);
-        });
-      }
-    },
-    checkExistItemWishList(wishlist, index) {
-      for (let i = 0; i < wishlist.length; i++) {
-        console.log("this top 5 course", this.Top5Course[index].name);
-        if (wishlist[i].id == this.Top5Course[index].id) {
-          return true;
-        }
-      }
-      return false;
-    },
-    AddToWishList(index) {
-      let wishlist = [];
-      if (localStorage.wishlist) {
-        wishlist = JSON.parse(localStorage.wishlist);
-      }
-      if (this.checkExistItemWishList(wishlist, index)) {
-        let list = JSON.parse(localStorage.wishlist);
-        console.log("This top 5", this.Top5Course[index].id);
-        for (let i = 0; i < list.length; i++) {
-          console.log(list[i]);
-          if (list[i].id == this.Top5Course[index].id) {
-            console.log("This Top5Course[index]", this.Top5Course[index].id);
+          if (this.guestCourseDetailObject.instructor.social_id == 0) {
+            this.ImageURL =
+              apiConfig.avatarURL +
+              "/" +
+              this.guestCourseDetailObject.instructor.user_id +
+              "/avatar.png";
+          } else {
+            this.ImageURL = this.guestCourseDetailObject.instructor.avatar;
           }
-        }
-
-        Swal.fire({
-          icon: "error",
-          title: "Thông báo",
-          text: "Đã bỏ thích khóa học"
-        }).then(response => {
-          console.log(response);
-          list.pop(this.Top5Course[index]);
+          this.courseURL =
+              apiConfig.imageURL +
+              "/" +
+              this.guestCourseDetailObject.course_id +
+              "/" +
+              this.guestCourseDetailObject.course_id +
+              ".png";
+          this.countValueStar = [];
+          this.descriptionMore = false;
+          this.authorMore = false;
+          this.totalStars = 0;
+          vm.handleForInstructor();
+          vm.handlStar();
+          vm.closeSelectStar();
+          vm.addHistory();
         });
-      } else {
-        wishlist.push(this.Top5Course[index]);
-        console.log("Cái course id", this.Top5Course[index]);
-        Swal.fire({
-          icon: "success",
-          title: "Thông báo",
-          text: "Đã thích khóa học"
-        }).then(response => {
-          console.log(response);
-          localStorage.wishlist = JSON.stringify(wishlist);
-        });
-      }
-    },
-    checkWishList(id) {
-      //console.log('checkWishlissssssssst',id);
-      for (let i = 0; i < this.list.length; i++) {
-        if (this.list[i].name === id) {
-          return true;
-        }
-      }
-      return false;
-    },
-    showReview(index) {
-      console.log(index);
-      this.getPostsByRateValue(index);
-    },
-
-    getPostsByRateValue(rateValue) {
-      // console.log("getPost by ratevalue", rateValue);
-      // console.log("This posts",this.posts);
-      // console.log("this pages",this.pages);
-      this.posts.splice(0);
-      this.pages.splice(0);
-      // console.log("Đây là post sau khi delete", this.posts);
-      // console.log("this pagesssssss sau delete",this.pages);
-      this.page = 1;
-      let comment;
-      for (let i = 0; i < this.listComment.length; i++) {
-        if (
-          this.listComment[i].rating_value == rateValue ||
-          this.listComment[i].rating_value - 0.5 == rateValue ||
-          this.listComment[i].rating_value + 0.5 == rateValue
-        ) {
-          comment = this.listComment[i];
-          this.posts.push(comment);
-          console.log(this.posts);
-        }
-      }
-      this.paginate(this.posts);
-    },
-
-    refreshComment() {
-      this.listComment.splice(0, this.listComment.length);
-      this.pages.splice(0);
-      this.posts.splice(0);
-      this.chooseRatingValue = 0;
-      this.isHover1 = true;
-      this.isHover2 = true;
-      this.isHover3 = true;
-      this.isHover4 = true;
-      this.isHover5 = true;
-      this.getPosts();
-
-      console.log(
-        "tổng hợp",
-        this.isHover1,
-        this.isHover2,
-        this.isHover3,
-        this.isHover4,
-        this.isHover5
-      );
     },
     addHistory() {
-      let history = []
-      if(localStorage.historyCourseList) {
-        history = JSON.parse(localStorage.historyCourseList)
+      let history = [];
+      let flag = false;
+      if (localStorage.historyCourseList) {
+        history = JSON.parse(localStorage.historyCourseList);
+        history.forEach(course => {
+          if (course.course_id == this.guestCourseDetailObject.course_id) {
+            flag = true;
+          }
+        });
       }
-      history.push({ course_id: this.$route.params.id })
-      localStorage.historyCourseList = JSON.stringify(history)
+      if (!flag) {
+        let course = {};
+        course.course_id = this.guestCourseDetailObject.course_id;
+        course.name = this.guestCourseDetailObject.name;
+        course.description = this.guestCourseDetailObject.description;
+        course.author = this.guestCourseDetailObject.instructor.name;
+        course.rating = this.avgStar;
+        if (this.guestCourseDetailObject.course_comment)
+          course.commentCount = this.guestCourseDetailObject.course_comment.length;
+        else course.commentCount = 0;
+        course.priceTier = this.guestCourseDetailObject.price_tier.priceTier;
+        course.whatLearn = this.guestCourseDetailObject.what_you_learn;
+        course.topicEnable = this.guestCourseDetailObject.topics_enable;
+        history.push(course);
+        localStorage.historyCourseList = JSON.stringify(history);
+        this.$store.commit("updateHistoryCourseList");
+      }
+    },
+    changeItem(course_id) {
+      this.$router.push({
+        name: "course-detail-page",
+        params: { id: course_id }
+      });
+      this.loadCourseDetail();
+    },
+    getCommentListByStar(index, flag) {
+      if (index != -1) {
+        this.activeProgress = index;
+        this.currentIndexStar = index;
+        let tempList = this.guestCourseDetailObject.course_comment;
+        this.commentList = [];
+        if (tempList != null && tempList.length > 0) {
+          let star = index;
+          tempList.forEach(comment => {
+            if (comment.rating_value == star) {
+              this.commentList.push(comment);
+            }
+          });
+        }
+        if (flag == null) this.search = "";
+      } else {
+        this.closeSelectStar(flag);
+      }
+    },
+    closeSelectStar(flag) {
+      this.activeProgress = -1;
+      this.commentList = [];
+      this.commentList = this.guestCourseDetailObject.course_comment;
+      if (flag == null) this.search = "";
+    },
+    handlStar() {
+      let tempList = this.guestCourseDetailObject.course_comment;
+      this.totalStars = 0;
+      if (tempList != null && tempList.length > 0) {
+        tempList.forEach(comment => {
+          if (this.countValueStar[comment.rating_value] != null) {
+            this.countValueStar[comment.rating_value]++;
+          } else {
+            this.countValueStar[comment.rating_value] = 1;
+          }
+          this.totalStars += comment.rating_value;
+        });
+        this.avgStar = this.totalStars / tempList.length;
+      } else {
+        this.totalStars = 0;
+        this.avgStar = 0;
+      }
+    },
+    perCentStar(index) {
+      if (
+        this.countValueStar[index] != null &&
+        this.guestCourseDetailObject != null &&
+        this.guestCourseDetailObject.course_comment != null
+      ) {
+        let perCent =
+          (this.countValueStar[index] /
+            this.guestCourseDetailObject.course_comment.length) *
+          100;
+        return Math.floor(perCent);
+      } else return 0;
+    },
+    searchKeyWord() {
+      if (this.search != "" && this.commentList != null) {
+        this.getCommentListByStar(this.activeProgress, 1);
+        let tempList = [];
+        for (let i = 0; i < this.commentList.length; i++) {
+          let str1 = this.commentList[i].comment.toLowerCase();
+          let str2 = this.search.toLowerCase();
+          if (str1.includes(str2)) {
+            tempList.push(this.commentList[i]);
+          }
+        }
+        this.commentList = tempList;
+      } else {
+        this.getCommentListByStar(this.activeProgress);
+      }
+    },
+    handleForInstructor() {
+      let instructor = this.guestCourseDetailObject.instructor;
+      if (instructor != null) {
+        let courses = instructor.ins_courses;
+        if (courses != null) {
+          let sumReview = 0;
+          let sumStar = 0;
+          courses.forEach(course => {
+            if (course.course_comment != null) {
+              sumReview += course.course_comment.length;
+              let tempStar = 0;
+              course.course_comment.forEach(comment => {
+                tempStar += comment.rating_value;
+              });
+              sumStar += tempStar;
+            }
+          });
+          this.instructorReview = sumReview;
+          this.instructorAVGStar = Math.floor(sumStar / sumReview);
+        }
+      }
+    },
+    addToCart() {
+      this.$store
+        .dispatch("userAddToCart", this.guestCourseDetailObject.course_id)
+        .then(response => {
+          let icon = "";
+          response.data.RequestSuccess ? (icon = "success") : (icon = "error");
+          this.$swal({
+            icon: icon,
+            title: response.data.msg
+          });
+        });
     }
   },
   computed: {
     ...mapGetters({
-      userCommentState: "userCommentState",
-      userTop5CourseStateList: "userTop5CourseStateList",
-      userTop5CourseStateTop5: "userTop5CourseStateTop5",
-
-      guestGetDetailCourseAmountReview:"guestGetDetailCourseAmountReview",
-      guestGetDetailCourse: "guestGetDetailCourse",
-      guestGetDetailCourseLoading: "guestGetDetailCourseLoading"
-    }),
-    loadIsHover() {
-      //console.log("dsadsadasdadas", this.chooseRatingValue);
-      return this.chooseRatingValue;
-    },
-    rows() {
-      return this.items.length;
-    },
-    displayedPosts() {
-      return this.paginate(this.posts);
-    },
-    target() {
-      const value = this[this.type];
-      if (!isNaN(value)) return Number(value);
-      else return value;
-    },
-    options() {
-      return {
-        duration: 200,
-        offset: 200,
-        easing: this.easing
-      };
-    }
+      guestCourseDetailObject: "guestCourseDetailObject",
+      guestCourseDetailLoading: "guestCourseDetailLoading",
+      historyCourseList: "historyCourseList",
+      userCourseListCartLoading: "userCourseListCartLoading"
+    })
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.my-align {
+  text-align: justify;
+}
+
+.history-course-container {
+  position: relative;
+  margin-top: 22rem;
+  height: 100%;
+  .history-1 {
+    position: sticky;
+    top: 0.5rem;
+    .history-2 {
+      position: relative;
+      margin-left: 2.8rem;
+      width: 75%;
+      border: 1px solid silver;
+      max-height: 35rem;
+      overflow-y: auto;
+    }
+  }
+}
+
+.hight-ligh-text-comment {
+  color: yellowgreen;
+  background-color: yellow;
+}
+
+.miniContent {
+  height: 10rem;
+  overflow: hidden;
+}
+
+.recommend-container {
+  margin: 2rem 0;
+  width: 100%;
+  .reccommend-item {
+    padding: 0 1rem;
+    position: relative;
+    border-bottom: 1px solid silver;
+    cursor: pointer;
+    &:hover {
+      background-color: #c2deff;
+    }
+  }
+}
+.active {
+  opacity: 1;
+}
+
+.unactive {
+  opacity: 0.5;
+}
+
+.review-container {
+  margin: 1rem 0;
+  width: 100%;
+  padding: 1rem;
+}
 .ratingHover {
   opacity: 0.35;
 }
 #content-container {
-  margin: 1rem 10%;
+  margin: 2rem 0;
   background: #f9f9f9;
-  width: 50%;
+  width: 100%;
   border: 1px solid silver;
   padding: 1rem;
   .row {
@@ -915,38 +582,21 @@ export default {
     }
   }
 }
-#requirement-container {
-  margin: 1rem 10%;
-  width: 50%;
-  h2 {
-    margin-top: 2rem;
-  }
-  ul {
-    li {
-      font-size: 12pt;
-      margin-left: 3%;
-      list-style-type: circle;
-    }
-  }
-}
 #introduce-container {
-  margin: 3rem 10%;
-  width: 50%;
-
-  .col-12 {
-    .row {
-      .col-4 {
-        img {
-          border-radius: 50%;
-          width: 100px;
-        }
+  margin: 2rem 0;
+  width: 100%;
+  .row {
+    .col-3 {
+      img {
+        border-radius: 50%;
+        width: 100px;
       }
     }
   }
 }
 #description-container {
-  margin: 1rem 10%;
-  width: 50%;
+  margin: 1rem 0;
+  width: 100%;
   p {
     font-size: 12pt;
   }
@@ -954,73 +604,15 @@ export default {
     margin-top: 2rem;
   }
 }
-#alsobought-container {
-  margin: 1rem 10%;
-  width: 70%;
-  hr {
-    width: 90%;
-  }
-  h2 {
-    margin-top: 2rem;
-  }
-}
-#feedback-container {
-  margin: 1rem 10%;
-  margin-left: 9%;
-  width: 100%;
-  h2 {
-    margin-top: 3rem;
-  }
-  #row-average-rating {
-    margin: 0 0 0 -2rem;
-    .col-2 {
-      font-size: 42pt;
-      text-align: center;
-    }
-  }
-  .row {
-    .col-10 {
-      #row-rating-star {
-        margin-top: -8%;
-        .col-12 {
-          span {
-            #rowBig {
-              padding-left: 2%;
-            }
-            .col-3 {
-              margin-top: -0.3rem;
-            }
-            #percent-value {
-              margin-top: 0.7rem;
-              margin: 2px 0px 0px 5px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-#review-container {
-  margin: 1rem 10%;
-  width: 80%;
-  h2 {
-    margin-top: -1rem;
-  }
-  #comment {
-    margin-left: 10%;
-  }
-}
 
 .my-card-container {
   position: absolute;
+  z-index: 3;
   right: 5rem;
   top: 5rem;
   background-color: white;
   width: 20rem;
   border: solid 0.5px rgb(194, 187, 186);
-  li {
-    margin-left: 10%;
-  }
   img {
     border: none;
     width: 100%;
@@ -1032,6 +624,7 @@ export default {
     height: 3rem;
   }
 }
+
 // span:hover {
 //   display: block;
 //   background-color: yellow;
@@ -1040,14 +633,12 @@ export default {
   text-align: left;
   margin-left: 10%;
   width: 50%;
-  padding: 2rem 2rem 2rem 0.5rem;
+  padding: 2rem;
 }
 
-#DetailSubject h1 {
+#DetailSubject h3 {
+  margin-bottom: 1rem;
   color: #f7f8f8;
-  font-size: 25pt;
-  padding-bottom: 2rem;
-  height: 5rem;
   font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
 }
 #DetailSubject h2 {
@@ -1055,14 +646,6 @@ export default {
   font-size: 14pt;
   height: 1rem;
   font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
-}
-
-#DetailSubject p,
-a {
-  color: #f7f8f8;
-  font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  line-height: 1.43;
 }
 
 body {
