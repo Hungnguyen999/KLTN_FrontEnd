@@ -1,3 +1,5 @@
+import { data } from "jquery"
+
 export default {
     changeTab(state, data) {
         state.mypageTabState.hash = data
@@ -62,6 +64,75 @@ export default {
     admin_getTopic_error(state) {
         state.adminTopicState.loading = false
     },
+    //hung
+    admin_getStatistical_request(state){
+        state.adminStatisticalState.loading = true
+    },
+    admin_getStatistical_success(state){
+        state.adminStatisticalState.loading = false
+        if(data.list){
+            state.adminStatisticalState.list = data.list
+        }
+        if(data.object){
+            state.adminStatisticalState.object = data.object
+        }
+    },
+    admin_getStatistical_error(state){ 
+        state.adminStatisticalState.loading = false
+    },
+
+
+    admin_getListCourse_request(state){
+        state.adminGetListCourseState.loading = true
+    },
+    admin_getListCourse_success(state){
+        state.adminGetListCourseState.loading = false
+        if(data.list){
+            state.adminGetListCourseState.list = data.list
+        }
+        if(data.object){
+            state.adminGetListCourseState.object = data.object
+        }
+    },
+    admin_getListCourse_error(state){
+        state.adminGetListCourseState.loading = false
+    },
+
+
+    admin_getListPricetier_request(state){
+        state.adminGetListPricetierState.loading = true
+    },
+    admin_getListPricetier_success(state){
+        state.adminGetListPricetierState.loading = false
+        if(data.list){
+            state.adminGetListPricetierState.list = data.list
+        }
+        if(data.object){
+            state.adminGetListPricetierState.object = data.object
+        }
+    },
+    admin_getListPricetier_error(state){
+        state.adminGetListPricetierState.loading = false
+    },
+
+    admin_getListCoursebyPrice_request(state){
+        state.adminGetListCoursebyPriceState.loading = true
+    },
+    admin_getListCoursebyPrice_success(state){
+        state.adminGetListCoursebyPriceState.loading = false
+        if(data.list){
+            state.adminGetListCoursebyPriceState.list = data.list
+        }
+        if(data.object){
+            state.adminGetListCoursebyPriceState.object = data.object
+        }
+    },
+    admin_getListCoursebyPrice_error(state){
+        state.adminGetListCoursebyPriceState.loading = false
+    },
+    //
+
+
     user_getCategory_request(state) {
         state.userCategoryState.loading = true
     },

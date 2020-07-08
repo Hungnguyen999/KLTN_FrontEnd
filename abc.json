@@ -1,4 +1,6 @@
 {
+
+    "apiURL": "http://goodlearning.com/",
     "list": [
         {
             "course_id": 33,

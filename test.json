@@ -1,0 +1,92 @@
+[
+    {
+        "name": "Đầu ra của đoạn code sau là gì",
+        "image": [],
+        "type": 1,
+        "answerList": [
+            "Lỗi biên dịch.","Quantrimang.com xin chào!","Quantrimang.com","Cảnh báo của trình biên dịch."
+        ],
+        "correctAnswer": ["Lỗi biên dịch."]
+    },
+    {
+        "name": "Size của định nghĩa union dưới đây là?",
+        "image": [],
+        "type": 1,
+        "answerList": [
+            "1967","1972","1970","1976"
+        ],
+        "correctAnswer": ["1972"]
+    },
+    {
+        "name": "Ngôn ngữ lập trình nào dưới đây là ngôn ngữ lập trình có cấu trúc?",
+        "image": [],
+        "type": 1,
+        "answerList": [
+            "Ngôn ngữ Assembler","Ngôn ngữ C và Pascal","Ngôn ngữ Cobol","a, b và c"
+        ],
+        "correctAnswer": ["Ngôn ngữ C và Pascal"]
+    },
+    {
+        "name": "Những tên biến nào dưới đây được viết đúng theo quy tắc đặt tên của ngôn ngữ lập trình C?",
+        "image": [],
+        "type": 1,
+        "answerList": [
+            "diem toan"," 3diemtoan","_diemtoan","-diemtoan"
+        ],
+        "correctAnswer": ["_diemtoan"]
+    },
+    {
+        "name": "Một biến được gọi là biến toàn cục nếu:",
+        "image": [],
+        "type": 1,
+        "answerList": [
+            "Nó được khai báo tất cả các hàm, ngoại trừ hàm main()","Nó được khai báo ngoài tất cả các hàm kể cả hàm main()","  Nó được khai báo bên ngoài hàm main()","Nó được khai báo bên trong hàm main()"
+        ],
+        "correctAnswer": ["Nó được khai báo ngoài tất cả các hàm kể cả hàm main()"]
+    },
+    {
+        "name": " Một biến được gọi là một biến địa phương nếu:",
+        "image": [],
+        "type": 1,
+        "answerList": [
+            "Nó được khai báo bên trong các hàm hoặc thủ tục, kể cả hàm main()","Nó đươc khai báo bên trong các hàm ngoại trừ hàm main()","Nó được khai báo bên trong hàm main()","Nó được khai báo bên ngoài các hàm kể cả hàm main()"
+        ],
+        "correctAnswer": ["Nó được khai báo bên trong các hàm hoặc thủ tục, kể cả hàm main()"]
+    },
+    {
+        "name": "Kiểu dữ liệu nào dưới đây được coi là kiểu dữ liệu cơ bản trong ngôn ngữ lập trình C:",
+        "image": [],
+        "type": 1,
+        "answerList": [
+            "double","con trỏ","hợp","mảng"
+        ],
+        "correctAnswer": ["double"]
+    },
+    {
+        "name": "Giả sử a, b là hai số thực. Biểu thức nào dưới đây viết không đúng theo cú pháp của ngôn ngữ lập trình C:",
+        "image": [],
+        "type": 1,
+        "answerList": [
+            "(a+=b)"," (a*=b)","(a=b)","(a&=b)"
+        ],
+        "correctAnswer": ["(a&=b)"]
+    },
+    {
+        "name": "Xâu định dạng nào dưới đây dùng để in ra một số nguyên hệ 16:",
+        "image": [],
+        "type": 1,
+        "answerList": [
+            "“%d”","“%x”","%i","%u"
+        ],
+        "correctAnswer": ["“%x”"]
+    },
+    {
+        "name": "Trong các hàm sau, hàm nào là hàm không định dạng để in một chuỗi kí tự ra màn hình:",
+        "image": [],
+        "type": 1,
+        "answerList": [
+            "puts()","printf()","scanf()","gets()"
+        ],
+        "correctAnswer": ["puts()"]
+    }
+]

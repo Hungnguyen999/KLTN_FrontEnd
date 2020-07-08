@@ -36,8 +36,32 @@ export const store = new Vuex.Store({
         adminTopicState: {
             loading: false,
             list: [],
-            pbject: {}
+            object: {}
         },
+
+        //hung
+        adminStatisticalState   :{
+            loading: false,
+            list: [],
+            object: {}
+        },
+        adminGetListCourseState:{
+            loading: false,
+            list: [],
+            object: {}
+        },
+        adminGetListPricetierState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        adminGetListCoursebyPriceState: {
+            loading: false,
+            list: [],
+            object: {}
+        },
+        ///
+
         userCategoryState: {
             loading: false,
             list: [],

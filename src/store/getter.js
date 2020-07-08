@@ -61,19 +61,25 @@ export default {
     guestSearch: state => state.guestSearchState.search,
     guestSearchLoading: state => state.guestSearchState.loading,
 
-
-
-
-
-
-
-
-
-
-
-
-
+    
     // hung
+    adminStatisticalStateList: state => state.adminStatisticalState.list,
+    adminStatisticalStateLoading: state => state.adminStatisticalState.loading,
+    adminStatisticalStateObject: state => state.adminStatisticalState.object,  
+
+    adminGetListCourseList: state => state.adminGetListCourseState.list,
+    adminGetListCourseLoading: state => state.adminGetListCourseState.loading,
+    adminGetListCourseObject: state => state.adminGetListCourseState.object,
+
+    adminGetListPricetierList: state => state.adminGetListPricetierState.list,
+    adminGetListPricetierObject: state => state.adminGetListPricetierState.object,
+    adminGetListPricetierLoading: state => state.adminGetListPricetierState.loading,
+
+    adminGetListCoursebyPriceLoading: state => state.adminGetListCoursebyPriceState.loading,
+    adminGetListCoursebyPriceList: state => state.adminGetListCoursebyPriceState.list,
+    adminGetListCoursebyPriceObject: state => state.adminGetListCoursebyPriceState.object,
+    
+    
     userCommentState: state => state.userCommentState.list,
     userCommentStateLoading: state => state.userCommentState.loading,
 

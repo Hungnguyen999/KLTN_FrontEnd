@@ -105,6 +105,11 @@ export default {
           title: "Thống kê",
           icon: "far fa-chart-bar fa-lg",
           href: "statistical-page"
+        },
+        {
+          title: "Quản lý giá",
+          icon: "fas fa-dollar-sign fa-lg",
+          href: "price-page"
         }
       ]
     };

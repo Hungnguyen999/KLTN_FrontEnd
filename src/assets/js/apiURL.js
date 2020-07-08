@@ -34,6 +34,25 @@ var apiURL = {
     guestDetailCourse: apiAddress + "/guest/course",
     guestSearch: apiAddress + "/guest/search",
     // hung
+    adminGetSatistical: apiAddress + "/admin/detailstatistical",
+    adminGetInfoSatistical: apiAddress +"/admin/statistical",
+    adminGetInfoCourseStatistical: apiAddress + "/admin/coursestatistical",
+    adminGetListCourse: apiAddress + "/admin/getlistcourse",
+    adminUnactiveCourse: apiAddress + "/admin/unactivecourse",
+    adminActiveCourse: apiAddress + "/admin/activecourse",
+
+    adminGetListPricetier: apiAddress + "/admin/getlistpricetier",
+    adminGetListCoursebyPrice: apiAddress + "/admin/getlistcoursebyprice",
+    adminDeletePricetier: apiAddress + "/admin/deletepricetier",
+    adminInsertPricetier: apiAddress + "/admin/insertpricetier",
+
+    adminGetListMoneytype: apiAddress + '/admin/getlistmoneytype',
+    adminGetListCoursebyMoneytype: apiAddress + '/admin/getlistcoursebymoneytype',
+    adminDeleteMoneytype: apiAddress + '/admin/deletemoneytype',
+    adminInsertMoneytype: apiAddress + '/admin/insertmoneytype',
+    //
+
+
     userInsertComment: apiAddress + "/user/course/insertcomment",
     guestGetListComment: apiAddress + "/guest/course/getlistcomment",
     guestGetTop5CourseByTopic: apiAddress + "/guest/course/gettop5course",

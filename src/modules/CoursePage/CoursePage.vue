@@ -85,6 +85,7 @@
           <div id="introduce-container">
             <div class="row" style="margin-bottom:0">
               <div class="col-3">
+                {{ImageURL}}/vinh
                 <img
                   :src="ImageURL"
                   class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|}"
@@ -333,9 +334,14 @@ export default {
               "/" +
               this.guestCourseDetailObject.instructor.user_id +
               "/avatar.png";
+              // alert( apiConfig.avatarURL +
+              // "/" +
+              // this.guestCourseDetailObject.instructor.user_id +
+              // "/avatar.png")
           } else {
             this.ImageURL = this.guestCourseDetailObject.instructor.avatar;
           }
+          //alert(this.guestCourseDetailObject.instructor.social_id)
           this.courseURL =
               apiConfig.imageURL +
               "/" +

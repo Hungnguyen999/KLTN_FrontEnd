@@ -1,8 +1,8 @@
 {
-    "apiURL": "http://goodlearning.com/",
+    "apiURL": "https://localhost/KLTN-Server/public",
     "socialURLRedirect": "https://localhost/KLTN-Server/public/redirect",
     "apiURLs": "https://localhost/KLTN-Server/public",
-    "baseURL": "http://localhost:8081",
+    "baseURL": "https://localhost:8081",
     "apiURLapiURL": "https://goodlearningserver.herokuapp.com",
     "baseURLOnline": "https://goodlearningclient.herokuapp.com",
     "imageURL" : "https://localhost/KLTN-Server/public/uploads/images",
